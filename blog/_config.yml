@@ -11,9 +11,9 @@ plugins:     ./_plugins
 
 future:      true
 lsi:         false
-pygments:    false
+pygments:    true
 markdown:    maruku
-permalink:   pretty
+permalink:   /:categories/:year/:month/:title/
 
 maruku:
   use_tex:    false

@@ -1,9 +1,10 @@
 ---
-layout: default
-title: blog
+layout: index
+title: blog archive
 ---
 
 <div id="home">
+  <p> Herein lie the dusty blog archives: </p>
   <ul class="posts">
     {% for post in site.posts %}
       <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="/blog{{ post.url }}">{{ post.title }}</a></li>
