@@ -1,0 +1,180 @@
+<head>
+<title>go2net | internet | deep magic | Twiddler on the Spoof</title>
+</head>
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+<img src="head.gif" width=271 height=41 border=0 usemap="#head" alt="Twiddler on the Spoof"><br clear=left>
+<MAP Name="head">
+<AREA SHAPE="RECT" COORDS="45,2,121,23" target="define" href="01.html">
+</map><br>
+<font size=-1 color="#99CC66">5 February 1997</font>
+
+<p> Life as a 
+<a href="02.html" target="define"><b>white hat</b></a><sup><font
+size="-1">2</font></sup>
+isn't easy.  The black hats seem to have all the
+time in the world.  They share cracking tools.  They need only find one
+vulnerability, while we have to plug them all.  And a significant portion
+of the currently deployed network software was not written by the
+paranoid.<p>
+
+   Remember when Kevin Mitnick broke into Tsutomu Shimomura's computer at
+SDSC, and the whole world got all excited, and John Markoff wrote a book,
+and everyone got rich but me? If you weren't following the technical
+aspects amidst the drama, that was an IP spoofing attack.  In fact, it was
+the first widely reported successful execution of the so-called 
+<a href="03.html" target="define"><b>"sequence number attack"</b></a><sup><font
+size="-1">3</font></sup>, 
+even though it had first been theorized as possible by
+<a href="04.html" target="define"><b>Robert T. Morris</b></a><sup><font
+size="-1">4</font></sup>
+in 1985.<p>
+
+   In this article I'll walk you through the execution of a sequence
+number attack.  You should be able to get by with only tenuous knowledge
+of IP and TCP, though if those initials ring no bells, you might want to
+try something 
+<a href="/internet/useless/" target="_blank">less arduous</a>.  
+The following abbreviations apply throughout the article: 
+
+<pre>
+ [A] -- the trusted host to be spoofed
+ [B] -- the target host who is too trusting
+ [Q] -- the dastardly attacking host
+</pre>
+
+   The 
+<a href="05.html" target="define"><b>IP spoofing attack</b></a><sup><font
+size="-1">5</font></sup>
+is based on exploiting an insecure trust
+relationship between two machines.  UNIX users are lazy folk, like all
+<a href="06.html" target="define"><b>virtuous</b></a><sup><font
+size="-1">6</font></sup> 
+techies, and we get annoyed at repeatedly typing the same
+passwords.  So we set up time saving devices like .rhosts files, which
+allow us an unchallenged login when entering from one or more designated
+machines.  Since the determination of where we are coming from is done by
+IP address, anyone who can appear as coming from a trusted IP can
+compromise the account.<p>
+
+   The source IP address of a packet is set by the originating machine, so
+this part is quite simple for [Q].  The difficult part is actually
+establishing and carrying out the connection.  To see why, we have to take
+a brief look at how TCP/IP works, and how a TCP connection is established
+and maintained.<p>
+
+   Consider a typical connection between [A] and [B].  [A] sends a packet
+with its SYN bit set and an "initial sequence number" to [B], which
+(assuming it is interested in the connection) responds with a packet with
+both SYN and ACK bits set, as well as its own initial sequence number. 
+Finally [A] ACKs the SYN-ACK packet.  These steps comprise the "3-way
+handshake" of TCP.  All subsequent packets in both directions will hold a
+sequence number.  These are used to uniquely identify each byte, because
+TCP is a "reliable" protocol, meaning that the hosts will re-order packets
+received out of order and deliver them as expected.<p>
+
+   Why isn't the initial sequence number always 1, since the TCP
+connection is uniquely defined by the source and destination IP addresses
+and ports? The reasoning is that packets from an earlier connection with
+identical characteristics could still be wandering around the network,
+stuck in a routing loop or just relaxing in the Sun.  If one were to
+suddenly show up in mid-connection with a valid sequence number,
+"reliable" would be a very generous description of TCP.  Instead, the
+kernel cycles through a 32-bit range of initial sequence numbers, so many
+hours will pass before any are potentially re-used.<p>
+
+   The essential weakness that makes the sequence number attack possible
+is that the initial sequence number is <em>predictable</em>. At the time most
+TCP/IP stacks were written, there didn't seem to be much need to keep it a
+secret.  Further, many of those written after Morris's description of the
+vulnerability were still derived from the same original code.<p>
+
+   One difficulty with IP spoofing is that the return packets, starting
+with the SYN-ACK sent by the target [B], don't go to our attacker [Q] --
+of course, they go to [A].  If a host suddenly sees a SYN-ACK for a
+connection it did not attempt to initiate, it will get startled and, in a
+panic, send a RST packet to kill the connection.  Obviously this is not in
+the interests of the attacker.<p>
+
+   Before the attack can commence, [A] must be prevented from issuing
+those RSTs.  This leads us into the interesting area of 
+<a href="07.html" target="define"><b>DOS attacks</b></a><sup><font
+size="-1">7</font></sup>,
+unless the machine in question is running Solaris 2.3 or something
+similarly robust, in which case it's probably already down.  There are a
+number of ways to crash or completely occupy most UNIX machines -- one
+simple one is to send it many SYN packets, and ignore the SYN-ACKS the
+machine returns, or forge the source of the SYN packets so the SYN-ACKs
+are delivered to a black hole.  Very quickly the target will become unable
+to hold any more half-open connections, and start dropping incoming
+packets.  This is known as SYN-flooding, and can be a devastating denial
+of service attack, as 
+<a href="http://www.packet.com/packet/garfinkel/96/43/index2a.html" target="_blank">witnessed by Panix</a> recently.<p>
+
+   Next, [Q] establishes some kind of innocuous connection with [B], such
+as connecting to the 
+<a href="08.html" target="define"><b>SMTP port</b></a><sup><font
+size="-1">8</font></sup>.  [Q] observes the initial sequence
+number in the returned SYN-ACK, and because of the predictability of
+sequence number generation, it can make a very good guess about what the
+initial sequence number of the next connection will be.<p>
+
+   With this newfound knowledge, it now initiates another connection, this
+time to the rlogin port of [B], but the source address of its IP packets
+is set to that of [A].  Our target [B], blissfully unaware that the real
+[A] is busy juggling bogus packets, sends a SYN-ACK which gets lost.  [Q]
+never sees the SYN-ACK with the initial sequence number, but waits long
+enough to be fairly sure it was sent, then transmits the ACK with the
+sequence number it deduced from the SMTP connection.  If the guess is
+correct, the 3-way handshake has been completed and data can now be
+transferred.  If not, it's time to try again, for crackers are nothing if
+not persistent.<p>
+
+   It is rather inconvenient to continue with an ongoing connection when
+all the response packets are going into the void, something like trying to
+read a 
+<a href="09.html" target="define"><b>book</b></a><sup><font
+size="-1">9</font></sup> with your eyes tightly closed in the midst of pitch
+darkness.  So typically, the attacker now inserts a backdoor into the
+system, perhaps again using the "built for security" rlogin system by
+modifying .rhosts to allow remote logins from any location.<p>
+
+   IP spoofing can be combatted from a number of directions.  Sequence
+number prediction could be made much harder in TCP stacks, but this would
+not help protect existing machines.  More simply, if you never trusts
+hosts outside the local network, you can use route filtering to make
+spoofing impossible.  At go2net, any packets received from the Internet
+that claim a source address inside our network are immediately dropped, as
+per <a href="10.html" target="define"><b>these cisco rules</b></a><sup><font
+size="-1">10</font></sup>:<p>
+
+<pre>
+access-list 100 deny   ip 207.178.54.0 0.0.0.255 any log
+access-list 100 deny   ip 207.178.55.0 0.0.0.255 any log
+</pre>
+
+   There are also much better ways of logging into remote machines using
+strong authentication, such as ssh.<p>
+
+   That's about the size of it.  At this point, you're probably wondering
+"but what about the great Java code I've come to expect in Deep Magic
+articles?" I started writing a cutesy little animated demo with packets
+flying to and fro, but decided it didn't really add much value, and
+graphics are far from my strength. And then at the last minute, I realized
+what I SHOULD have done.  A fully interactive applet with actual operating
+hosts, each with sequence number counters and correct reactions (i.e.
+unless you disable host [A], it tears down your spoofed connection with an
+RST.) So I'll tell you what.  If more than a couple people 
+<a href="mailto:paulp@go2net.com">email me</a>
+saying "I'd still like to see that, man!" then I'll do it and add it here.<p>
+
+   Until then, don't take any spoofed nickels.<a href="/internet/deep/" 
+target="_top"><img src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10 height=10 alt="*"></a>
+
+<p><font size="-1">-- Paul <a 
+href="mailto:paulp@go2net.com">&lt;paulp@go2net.com&gt;</a> initially
+wanted to title this "The Spoof is in the Buddy" but was convinced that
+this was a terminally stupid idea.
+</font>
+
+</body>
+

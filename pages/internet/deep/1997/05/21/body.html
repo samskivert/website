@@ -1,0 +1,234 @@
+<head><title>go2net | internet | deep magic | Two objects on every table</title></head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+<img src="head.gif" width=271 height=41 border=0 alt="Two objects on every table"><br clear=left>
+<br><font size=-1 color="#99CC66">21 May 1997</font>
+
+<p><table width=128 align=left hspace=2><tr><td><img src="image.gif" width=124 height=124 border=0 align="LEFT"></td> <tr><td align=center><b><font size="-1" face="Helvetica"></font></b></td></table>
+
+"Object-oriented" is well on its way to becoming part of that elite group
+of phrases that make you want to <a href="01.html"
+target="define"><b>depart from a conversation</b></a><sup>1</sup> as soon
+as possible, no matter how attractive the participants. What it is that
+drives a phrase into ubiquitious buzzword-dom I cannot say, but if you
+could bottle it and sell it, Steve Jobs would have picked up a truckload
+about five years ago and started shoving the topic of this article down
+everyone's throat.
+
+Enough with obscure references; what I'm talking about here are
+distributed objects. In a nutshell, a distributed object is like a <a
+href="02.html" target="define"><b>regular object</b></a><sup>2</sup>,
+
+<table width=180 align=right>
+<tr><td width=10><br></td><td><br><hr size=1><b><tt><FONT SIZE="+1" FACE="ARIAL"><I>I'll limit my endeavors this week
+to creating a distributed-object system with the ability to do something
+actually exciting in next week's article.</I></FONT></tt><br></b><hr size=1><br></td>
+</table>
+
+only it is shared between processes on a machine or <a href="03.html"
+target="define"><b>processes on different
+machines</b></a><sup>3</sup>. Like object-oriented programming, this
+relatively simple concept can prove to be a very useful way to organize
+one's applications.
+
+<p><b>Deep objects and distributed magic</b><br>
+
+What better way to introduce the topic of distributed objects than to <a
+href="04.html" target="define"><b>implement a distributed-object
+system</b></a><sup>4</sup>? Since I don't exactly have time to write a
+full-fledged, general-purpose distributed-object system -- and I certainly
+don't have time to explain one in detail -- I'll limit my endeavors this
+week to creating a distributed-object system with the ability to do
+something <a href="05.html" target="define"><b>actually
+exciting</b></a><sup>5</sup> in next week's article.
+
+The architecture of this system is relatively simple. A server runs on a
+machine (the one that served you this article, in fact) and manages all
+the objects. Clients connect to that machine and register as subscribers
+to those objects. Whenever a change is made to an object (by any of the
+clients or by code running as part of the server), an attribute-changed
+event is broadcast to all the subscribers of that object. The clients
+automatically update their local representations of the object and
+broadcast the attribute-changed event to any local subscribers.
+
+<p>Let's take a look at some excerpts of the code for a clearer
+understanding of what all this means:
+
+<pre>
+public class DObject
+{
+    public int getValue (String name, int def);
+    public void setValue (String name, int value)
+        throws IOException;
+
+    public String getValue (String name, String def);
+    public void setValue (String name, String value)
+        throws IOException;
+
+   // getting and setting arrays of int and arrays
+   // of String is also available
+}
+</pre>
+
+Since we don't yet have support for <a
+href="http://www.javasoft.com/products/jdk/1.1/docs/guide/reflection/spec/java-reflectionTOC.doc.html" target="_blank">Java Object Reflection</a> the
+DObject has to provide specialized member-functions for getting and
+setting values. When a value is set, it automatically informs its local
+object manager (described below), who takes care of sending
+attribute-changed events to the appropriate parties.
+
+<pre>
+public class Event
+{
+    public final static byte OBJECT_CREATED = 0;
+    public final static byte OBJECT_DELETED = 1;
+    public final static byte ATTR_CHANGED = 2;
+
+    public byte type;
+    public String oid;
+    public String name;
+    public Object value;
+}
+
+public interface Subscriber
+{
+    public boolean handleEvent (DObject target,
+                                Event evt);
+}
+</pre>
+
+<p>When a change occurs to a DObject attribute, an event is delivered to
+all subscribers of that object. In order to get a reference to a DObject,
+one must name a subscriber to be notified when changes occur to that
+object. The subscriber can respond accordingly to the attribute
+changes. This system is used by users of the distributed-object system as
+well as internally, to facilitate the distribution of attribute-changed
+events.
+
+<pre>
+public interface DObjectManager
+{
+    public void attributeChanged (DObject object,
+        String name, Object value)
+        throws IOException;
+
+    public DObject subscribeToObject (String oid,
+        Subscriber sub) throws IOException;
+
+    public void destroyObject (String oid)
+        throws IOException;
+    public void dispatchEvent (Event evt)
+        throws IOException;<br>
+}
+</pre>
+
+<p>The last major piece of the puzzle is the object manager, which is
+where objects are obtained. It handles all the event-dispatch
+details. DObjects are obtained from the object manager and it is also used
+to destroy objects.
+
+<p><b>The hairy details</b><br>
+
+I'll try to <a href="06.html"
+target="define"><b>quickly</b></a><sup>6</sup> describe the mechanism by
+which attribute-changed events get properly passed to all subscribers of
+an object (both local and remote), but don't fret if this gets a little
+hairy. After all, it's just implementation detail.
+
+<p>There are two implementations of DObjectManager (notice that it is only
+an interface), one for the server and one for the client. All DObjects
+have a reference to the object manager. When the user calls any of the
+setValue (or related) member functions, the DObject notifies the
+DObjectManager that one of its attributes has been changed. The server
+object manager turns this notification into an attribute-changed event and
+broadcasts that event to all registered subscribers of that DObject.
+
+<p>If life were limited to the single-server process, this would
+suffice. However, a similar implementation in the client DObjectManager
+would not work. It would only broadcast attribute-changed events to local
+subscribers of a Dobject, not the potential multitude of other
+client-subscribers connected to the server. So every client maintains a
+proxy subscriber in the server process. When the client DObjectManager
+gets a subscribe request, it sends a message to its proxy in the server,
+asking it to subscribe to the object. The server proxy then <a
+href="07.html" target="define"><b>marshals </b></a><sup>7</sup> the object
+and sends it down to the client. The client DObjectManager keeps that
+object around in a hash table for other potential local subscribers to
+use.
+
+<p>Now, whenever an attribute-change event happens at the server, it will
+be sent to this client's subscriber proxy, who will forward the event to
+the client. The client can then distribute the attribute-changed event to
+all local subscribers. Conversely, when the client DObjectManager
+
+<table width=160 align=left>
+<tr><td><br><hr size=1><b><tt><FONT SIZE="+1" FACE="ARIAL"><I>I'm going to implement a lame
+little chat system, then go back to doing real
+work.</I></FONT></tt><br></b><hr size=1><br></td><td width=10><br></td>
+</table>
+
+receives an attribute-change notification from one of its local objects,
+it does not send it to the subscribers of that object, but forwards it to
+the subscriber proxy, who makes the same change to the server-object
+instance. This causes the server to generate an attribute-changed event
+and forward it to all of that object's subscribers (local and remote). As
+a consequence of that event, all the subscribers local to the client will
+eventually receive the attribute change, the same round-a-bout way that
+all the other clients received it. This also helps to equalize
+event-delivery timing.
+
+<p>If you want to know more, you'll have to take a look at the source.
+
+<p><b>The token application</b><br>
+
+If you can remember all the way back to the beginning of the article, I
+mentioned something about using this to write something cool. Well, that's
+not going to happen now. I'm saving that for next week. So instead, I'm
+going to implement a lame little chat system, then go back to doing real
+work.
+
+<p>If any of this made sense, you might have a clue as to what the
+implementation is going to look like. I can sum it up for you in these two
+code fragments:
+
+<pre>
+// send a chat message to everyone
+String message = _name + ": " +  _text.getText();
+_cobj.setValue("message", message);
+
+// update our message display when a
+// new message arrives
+public boolean handleEvent (Event evt)
+{
+    if ((evt.type == Event.ATTR_CHANGED) &amp;&amp;
+        evt.oid.equals("chat_object") &amp;&amp;
+        evt.name.equals("message")) {
+        _msgbuffer.appendText((String)evt.value+"\n");
+    }
+    return true;
+}
+</pre>
+
+That and a little user-interface code are all that are necessary to
+implement a chat system (a very simple and not terribly efficient one, but
+who's counting?)
+
+<p><center><font size="-1"><b>Cheesy Chat</b><br>
+<applet codebase="/internet/deep/1997/05/21/" code="chat.Chat" width=350 height=200></applet><br>
+<a href="bigger.html" target="_top">Bigger Cheesy Chat</a></font>
+</center>
+
+<p>Tune in next week for an interesting application of this nice little
+distributed-object system and an affirmation that other things besides
+chat are easy to do with distributed objects.  <a href="/internet/deep/"
+target="_top"><img src="/global_images/green_thingy.gif" border=0
+align=absmiddle width=10 height=10 alt="*"></a>
+
+<p><font size="-1">-- Michael Bayne <a
+href="mailto:mdb@go2net.com">&lt;mdb@go2net.com&gt;</a> is ogling the
+price of Solstice (tm) Enterprise Manager (tm) and wondering whether he
+should be distributing this source code.</font>
+
+<br><div align=right><font size="-1">Source code as a <a href="dobj.tar.gz">gzipped tar
+file</a> or a <a href="dobj.zip">zip file</a>.</font></div><br>
+</body>

@@ -1,0 +1,230 @@
+<head><title>go2net | internet | deep magic | Morphin' than a barrel of monkeys</title></head>
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+<img src="head.gif" width=271 height=41 alt="Morphin' than a barrel of monkeys"><br clear=left>
+<br>
+<font size=-1 color="#99CC66">22 January 1997</font>
+
+<p> Computer software is a popular albeit expensive mechanism for generating
+special effects in movies and TV shows.  One effect you probably
+recognize despite its absence from Webster's is morphing.  In 1988
+morphing was used in "Willow", and in 1989 in "The Abyss."  Then, in
+1991, it was used extensively in "Terminator 2" as well as taking center
+stage in Michael Jackson's video "Black and White." Today, morphing is
+very commonplace, appearing even in commercials.
+
+<P>
+<table width=150 align=left><tr><td><hr noshade>
+<font color="#336600" size="+1"><tt><b>Try the <a href="#andre">morph
+applet</a> to make your own morph.</b></tt></font><hr noshade></td></tr></table>
+As an <a href="01.html" target="define"><b>inquisitive</b></a><sup><font size="-1">1</font></sup>
+individual, I set out to find out how morphing
+works, and to implement my own morphing software.  I did find
+<a href="http://www.att.com/homes/dt/html/morph.html" target="_blank">one other morpher</a>
+written in Java, and while it was fast, it lacked editing
+capabilities, and was limited to three
+<a href="02.html" target="define"><b>control points</b></a><sup><font size="-1">2</font></sup>. You can also
+<a href="http://www.gamelan.com/find.cgi?and=morph" target="_blank">search gamelan</a> for new morphing-related entries to see what
+might have shown up since this article was written. Since I originally wrote
+this, an
+<a href="http://web.cs.bgsu.edu/morph/morph.html" target="_blank">excellent morpher</a>
+has appeared.
+
+<P>
+There are numerous commercial morphing packages that range in complexity
+from two dimensional image morphers to professional quality three
+dimensional model morphers. There are a few
+<a href="03.html" target="define"><b>freely available morphing
+packages</b></a><sup><font size="-1">3</font></sup>
+for Unix on the Net, but I decided to see if I could just
+figure it out for myself and write a quick-and-dirty 2D morphing
+program.
+
+<P>
+Morphing is a combination of two image effects. The first is fading one
+color into another, and the second is warping.  The fading seemed
+simple.  I took the red, green, and blue components of a pixel before
+and after the transformation and interpolated those values for each
+frame.  If a certain part of the picture is red, but would be yellow
+after the morph, I intended to fade from red to yellow at each step of
+the morph.  It turned out that fading was somewhat more involved than
+this because the warping changed the locations of the colors.  I'll
+explain how I addressed that issue momentarily.
+
+<P>
+Warping is considerably more complicated.  It requires moving pieces of
+the images around, compressing some areas and stretching others in order
+to make the two images match up.  There are a number of ways that it
+could be done, and I considered a few before selecting one that I
+believed would yield good results along with being manageable to program
+in a reasonable amount of time.
+
+<table hspace=10 width=100 border=0 align=left><tr><td>
+<hr noshade>
+<applet code="MorphPlayer" width="87" height="115">
+<param name="wait" value="100">
+<param name="img1" value="paulsm.jpg">
+<param name="img2" value="mikesm.jpg">
+<param name="numframes" value="9">
+<param name="grid1" value="Gridv1.0 9:11 0,0 12,0 24,0 36,0 48,0 60,0 72,0 84,0 87,0 0,12 23,22 26,13 36,8 49,7 60,9 72,19 75,33 87,12 0,24 17,29 28,26 37,13 47,14 60,15 70,24 74,42 87,24 0,36 18,43 28,49 39,29 52,33 56,33 70,32 76,51 87,36 0,48 14,50 25,62 35,45 51,47 60,44 70,43 74,55 87,48 0,60 26,65 30,67 37,59 49,56 65,57 67,53 72,59 87,60 0,72 25,84 33,76 43,61 49,62 56,63 65,65 70,66 87,72 0,84 15,88 34,78 39,81 43,68 53,75 64,71 68,72 87,84 0,96 6,92 27,94 42,84 48,87 55,87 68,84 84,93 87,96 0,108 12,108 32,101 40,104 51,105 60,101 66,92 84,108 87,108 0,115 12,115 24,115 36,115 48,115 60,115 72,115 84,115 87,115">
+<param name="grid2" value="Gridv1.0 9:11 0,0 12,0 24,0 36,0 48,0 60,0 72,0 84,0 87,0 0,12 22,22 29,16 36,12 48,11 59,14 72,24 75,31 87,12 0,24 21,28 33,32 43,27 48,24 61,28 67,32 72,50 87,24 0,36 18,41 25,53 35,44 50,43 56,43 68,43 74,48 87,36 0,48 16,51 25,58 34,52 49,52 56,52 69,53 70,53 87,48 0,60 23,62 27,68 36,60 47,63 60,64 62,60 69,61 87,60 0,72 23,77 32,73 41,70 42,68 52,69 62,69 67,65 87,72 0,84 13,83 31,76 34,78 43,73 52,77 60,75 62,75 87,84 0,96 3,86 17,89 37,80 45,84 54,86 59,85 86,100 87,96 0,108 12,108 29,98 37,101 48,100 56,97 58,92 84,108 87,108 0,115 12,115 24,115 36,115 48,115 60,115 72,115 84,115 87,115">
+</applet>
+<font color="#336600"><B>Resident Internet personality
+Paul Phillips morphing into resident magic maker,
+Michael D. Bayne</b></font><hr noshade></td></table>
+<P>
+Originally I thought that I would allow the user to place "control
+points" on the images.  These points would be used to align regions of
+the two images.  For example, if the images to be morphed were two
+faces, then the user would put a control point on each eye, the nose,
+the mouth, and other important facial features. My software would then
+move these points so that the control point on the first person's nose
+would move a little each frame until the final frame, in which it would
+be on the second persons nose.
+
+<P>
+That would account for the warping of the control points, but what
+about the other pixels? My idea was that that they would follow the 
+control points, to a certain extent.  For each pixel, the control 
+points would be weighted according to their distance, and would then 
+move according to these weights. For example, if there were only two 
+control points, one which moved 10 pixels up and another which moved 
+ten to the left, then a pixel very close to the first point might move
+up 9.7 pixels, and very slightly left. A point directly between them 
+at the outset would move equally in both directions.
+
+<P>
+This seemed appealing, but upon further consideration I realized that it
+would not do.  Imagine many control points in a vertical row, which all
+move to the left.  Now add a single control point to the right of the
+vertical row, which will move right.  A pixel very near this lone
+control point should intuitively move to the right, but the sheer number
+of nearby leftward moving points will induce it to the left.  Clearly I
+needed some kind of locality of effect.
+
+<P>
+I came up with what I call the "two-quilt" method, in which each pixel
+is seen as a stretchable "patch" that starts out in a square shape, but
+is then increasingly deformed as the morph progresses. These patches
+taken together make up a quilt.  The user is presented with an
+adjustable grid, whose points of intersection make up the control
+points.  The grid is used to align features of the two images.  When
+it's morphing time, the vertices of each patch on the grid are used to
+control the movement for that patch of the quilt.
+
+<P>
+The two quilts are separate from the frames of the morph.  Before being
+warped, the quilts look exactly like the first and second image.  When
+calculating the morph, the first quilt gets progressively more warped as
+the morph proceeds, while the second begins the process maximally warped
+and heads back toward relative normality.  To determine how to draw the
+intermediate frames, we examine each pixel and identify which patch from
+each quilt is over that pixel at that moment.  Then, each quilt's color
+is taken into account when calculating the color of the pixel.
+Additionally, the first image has higher priority early in the morph and
+the second image has higher priority later.
+
+<P>
+If your understanding of this process is patchy, don't worry, I know
+this is a warped explanation, but I think this example will make
+everything morph or less clear.  Focus on the second frame of the morph.
+At this point the first quilt is just beginning to deform, and the
+second quilt is beginning its journey very deformed.  Let's say the
+first quilt has a patch of white over one pixel and the second quilt has
+a large ugly patch of blue.  Since we are closer to the beginning of the
+morph, we use mostly the white patch as our source color and mix in a
+little blue. We color that pixel a very light blue. The next pixel might
+be under a red patch on the first quilt, but it is still under the same
+giant patch of blue on the second quilt. This pixel will turn out a
+strong red with a hint of purple.
+
+<P>
+Enough about coloring, let's examine the warping process that actually
+<table hspace=10 width=150 border=0 align=left><tr><td><hr noshade><Center><img src="diagram.gif" alt="[diagram image]"></center>
+<font color="#336600">The patchwork quilt becomes warped.</font>
+<hr noshade></td></table>
+moves the patches around on each quilt.  Each control point must move
+from its position in the before image to its position in the after
+image.  Since we know how many frames we are going to be generating and
+how far the control point will ultimately move, we can calculate the
+amount it will change in the x and y directions for each frame. Each
+control point for a given patch corner is weighted by the inverse of its
+distance from the corner, and then a change in x and y is calculated for
+each corner.  The rest is easy.  As we step through the morph, each
+corner of each patch is adjusted a little, moving in its prescribed
+direction.  The pixels, or patches, that are defined by four corners are
+thus moved along, and individually deformed in different ways.
+
+<P>
+That accounts for one quilt, but what about the other one? After all, I
+did call this the two quilt method.  The second quilt is going the other
+way. It is made up originally of patches which coincide with the pixels
+of the *second* image, and go backward, warping their way towards the
+first image.  Each patch in each quilt is associated with a color -- the
+color of the pixel that coincided with it in its beginning state. I
+start out with a frame completely colored like the first quilt, and as
+the two quilts glide over each other, I progressively blend in more
+color from the second quilt.  The last frame is colored completely like
+the second quilt.  Without the second quilt, the morph would look like
+the first image deforming and slowly moving around as the the second
+image statically faded in.
+
+<P>
+<a name="andre"></a>
+<font size="+1">Morph Marc Andreessen into Andre the Giant!</font><P>
+Sorry- you can't save your morph in this applet version. You may
+also want to stop the other morph applet in this article (by clicking on it)
+before playing with this one.<br>
+<applet code="EditorApplet" width=300 height=390>
+<param name="bgcolor" value="FFFF99">
+<param name="img1" value="marca.gif">
+<param name="img2" value="andre.gif">
+</applet>
+
+<P>
+If you haven't already done so, please play around with the applet!
+Because of the security restrictions placed on applets, you won't be
+able to load your own pictures or save your results, but I have provided
+the source code, which includes an application class that will allow you
+to do both of those things.
+
+<P>
+While my morphing software may not be the highest of tech, it is cool,
+and can certainly be improved upon by an interested individual with some
+time on their hands. The grid could be replaced by a polygon of
+arbitrary complexity, and some method of allowing the user to add
+control points and connect them with lines to existing control points
+could be implemented.  The calculation of how to move each pixel point
+would essentially remain the same.  There are probably some
+optimizations one could make to the code to make the whole process
+faster.  Also, since I did come up with this algorithm on my own, there
+might be a vastly superior way of doing this whole thing.  Describing it
+is left as an exercise for the reader.
+
+<P>
+Irregardless of the fact that irregardless is not a word, this should
+provide a good introduction and an amusing toy.
+Morph out.&nbsp;<a href="/internet/deep/" target="_top"><img
+src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a>
+
+<P><font size=-1>-- Ray
+<a href="mailto:ray@go2net.com">&lt;ray@go2net.com&gt;</a>
+is a Dreamer of Dreams at go2net. If you told him he was gullible, he'd
+probably believe you.</font><P>
+
+<font size=-1>Source code for the morph editor applet and player,
+including an application version that allows you to save your morphs, are
+included below.</font>
+<P>
+<font size=-1>
+<a href="Adjustor.java" target="_blank">Adjustor.java</a>,
+<a href="EditorApp.java" target="_blank">EditorApp.java</a>,
+<a href="EditorApplet.java" target="_blank">EditorApplet.java</a>,
+<a href="EditorPanel.java" target="_blank">EditorPanel.java</a>,
+<a href="Grid.java" target="_blank">Grid.java</a>,
+<a href="Line.java" target="_blank">Line.java</a>,
+<a href="Morph.java" target="_blank">Morph.java</a>,
+<a href="MorphPlayer.java" target="_blank">MorphPlayer.java</a>, and
+<a href="Quilt.java" target="_blank">Quilt.java</a>.
+</font>
+</body>

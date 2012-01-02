@@ -1,0 +1,177 @@
+<head>
+<title>go2net | internet | deep magic | Prolog: it's better than bad, it's good</title>
+</head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="Prolog: it's better than bad, it's good">
+<p><font size=-1 color="#99CC66">9 April 1997</font>
+
+<p>
+
+
+     <blockquote>Everyone wants Prolog.<br>
+      You're gonna love Prolog.<br>
+      Come on and get Prolog, <br>
+      get Prolog, get Prolog... <br>
+          -- with apologies to <a href="http://www.lysator.liu.se/~marcus/ren_stimpy/FAQ7a.html" target="_blank">Ren and Stimpy</a>
+</blockquote>
+
+<P>Much of programming in traditional languages consists of drudgery.
+Whipping data structures to and fro, playing "hide and go memory leak",
+while-ing away the nanoseconds, and specifying all sorts of algorithmic
+details that serve only to annoy.  When a program's goal is simply to
+harness the CPU and reach a conclusion, we
+shouldn't have to waste our time holding its hand.
+We would prefer simply to specify the laws of the software's universe
+and let the rest take place automagically.
+
+<P>And so it goes, in <a href="http://www.cis.ohio-state.edu/hypertext/faq/bngusenet/comp/lang/prolog/top.html" target="_blank">Prolog</a>.  "Programming in Logic" is probably
+best known for its applications in artificial intelligence and
+expert systems, but it's useful for all sorts of tasks.  If your
+application lends itself to expression in facts and rules, the Prolog
+code will be extremely concise relative to other languages.
+
+<P>A Prolog interpreter is essentially an extremely capable theorem
+prover.  Program data consists of a set of <i>facts</i> (statements asserted
+to be true) and <i>rules</i> (mechanisms for logical inference.) It can then
+be presented with a <i>question</i> (a proposed theorem conclusion) and the
+interpreter will deduce whether it can be proven given the known facts
+and rules.  The actual mechanisms by which this is done are under the
+hood (but I'll eventually let you in on the secret, because I like you.)
+
+<P>The feel is most easily communicated by example.  Let's learn about
+Prolog through this crude but <a href="01.html" target="define"><b>effective</b></a><sup>1</sup> matchmaking program.  "gender"
+and "likes" are the <i>relations</i> we use to express facts.  Arguments
+beginning with a lowercase letter are treated as <i>constants</i> and those
+beginning with an uppercase letter are <i>variables</i>.  A variable holds
+the same meaning within the scope of a particular rule.
+
+
+<P><tt>
+<pre>/*
+ * Modern dating can be so confusing!
+ * Sort it out with PROLOG.
+ */</pre>
+
+<P>/* facts about gender */<br>
+gender(alicia, female).<br>
+gender(barbara, female).<br>
+gender(cynthia, female).<br>
+gender(dimh, male).<br>
+gender(egbert, male).
+
+<P>
+/* facts about preferences */<br>
+likes(alicia, male).<br>
+likes(alicia, female).<br>
+likes(barbara, female).<br>
+likes(cynthia, male).<br>
+likes(dimh, male).<br>
+likes(dimh, female).<br>
+likes(egbert, female).
+
+<P>
+
+  /* rule about who is destined for whom */<br>
+  good_match(X, Y) :-<br>
+  gender(X, A),<br>
+  gender(Y, B),<br>
+  likes(X, B),<br>
+  likes(Y, A).<br>
+  not(X = Y).
+ </tt>
+
+<P>Once this is loaded into the Prolog interpreter, we can solve the
+mysteries of modern romance by asking simple questions.  At the ?-
+interactive prompt, I will query "who is a good match for alicia?"
+Recall that Date is identified as a variable because of its initial
+capital letter.
+
+<P>
+<tt>   ?- good_match(alicia, Date).<br>
+   Date = barbara ;<br>
+   Date = dimh ;<br>
+   Date = egbert ;<br>
+   No
+</tt>
+<P>The interpreter goes about its work like so.  It finds no facts
+that match our question (else it would have returned that fact immediately),
+but it does find the rule <tt>good_match(X, Y)</tt>.  It replaces our goal
+with the list of goals enumerated in the good_match rule, with the variable
+<tt>X</tt> now bound to the constant <tt>alicia</tt> and the variables <tt>Y</tt> and <tt>Date</tt>
+bound to one another.  Now it must satisfy all these rules.  First among
+them is <tt>gender(alicia, A)</tt>.  Our database contains the fact
+<tt>gender(alicia, female)</tt>, so <tt>A</tt> is bound to <tt>female</tt>.
+This matching process continues until all variables are successfully
+bound, or all possibilities fail, or <a href="02.html" target="define"><b>our CPU limit</b></a><sup>2</sup> is exceeded and
+the system administrator comes grimly stalking us with a <a href="03.html" target="define"><b>LART</b></a><sup>3</sup>.
+
+<P>Once it satisfies the goal, it can be told to find further possibilities
+with a single semicolon.  The interpreter scratches its initials
+into the spot on the parse tree where a solution is found, so it just
+<a href="04.html" target="define"><b>backtracks</b></a><sup>4</sup> from there until it finds another solution.
+In this example, there were eventually no dates remaining for poor
+alicia, and the interpreter displayed its innate indifference toward
+the lovelorn with: <tt>No.</tt>
+
+<P>The inclusion of <tt>not(X = Y)</tt> in the good_match conditions is necessary
+to keep barbara from pursuing a date with herself.  The introduction of
+negation to a Prolog program has some interesting implications, because
+of what is called the "closed world assumption." Prolog assumes that
+everything that cannot be proven true, <a href="05.html" target="define"><b>must be false</b></a><sup>5</sup>.  So if you
+asked Prolog
+
+<P>
+<tt>?- not jimmy_hoffa(buried_in_giants_stadium)</tt>
+
+<P>it would <a href="06.html" target="define"><b>most likely</b></a><sup>6</sup> answer "yes", which seems to imply it proved
+that Jimmy Hoffa is not buried in Giant's stadium.  In fact, it failed
+to prove that Jimmy Hoffa IS buried in Giant's stadium -- a considerably
+less controversial outcome.
+
+<P>Because Prolog is so thorough about exploring the possibilities,
+it can be <a href="07.html" target="define"><b>extremely slow</b></a><sup>7</sup>.  This difficulty is alleviated somewhat
+at a cost in elegance by allowing the programmer to control
+backtracking.  If a program reaches a <i>cut</i> (represented by an
+exclamation point), the interpreter <a href="08.html" target="define"><b>will not attempt any further
+backtracking</b></a><sup>8</sup> from that point in the program.
+
+<P>Unfortunately cuts introduce a schism between the "procedural"
+and "declarative" meanings of a Prolog program.  In code without
+cuts, the order in which facts and rules are asserted will not
+affect the result of a question.  Cuts which prevent the interpreter
+from reaching goals it would otherwise have considered valid are
+called <i>red cuts</i>, and if you need many of these, Prolog may not
+have been such a good choice after all.  Cuts that only prevent
+useless backtracking are used to improve efficiency; they are called
+<i>green cuts</i>, and they're A-OK in my book.
+
+<P>So there you have the basics of Prolog.  I didn't delve into
+more complex data structures such as lists or the <a href="09.html" target="define"><b>nifty things</b></a><sup>9</sup>
+that can be done with them, but you can read about that another
+day.  Remember, Prolog interpreters can be (and certainly
+have been) embedded into other applications.  So the next time all
+or just some of a project sounds like a hairball logic problem,
+consider whether that sound can be improved with some Prologic.
+
+<P>Writing a (working) Prolog interpreter in Java was a little
+daunting for the time I had allocated.  A few other people have
+nicely pulled this off:
+<a href="http://munkora.cs.mu.oz.au/%7Ewinikoff/wp/" target="_blank">here's
+one</a>.  I did have some fun with
+<a href="http://www.cs.albany.edu/~sreeni/JavaCC/" target="_blank">JavaCC</a>
+(a wonderful tool) and
+wrote a little parser (which isn't at all faithful to "real" Prolog)
+that builds up all the relevant data structures
+in Java.  The <a href="prolog.tar.gz">source</a> is just for you.
+
+<a href="/internet/deep/" target="_top"><img
+src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a>
+
+<p><font size="-1">-- Paul <a
+href="mailto:paulp@go2net.com">&lt;paulp@go2net.com&gt;</a> recently proved that he has no life, but then claimed the
+results were inaccurate due to the closed world assumption.</font>
+
+</body>

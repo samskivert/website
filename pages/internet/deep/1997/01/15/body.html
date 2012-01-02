@@ -1,0 +1,254 @@
+<head><title>go2net | internet | deep magic | From cellular mitosis to cellular automata</title></head>
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+<img src="head.gif" width=271 height=41 alt="From cellular mitosis to cellular automata"><br clear=left>
+<br>
+<font size=-1 color="#99CC66">15 January 1997</font>
+
+<p>There are few topics in computer science that are as diversely
+applicable and as actively explored as cellular automata. Much of the
+research going on in computer science today finds some basis in cellular
+automata or utilizes cellular automata in some fashion. It has turned up
+in artificial life, image processing, distributed computing, and
+encryption, to name a few. In fact, it doesn't stop at computer science;
+cellular automata have been used to model population growth, urban
+development, energy diffusion in a gas, decentralized goal-oriented
+behavior, and an enormous list of other things that I don't care to
+enumerate.
+
+<p>Now that you're sufficiently intrigued by the topic, I'll proceed to give
+you just enough background on cellular automata to get yourself in trouble at
+<a href="01.html" target="define"><b>parties</b></a><sup><font
+size="-1">1</font></sup>. First, a <a href="02.html"
+target="define"><b>definition</b></a><sup><font size="-1">2</font></sup>
+suitably detailed to allow the article to make sense and suitably vague so as
+to annoy the mathematicians:
+
+<p><blockquote>
+<tt>A <a href="03.html" target="define"><b>CA </b></a><sup><font
+size="-1">3</font></sup>is characterized by a set of cells and a set of
+rules. The cells are commonly, but not necessarily (as we'll see later)
+organized into a two-dimensional grid extending infinitely in both
+directions. The cells have characteristics or <i>states</i>, generally
+something along the lines of on/off or a numerical value.
+
+<br><br>A generation is one particular set of cell states. The rules describe how
+to generate the next generation given the current generation. They are usually
+something along the lines of "if a cell has exactly three neighbors in state 1
+and it is in state 0, it's new state is 1." The rules are applied to each cell
+in the <a href="05.html" target="define"><b>grid</b></a><sup><font
+size="-1">5</font></sup> and the result is the next generation.
+</tt>
+</blockquote>
+
+<p>As has probably already occurred to you, this is a very open ended
+description. The cell states can be extremely complex, as can the rule
+sets. What will become <a href="06.html" target="define"><b>increasingly
+apparent</b></a><sup><font size="-1">6</font></sup> by the end of the article
+is that CAs are a different approach to computing, one that lends itself very
+well to some problems that are difficult to solve with conventional computing
+techniques.
+
+<p><b>Machine copy machine</b><br>
+
+In the late 1940's a mathematician by the name of <a href="07.html"
+target="define"><b>John von Neumann</b></a><sup><font size="-1">7</font></sup>
+began to develop the ideas that would eventually <a href="08.html"
+target="define"><b>flourish</b></a><sup><font size="-1">8</font></sup> into
+the theory of cellular automata. His interests varied from <a href="09.html"
+target="define"><b>game theory</b></a><sup><font size="-1">9</font></sup> to
+self-reproducing machines. The latter is what led him to develop cellular
+automata.
+
+<p> Building an actual machine that, in turn, built a copy of itself is no
+small task even today. It comes as no surprise that fifty years ago, von
+Neumann opted to <a href="10.html"
+target="define"><b>develop</b></a><sup><font size="-1">10</font></sup> a
+mathematical world in which machine copying machines could operate.
+
+<p> He devised a cellular automaton that consisted of an infinite
+two-dimensional grid of cells that could take on any of 29 states and a large
+number of transition rules. His reproducing <i>machine</i> consisted of a
+rectangular organization of cells followed by an extremely long tail. Within
+the rectangular part of the machine, there existed a number of
+suborganisms. The factory suborganism arranged <i>materials</i> from the
+environment, the duplicator suborganism read a series of instructions and
+copied them and a <i>computer</i> orchestrated the whole process. All in all,
+it is very <a href="11.html"
+target="define"><b>Turing-machine-esque</b></a><sup><font
+size="-1">11</font></sup>.
+
+<p> It is interesting to reflect on the concepts of modularity and reusability
+in light of the fact that von Neumann's self-reproducing <i>program</i>
+consisted of over two hundred thousand cells arranged on a grid, each
+containing one of 29 values. Perhaps the concept of code readability had yet
+to be invented. Another interesting side note is that von Neumann's
+self-reproducing machine has many parallels to the little self-reproducing
+machines in each and every cell of your body. Many of the cellular organelles
+are represented in von Neumann's machine, and 150,000 of those 200,000 cells
+are his equivalent of DNA.
+
+<p><b>Who says life isn't a game?</b><br>
+
+Our next stop on the historical tour of CAs leads us to the realm of one <a
+href="12.html" target="define"><b>John Conway</b></a><sup><font
+size="-1">12</font></sup> and a little closer to the world of computing as it
+is today. Conway posited that a rule set substantially smaller than the one
+von Neumann developed could satisfy Turing's requirements for computational
+capability and hence support a self-replicating <a href="13.html"
+target="define"><b>machine</b></a><sup><font size="-1">13</font></sup>.
+
+<p> To that end, in 1970 Conway <a href="14.html"
+target="define"><b>developed</b></a><sup><font size="-1">14</font></sup> the
+game of life. Life is a cellular automaton operating on a two-dimensional grid
+of cells each of which can have only two states: dead or alive. The rules for
+Life are also very simple:
+
+<ol>
+<li>If a cell has exactly two living neighbors, it stays as it is. Live cells
+stay live and dead cells stay dead.
+
+<li>If a cell has exactly three living neighbors a dead cell becomes alive and
+a live cells stays alive.
+
+<li>If a cell has any other number of living neighbors a dead cell stays dead
+and a live cell becomes a dead cell.
+</ol>
+
+<p> These very simple rules can lead to extremely complex behavior given the
+right arrangement of live cells. Conway experimented with this game a great
+deal himself and following the publication of an article by Martin Gardner in
+<a href="15.html" target="define"><b>Scientific American</b></a><sup><font
+size="-1">15</font></sup> the rest of the world got in on the fun.
+
+<p> Soon, a whole host of interesting <i>creatures</i> was discovered and
+investigated. A very important one, known as the glider, is a configuration of
+cells that manages
+
+<table hspace=5 vspace=5 align=left border=0>
+<tr><td align=center bgcolor="#99cc66">
+<font size=-1>5 iterations in the<br>life of a glider</font></td>
+<tr><td align=center><img width=160 height=113 src="glider.gif" alt="[glider image]"></td>
+<tr><td align=center bgcolor="#99cc66">
+<font size=-1>Figure 1.</font></td>
+</table>
+
+to <a href="16.html" target="define"><b>move itself</b></a><sup><font
+size="-1">16</font></sup> diagonally across the cell grid by a convenient
+series of cell deaths and births. It forms the basis for many complicated
+organisms.
+
+<p> Various organisms in life exhibit interesting properties, and while I can
+only scratch the surface of what is possible, other people have put together
+<a href="http://www.cs.jhu.edu/~callahan/patterns/contents.html"
+target="_blank">voluminous archives</a> of patterns. To get a feel for how the
+game operates, take a look at some <a href="17.html" target="define"><b>still
+life</b></a><sup><font size="-1">17</font></sup> patterns as well as some of
+the more common <a href="18.html"
+target="define"><b>blinkers</b></a><sup><font size="-1">18</font></sup>.
+
+<p> Subsequent discoveries include logical AND and OR gates and even an <a
+href="http://www.cs.jhu.edu/~callahan/patterns/adder.html"
+target="_blank">entire adder</a> that adds values represented by streams of
+gliders the sum being represented by another stream of gliders. These
+discoveries certainly confirm Conway's idea that the Life CA was a Turing
+computer. Little did he know that he was creating something that was just
+plain <a href="19.html" target="define"><b>fun to watch</b></a><sup><font
+size="-1">19</font></sup>.
+
+<p><b>Controlled anarchy</b><br>
+
+Thanks to technological progression in the past 25 years, we don't have to
+move stones around on a Go board or conspire to develop nuclear weapons in
+order to explore CAs. This increase in computer availability has been mirrored
+by an explosive growth in research of cellular automata. Research in the field
+of artificial life has developed as rapidly, and in the same time frame as the
+thorough investigation of CAs. Like chocolate and peanut butter, these two
+fields have come together with some very exciting results.
+
+<p> A common characteristic of many biological systems is that of
+decentralized control. There are no ring masters in nature, no command
+central. The complex behavior that is observed must be explainable by some
+other mechanism.. CAs give us the perfect environment for exploring systems
+with no central control. Given that the rules are executed in parallel on
+every cell, we can easily explore systems where simple <a href="20.html"
+target="define"><b>local interaction</b></a><sup><font
+size="-1">20</font></sup> takes place for a large population of cells over
+some period of time.
+
+<p> A compelling example of this is a <a target="_blank"
+href="http://lcs.www.media.mit.edu/groups/el/Projects/starlogo/projects/termite.html">model
+of termite behavior</a>.  Termites organize little chips of wood into large
+piles, but being very small they can't see the big picture of where the piles
+of chips are, and there are no helicopters above radioing instructions down to
+the busily working termites. How can they achieve their goal?
+
+<p> It turns out that a simple set of rules allows just such a goal to be
+achieved. Suppose an initially random distribution of chips on a
+two-dimensional grid. Along with the chips are some number of termites. These
+termites wander around randomly until they encounter a chip, when they
+encounter the chip, they pick it up and continue to wander randomly around
+until they encounter another chip. They drop the first chip down next to the
+second chip and wander off looking for another chip.
+
+<p> This can be modeled as a cellular automaton with some simple rules. A cell
+can contain a wood chip, a termite, neither, or both (we assume two termites
+won't wander into the same cell). Each iteration, the termite wanders from its
+current cell to a neighboring cell. If the cell contains a woodchip, it picks
+it up. If it is carrying a woodchip and it wanders into a woodchip carrying
+cell, it instead sets the woodchip down in an empty space next to the first
+woodchip and then exits in some random direction from that cell.
+
+<p> Take a look at <a href="21.html" target="define"><b>this
+automaton</b></a><sup><font size="-1">21</font></sup> in action. The yellow
+squares are wood chips and the red squares are termites. When the termites
+pick up a wood chip, they turn blue. When they encounter a second wood chip,
+they turn green which indicates that they'll set the first chip down in the
+next empty space that they encounter. After many generations, the wood chips
+begin to collect into piles, eventually into one large pile. Unfortunately,
+Java doesn't quite boast the computing power to perform this simulation on a
+large enough set of termites and chips to truly impress, but the beginnings of
+the emergent behavior are definitely visible in the applet.
+
+<p><b>Generation N+1</b><br>
+
+Examples of CAs used to model <a target="_blank"
+href="http://www.cs.runet.edu/~dana/ca/examples/flock/flock.html">flocking
+behavior</a>, <a target="_blank"
+href="http://www.im.lcs.mit.edu:80/broch/cry1.html">molecular interaction</a>
+in a gas, and even <a target="_blank"
+href="http://www.runet.edu/~dana/ca/examples/ffire/index.html">forest
+fires</a> can be seen on the Net. It seems that there is no end to the
+applicability of cellular automata to new and different problems that arise in
+the sciences. Before I go, allow me to point you to three really good places
+to get all the meaty details that I left out of this article.
+
+<ul>
+<li><a target="_blank"
+href="http://alife.santafe.edu/alife/topics/cas/ca-faq/ca-faq.html">Cellular
+Atomata FAQ</a>
+
+<li><a target="_blank"
+href="http://www.cs.jhu.edu/~callahan/patterns/contents.html">Life Pattern
+Catalog</a>
+
+<li><a target="_blank" href="http://math.wisc.edu/~griffeat/welcome.html">The
+Primordial Soup Kitchen</a>
+</ul>
+
+<p> Bon appetit!
+
+<a href="/internet/deep/"
+target="_top"><img src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10 height=10 alt="*"></a>
+
+<p><font size="-1">-- Michael <a
+href="mailto:mdb@go2net.com">&lt;mdb@go2net.com&gt;</a> recently realized that
+he is merely a complex automaton himself and is now busily counting his states
+and transition rules.</font>
+
+<p> <font size="-1">Source code to the applets written for this article (in
+order of appearance): <br> <a href="DBApplet.java"
+target="_blank">DBApplet.java</a>, <a href="Life.java"
+target="_blank">Life.java</a>, <a href="Termite.java"
+target="_blank">Termite.java</a></font>
+
+</body>

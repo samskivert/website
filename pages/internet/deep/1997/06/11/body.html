@@ -1,0 +1,148 @@
+<head><title>go2net | internet | deep magic | The great go2net gaming boondoggle</title></head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="The great go2net gaming boondoggle">
+<br clear=left>
+
+<br><font size=-1 color="#99CC66">11 June 1997</font>
+<br>
+<table width=128 align=left hspace=2><tr><td><img src="image.gif" width=124 height=124 border=0 align="LEFT"></td> <tr><td align=center><b><font size="-1" face="Helvetica"></font></b></td></table>
+<em>[Note -- we're going bi-weekly with Deep Magic for a while.
+We may return to weekly at some point.  Only time will tell!
+Next article coming 18 June 1997.]</em><p>
+<B>The set-up</B>
+<br>
+In our last exciting installment, Mike developed a distributed object
+framework viable as the basis for a multi-player gaming system. 
+Mike then enhanced our lives with a <a href="01.html" target="define"><b>kick-ass</b></a><sup>1</sup> <a href="02.html" target="define"><b>word game</b></a><sup>2</sup> for this system.  It involved
+finding words on a grid of letters.  The game's great interface proved so
+popular here at go2net that it was banned during 
+<a href="03.html" target="define"><b>work hours</b></a><sup>3</sup>.
+<p>
+But sometimes in the wee hours of the night, the game rages on. While I enjoy
+the
+game immensely, I rarely win. Alas, I am usually no match for the wily
+vocabularies and sheer word-finding skills of Mike and Paul. I have
+lost more rounds than I care to remember, and if there is one thing
+worse than losing, it is losing to 
+<a href="http://www.improving.org/paulp/" target="_blank">Paul</a>. Paul is never a sore
+loser, but when he wins, the losers must sit through a series of boasts
+and prosaic self-glorifications. He makes it quite satisfying to win.
+<p>
+
+<B>Mr. Greenwell, in his office, with the perl code.</B>
+<br>
+I have been<table width=180 align=right>
+<tr><td width=10><br></td><td><br><hr size=1><b><tt><FONT SIZE="+1" FACE="ARIAL"><I>You know what they say: "A
+criminal
+mind is a terrible thing to waste." I have a saying of my own: "No problem
+can't be solved by programming."</I></FONT></tt><br></b><hr size=1><br></td>
+</table> told I have a criminal mind. You know what they say: "A
+criminal
+mind is a terrible thing to waste." I have a saying of my own: "No problem
+can't be solved by programming." ...or maybe it was Paul who said
+that.
+Damn his confident eloquence! I'll show him!
+<p>
+Either way, my plan was simple: create a cheat for the word game.
+Initially I conceived of a
+giant Rube Goldberg-type device with pulleys, buckets and hamster wheels,
+but I finally settled on just
+ writing some perl code. Sometimes it does feel
+the same, though.
+<p>
+The problem is simple enough: Search the game board for words. 
+To do this I needed a list of words, and an efficient algorithm for locating
+which of those words were on a given board. The word list was easily
+procured; I just downloaded a nice, big <a href="04.html" target="define"><b>crack dictionary</b></a><sup>4</sup>.
+<p>
+The algorithm was a different story. I originally planned to start with every
+letter on the board and do a depth-first search to find all conceivable
+"paths" from that letter. I would check each path more than four letters long
+and
+see if it constituted a valid word. Then I realized this was a bad idea.
+The number of words I would be checking was <a href="06.html" target="define"><b>O(n!)</b></a><sup>6</sup>, where n is the number
+of letters on the board, in this case 25. While it might be fun to let
+the computer try out each of the 15511210043330985984000000 combinations,
+it would not finish in the required three minutes, unless "three minutes" was
+redefined
+as "work hours."
+<p>
+A better way would be to examine each<table width=180 align=left>
+<tr><td width=10><br></td><td><br><hr size=1><b><tt><FONT SIZE="+1" FACE="ARIAL"><I>While it might be fun to let
+the computer try out each of the 155112100433<br>30985984000000 combinations,
+it would not finish in the required three minutes, unless "three minutes" was
+redefined
+as "work hours."</I></FONT></tt><br></b><hr size=1><br></td>
+</table> dictionary word in order, 
+then check to see if it was on the board. This is has a worst-case of
+O(n * m),
+where n is the number of words, and m is their average length. 
+I came up with the sly optimization
+of replacing all occurrences of "qu" in the dictionary words
+with "q," and treating the special "qu" cube as though it were just a "q."
+This
+allowed me to deal with everything as a single character. When a word
+matched, I simply needed to replace any instances of "q" with "qu"
+upon printing it out.  I coded this up and ran it.
+My program worked great, but it seemed a little sluggish; perhaps there
+was a way I could further speed it up.
+<p>
+<B>Face Game you must, for only then Jedi Knight will you truly be.</B>
+<br>
+A voice in my head echoed solemn advice: "Use the source, dumbass." It was
+the disembodied voice of Obi-Paul Kenobi! I quickly scanned Mike's
+source for the code that did the word-checking and found it identical
+in essence to my own, complete with sly Q-substitution. There had to be
+a better way.
+<p>
+I thought about it, and realized that for every word in the dictionary, I was
+scanning the entire board for the first letter, and for each
+subsequent letter I was checking each of the <table width=180 align=right>
+<tr><td width=10><br></td><td><br><hr size=1><b><tt><FONT SIZE="+1" FACE="ARIAL"><I>A voice in my head echoed solemn advice: "Use the source,
+dumbass."</I></FONT></tt><br></b><hr size=1><br></td>
+</table>eight adjacent positions for
+possible paths. This is especially wasteful if the word I am
+checking begins with a letter absent from the board, as I
+am doing 25 comparisons before throwing the word away.
+<p>
+So I created a hash indexed by letter. The data stored in the hash is a list of
+positions on the board where that letter occurs. Much better! Now if a word
+has a character that isn't on the board, I know it as soon as I get
+to that character and look it up in the hash, only to find it missing.
+I arranged it so that each subsequent character is looked up by retrieving its
+list of
+positions, then making sure those positions are next to the last-picked
+cube on the board. Most of the rest of the code remained the same. 
+<p>
+<B>The Showcase Showdown</B>
+<br>
+This was it. This was the blazing algorithm I was searching for. I was now
+ready to go <i>mano y machino</i> with Paul. I made a few
+test runs and achieved rounds in excess of 400 points. Paul had
+no hope. Coyly, I asked if he was ready to play a little word
+game...
+<p>
+It didn't take Paul long to find me out. Perhaps it was the way I got up for a
+drink of water about a minute into the round, or the way I calmly submitted my
+278
+points worth of words. He was amused. But now when we play, he logs into my
+machine so he can monitor running processes and make sure I'm not cheating.
+<p>
+If only I hadn't gone for the water ...
+
+
+
+<a href="/internet/deep/"
+target="_top"><img src="/global_images/green_thingy.gif" border=0
+align=absmiddle width=10 height=10 alt="*"></a>
+
+<p><font size="-1">-- Ray Greenwell <a href="mailto:ray@go2net.com">&lt;ray@go2net.com&gt;</a> cries during Hallmark commercials.</font>
+
+<p><div align=right><font size="-1"><a href="solve.pl">Perl code</a> and <a href="crack_dict.txt">dictionary</a>.</font></div><br>
+
+<!-- thanks to Winston Smith for his help authoring this article.  -->
+
+</body>
+

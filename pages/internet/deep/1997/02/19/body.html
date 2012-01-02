@@ -1,0 +1,179 @@
+<head>
+<title>go2net | internet | deep magic | Music to my URLs</title>
+</head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="Music to my URLs">
+<p><font size=-1 color="#99CC66">19 February 1997</font>
+
+<p>
+
+The first computer with enhanced musical capabilities was the Amiga, a
+<a
+href="01.html" target="define"><b>lesser known</b></a><sup><font
+size="-1">1</font></sup> system introduced in 1985. It had four digital channels
+of audio and a bonus co-processor to feed them. These advanced audio
+abilities did not go unnoticed by the many young programmers that owned
+them, and quickly a standard emerged for musical playback: the
+"Soundtracker Module", or MOD. The MOD is simply an audio format designed
+to take advantage of this four-channel setup. 
+
+<P>The MOD format approaches music differently than you may be accustomed to,
+even if you know your computer sounds formats. Two other popular sounds
+formats that exist on computers are samples and <a
+href="02.html" target="define"><b>MIDIs</b></a><sup><font
+size="-1">2</font></sup>. By samples, I
+mean the general category of straight recordings of some sound. Often
+files have extensions like <tt>.wav</tt>, <tt>.au</tt>, and <tt>.aiff</tt>. Since a sample is merely
+a recording of a sound, it can be arbitrarily complex, but will often be
+very large. A typical three minute song would be several megabytes.  Most
+newer music formats that a web user would be familiar with, including real
+audio and mpeg audio, are "sample" type sounds. 
+
+<P>A MIDI is much more compact because it doesn't encode the actual sounds,
+but rather information on when to play a certain instrument. MIDI was
+developed for computer interaction with a device that knows how to make its
+own sound, most often a digital keyboard.  A midi file says "play these
+notes on a piano, and these other notes on a trumpet." A MOD file most
+closely resembles a MIDI, with the addition of the samples, which are the
+instruments.  A MOD file says "play these notes and use the recording of
+my dog as the instrument." Mods are usually much shorter than a similar
+piece of music recorded as a sample. 
+
+<P>Each sample can be played back at a variety of frequencies to generate
+different notes on any of the four channels. A simple MOD might consist of
+a few drum samples and a piano. Then, perhaps two channels are used to lay
+down the drums and the other two channels for the piano sounds. In
+addition to playing different notes, the playing of a sample could be
+tweaked by select effects such as <a
+href="03.html" target="define"><b>arpeggio and vibrato</b></a><sup><font
+size="-1">3</font></sup>. 
+
+<P>Each channel has an associated 'track' which is merely a time sequence for
+what sample to play and how. Each track is assigned one of the digital
+channels for a total of four tracks. These are then organized into
+patterns, which have 64 rows of time steps in which to position notes. It
+looks something like a high-tech player piano roll. The mod player just
+looks at the first row, and simultaneously plays the samples (up to four) 
+contained there. Then it waits a set amount of time and plays the samples
+on the next row. The patterns are played in the specified order to create
+the whole song. 
+
+<P>This allowed for surprising freedom of composition, and MODs became hugely
+successful, with many trackers and players popping up. Even today, with
+<a
+href="04.html" target="define"><b>Amigas no longer in production</b></a><sup><font
+size="-1">4</font></sup>, the MOD lives on. After DOS computers
+become aurally enhanced by the introduction of such sound cards as the
+Sound Blaster, people familiar with MODs <a
+href="05.html" target="define"><b>ported the players to DOS</b></a><sup><font
+size="-1">5</font></sup>. 
+More players and trackers appeared, and soon just as many MODs were being
+authored on DOS machines as on Amigas. 
+
+<P>But on the DOS machines, the situation under the hood was quite different.
+The Amiga had four digital channels for outputting the sounds, but the
+newfangled Sound Blaster had only one.  Fortunately, it is a fairly easy
+operation to mix waveforms.  Each bit of each sample is added together,
+and the result is divided by four. It is simple wave interaction, with
+peaks cancelling troughs. The Amiga wasn't fast enough to mix samples this
+way, but the PC was, with the only disadvantage being a slight degradation
+of sound quality. 
+
+<P>It didn't take long for the <a
+href="06.html" target="define"><b>PC folk</b></a><sup><font
+size="-1">6</font></sup> to ask themselves, "We can mix
+four sounds, why not eight?" The MOD file format was extended to
+accommodate MODs of eight channels. Pretty soon people got even fancier
+and added capabilites for up to thirty-two channels, as well as a wide
+array of new effects. These are enough removed from the original format to
+merit a new filename extension like <tt>.s3m</tt> or <tt>.xm</tt>, but there are essentially
+still based on MOD. 
+
+<P>When I was first learning Java, I wanted to create a MOD player applet.
+However, I soon discovered that Java had only a very primitive and
+high-level sound support.  Playback of sampled sounds is the only thing
+supported.  A cool feature it did have is that you merely need to play
+back whatever samples you want, and the mixing of all currently playing
+samples is done automatically.  That would certainly be a help if there
+was a way to play back the sounds at different frequencies. 
+
+<P>It currently looks hopeless, as sound playback is only possible with
+<tt>java.applet.AudioClip</tt>, an opaque object that looks suspiciously like it
+was added to the language at the <a
+href="07.html" target="define"><b>last minute</b></a><sup><font
+size="-1">7</font></sup>.  A few people have
+written applets that play music in a very MOD-like fashion, but they
+download a different sample for each note, which destroys most of the
+coolness (and compactness) of MODs. 
+
+<P>Recently, while tooling around with some of the private Sun classes to see
+how it all works, I realized it would be possible to create my own
+AudioClips with resampled versions of audio data.  After some
+experimentation I came up with a sample that could be played at twice the
+speed! My code is not entirely up to spec: it relies on some Sun classes
+that are not a part of the standard JDK.  They are usually behind the
+scenes for audio playback, but are present in all the Java supporting
+browsers that I know of.  The classes work, but a serious applet or
+application should not depend on them. 
+
+<P>MOD players are completely viable to program in Java. There is, however, a question
+of quality of the sound playback.  Here, I have implemented a simple
+pattern player. I download the sample and resample it across a range of
+notes, and construct AudioClips for each of these notes.  After this, all
+the hard work is done, and I just have to play back the right samples at
+the right times. 
+
+<P>A bonus feature is the ability to draw upon a high quality source sample
+in creating my samples.  Java only supports the playback of 8000 Hz
+samples, which as audio enthusiasts know is a very poor sound quality,
+about that used in the digital answering machines.  The player I wrote can
+use a higher quality sample to construct the samples it needs for the
+music, resulting in better sound in the lower frequency samples. 
+
+<P>I have coded up a simple tracker for you to use. Do some experimenting by
+creating your own small "song."<P> 
+
+<applet code="JavaMod" codebase="." width=301 height=300>
+Oh no! You don't seem to have Java support! You can't see the cool
+tracker applet that I made <i>just for you</i>.
+<param name="samples" value="Vibe.au boing.au click2.au Bark.au flush.au soylent.au">
+<param name="bgcolor" value="FFFF99">
+</applet><P>
+<B>Instructions:</b>
+<blockquote>
+Since most of you aren't musicians anyway, I have provided
+a fun set of whimsical "instruments."
+Select an instrument and then click on the piano to test the note. Place the
+notes in the pattern by clicking on the cell of your choice. You can clear
+a cell by selecting the "clear sample" instrument. The speed setting is the
+number of milliseconds to wait between each row.<P>
+</blockquote><P>
+
+<P>A complete java MOD player is a possibility save for effects,
+and if I have enough free
+time I would like to finish it.  Certainly being "ported" to the Web will
+extend its life for years to come. From its humble beginnings on an
+alternative computer, the MOD has come a long way, yet has changed
+relatively little.  Many of the original songs composed by young Amiga
+hackers are still quite enjoyable, and I recommend 
+<a href="http://www.th-zwickau.de/~maz/trackers_text_only.html" target="_blank">grabbing a player</a>
+and visiting one of the
+<A HREF="http://www.modarchive.com" target="_blank">brimming archives</A> and listening to some of the classic pieces that
+have helped fuse technology and art. 
+
+ <a href="/internet/deep/" target="_top"><img
+src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a>
+
+<p><font size=-1>-- Ray
+<a href="mailto:ray@go2net.com">&lt;ray@go2net.com&gt;</a>
+is a Dreamer of Dreams at go2net. If you told him he was gullible, he'd
+probably believe you.</font>
+
+<p><font size="-1">Source code to the applet written for this article
+(archived): <br> <a href="javamod.tar.gz">tarred and gzipped</a> or <a
+href="javamod.zip">zipped</a>.</font>
+
+</body>

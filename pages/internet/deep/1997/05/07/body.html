@@ -1,0 +1,202 @@
+<head>
+<title>go2net | internet | deep magic | Climbing the data tree</title>
+</head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="Climbing the data tree">
+<br clear=left>
+<br><font size=-1 color="#99CC66">7 May 1997</font>
+
+
+<p>
+
+
+
+For many software engineers, working with tree-like data structures is a
+common pastime. I'm sure we've all sat down to code up a binary or M-ary
+tree at one time or another, wondering why on Earth we're rewriting
+something we've already written from scratch at least five times before. At
+some point
+during the coding, most programmers realize they're going to have to
+implement (again) another silly
+"print-<wbr>the-<wbr>tree-<wbr>out-<wbr>in-<wbr>text-<wbr>so-<wbr>I-<wbr>can-<wbr>see-<wbr>what-<wbr>I'm-<wbr>doing" function. Such
+functions are
+inherently dissatisfying, due to their poor visual
+representation of the data, and programmers invariably end up sketching
+their trees with pencil and paper. It's frustrating to have to make the
+mental leap between a list of nodes as ASCII text and a nice, clean
+graphical representation of the tree's data.
+<p>
+As some of you probably suspect by now (and many of you know),
+there <i>is </i> an alternative!  It turns out that tree-drawing (and
+<a href="01.html" target="define"><b>graph-drawing</b></a><sup>1</sup> is a very well-studied problem).  To my
+surprise, I discovered that there are entire <a href="http://www.inf.uniroma3.it/calendar/gd97/" target="_blank">conferences</a> dedicated to
+the discussion of graph-drawing algorithms and related
+research.  There are a variety of interesting, <a href="02.html" target="define"><b>open problems</b></a><sup>2</sup> in the
+field of graph drawing (and a number of <a href="03.html" target="define"><b>NP-hard problems</b></a><sup>3</sup> associated
+with the issue as well.) If <table width=160 align=left><tr><td><hr size=2 noshade><TT><FONT color="#666666"><B>Some basic porting of C code to Java left me with a Java class enabling
+the beautiful drawing of M-ary trees.</B></FONT></TT><hr size=2 noshade></td></table>you're ever lacking material to ponder during
+your early-morning shower, look no further.
+<p>
+I became interested in tree-drawing recently when I needed to
+display an M-ary tree in a graphically pleasing manner.  I zipped on over
+to <a href="http://www.gamelan.com" target="_blank">Gamelan</a>, expecting to quickly find a suitable pre-written Java
+package for displaying trees.  Much to my chagrin, nothing of the sort
+existed.  A search on "trees" and "graphs" brought up a variety of
+<a href="04.html" target="define"><b>directory tree</b></a><sup>4</sup> classes, some unsuitable 2-D or 3-D graphing classes,
+and little else.  In astonishment, I posted a message to
+<a href="news://comp.lang.java.programmer">comp.lang.java.programmer</a> asking for assistance.  Most responses
+were along the lines of, "Hey, what you're asking for sounds neat!  Why
+don't you write a class to draw such trees yourself, and release it
+publicly?"  These people missed the point; I wished to make use of the
+endangered beast called <a href="http://aazk.ind.net/animal_gifs/Preview/warthog.gif" target="_blank">code re-use</a>, but alas, I found myself playing
+the part of the far more common <a href="http://aazk.ind.net/animal_gifs/Preview/mandrill.gif" target="_blank">reimplementation primate</a>.  To aid
+others in a similar situation, then, I present herein my initial findings
+on the "tidy drawing of trees."
+<p>
+<B>Quest for trees</B>
+<br>
+I began my search for information by mucking around in the internals of
+the source code to Allan Brighton's <a href="http://arch-http.hq.eso.org/~abrighto/tree/tree.html" target="_blank">Brighton Tree Widget</a> for Tcl/Tk.
+The Brighton Tree Widget had proven tremendously useful for my <a href="http://www-cse.ucsd.edu/users/wgg/research.html" target="_blank">research
+group's</a> previous work, so porting the existing widget seemed
+a likely quick path to success.  As I perused the source, my
+<a href="05.html" target="define"><b>eagle-eyes</b></a><sup>5</sup> spotted one of the tastier bread crumbs programmers
+occasionally leave behind: a useful comment!  It attributed the
+basic tree-drawing algorithm to an <a href="06.html" target="define"><b>article</b></a><sup>6</sup> in the July 1990 issue of
+IEEE Software.
+<p>
+A quick trip to the library, a photocopy of the referenced article, and
+some basic porting of<table width=160 align=right><tr><td><hr size=2 noshade><TT><FONT color="#666666"><B>Your tree is one-of-a-kind; be sure to take a screen
+snapshot before clearing the tree, else you'll lose your creation forever!
+</B></FONT></TT><hr size=2 noshade></td></table> C code to Java left me with a Java class enabling
+the <a href="07.html" target="define"><b>beautiful</b></a><sup>7</sup> drawing of M-ary trees.  I present here Java
+applet
+demonstrations of my tree-drawing code (based on my humbly named
+<tt><a href="08.html" target="define"><b>WalTreeCanvas</b></a></tt><sup>8</sup> class) as both a <a href="example1.html" target="_blank">static sample
+applet</a> and a more interesting <a href="example2.html" target="_blank">dynamic applet</a>.  Much thanks goes
+to <a href="http://www.clarus.se/People/sm/" target="_blank">Sven Moen</a> for writing an eminently understandable article and
+bringing together prior research (with his own findings) in a
+comprehensive, usable fashion.
+<p>
+The dynamic applet above allows you to insert your own nodes, creating
+your very own <a href="09.html" target="define"><b>tree art</b></a><sup>9</sup>.  Just type the node name into the edit field
+and press the "Return" key.  You may clear the currently displayed tree by
+clicking the "Clear" button.  The nodes are inserted in random fashion,
+as either parent, sibling or child nodes.  The randomness
+guarantees that your tree is one-of-a-kind; be sure to take a screen
+snapshot before clearing the tree, else you'll lose your creation forever!
+For those dissatisfied with the size of the applet display, feel free to
+download the code, set your own applet size parameters in the html file,
+and run it locally.
+<p>
+While my implementation isn't quite a clean, abstracted package suitable
+for drop-in to any application wishing to display trees, it's an
+excellent starting point, and should be usable for many purposes as-is.
+Several settings in the <tt>WalTreeCanvas</tt> class
+directly affect the display of the tree.  Naturally, the size of
+each node (width/height) is crucial; the demonstrations here use the width
+of the node label, but a fixed width may also be used (this will also
+result in all nodes at the same level in the tree lining up exactly.) The
+horizontal position of the root node may be changed; here, it is set just
+to the left of the edge.  Finally, the distance between node levels
+(the "parent distance") may be changed; the parent distance in my
+demos is rather short, to fit more nodes on the display.
+<p>
+The nodes composing the internal tree structure are represented by the
+<tt>WNode</tt> class:
+<p>
+<pre>
+public class WNode {
+    String  label;
+    WNode   parent, child, sibling;
+    int     width, height, border;
+    Point   pos, offset;
+    Polygon contour;
+};
+</pre>
+<p>
+Thus, children of a node are accessed by traversing the child
+reference, then proceeding down the linked list of sibling references.
+The basic algorithm and further implementation details are described
+below.
+<p>
+<B>Tidy trees
+</B>
+<br>
+Moen's article references two prior ones on tree-drawing; <a href="10.html" target="define"><b>"Tidy
+Drawings of Trees"</b></a><sup>10</sup>, and <a href="11.html" target="define"><b>"Tidier Drawings of Trees"</b></a><sup>11</sup>.  In the latter,
+Reingold and Tilford detail various requirements for an eye-pleasing
+binary tree.  Moen distills these down to five key points:
+<p>
+<blockquote>
+1.  A parent should be drawn above its children.
+<p>
+2.  Nodes at the same level should lie along a horizontal line.
+<p>
+3.  A left child should be positioned to the left of its parent and a
+right child to the right.
+<p>
+4.  A tree and its mirror image should be drawn to reflect each other.
+<p>
+5.  A sub-tree should look the same, regardless of where it occurs.
+</blockquote>
+<p>
+In my applets I wanted a horizontal tree rather than a vertical one, but
+the code (and principles) of tree-drawing are equally relevant to both.
+The Brighton Tree Widget can draw trees oriented in either direction, but
+the WalTree applet cannot now perform such a feat.  Modifying the
+code to do so would be relatively simple.
+<p>
+The basic algorithm for drawing the tree relies on "contours" surrounding
+each node, and polygons representing groups of contours.  Nodes are
+surrounded by border space, and the contour takes into account both the
+node size and border space, representing the overall area, which
+should remain empty around the node for pleasant viewing.  The algorithm
+then begins by traversing to the leaves of the tree, finding their
+contours, and proceeding back up the tree.  At each node, the contours of
+the node's children are placed as close together as possible, then
+joined into one large polygon. This proceeds up the tree
+to the root, calculating the offset distance between each node and its
+children along the way.  Once all offsets are calculated, the absolute
+positions of the nodes are calculated by beginning with the root node (and
+its fixed, known position), and determining the positions of all child
+nodes by adding their offsets to the root node's position.  This is called
+"planting" the nodes.
+<p>
+<B>Branching out</B>
+<br>
+In addition to what I've implemented here, Moen's article describes
+an algorithm to allow dynamic updates to the tree; that is, it lets the user
+remove or insert nodes and only update the affected sub-tree.  I haven't
+implemented this feature due to time
+constraints; for those users working with large trees, however, this can
+be a valuable addition.
+<p>
+Tree-drawing algorithms may substitute for graph-drawing ones in
+certain circumstances.  This can be advantageous, as the runtime of the
+algorithm presented here is O(n), and many graph-drawing algorithms take
+time O(n<SUP>2</SUP>).  For further information, Roberto Tamassia has
+an excellent <a href="http://www.cs.brown.edu/people/rt/gd.html" target="_blank">web page</a> on graph drawing, containing information (or
+links to information) on most everything pertaining to the area.
+<p>
+<tt>System.out.println()</tt> drives everyone nuts eventually,
+and it's clear that excellent alternatives are available.
+Hopefully, the references and implementation described here will be of
+help the next time you find yourself wishing for a more appealing view of
+your tree-structured data.  Of course, there's always paper and pencil to
+fall back on, but there's little doubt that road leads inevitably to
+<a href="12.html" target="define"><b>ruin</b></a><sup>12</sup>.
+
+<a href="/internet/deep/" target="_top"><img src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a>
+
+<p><font size="-1">-- Walter <a
+href="mailto:shaper@cerf.net">&lt;shaper@cerf.net&gt;</a> still believes
+in keeping everything sheep-shape.</font>
+
+<p><font size=-1>Source code for this article, <a
+href="treedraw.tar.gz">tar'd and gzip'd</a> or <a href="treedraw.zip">zipped</a>.</font> <br><br>
+
+</body>

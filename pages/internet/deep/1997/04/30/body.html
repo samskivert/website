@@ -1,0 +1,196 @@
+<head>
+<title>go2net | internet | deep magic | Magic Lenses 2: Electric Boogaloo</title>
+</head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="Magic Lenses 2: Electric Boogaloo">
+<br clear=left>
+<font size="-1">(Part 2 of a 2-part series on the Magic Lens)</font>
+<br><font size=-1 color="#99CC66">30 April 1997</font>
+
+
+<p>
+<a href="/internet/deep/1997/04/23/body.html">Last week</a>, I introduced the see-through Magic Lens, a new way to view
+items not currently on your screen without opening additional windows. I
+included a simple applet of viewing lenses. As promised, this week I have
+written a small application using lenses that not only filter the view but
+modify and interact with it as you maneuver your way through the program.
+<p>
+To really show off the potential of the Magic Lens, I decided a paint program
+was the way to go. I was less interested in creating different painting lenses than in developing
+a model that would allow lenses to be added and combined
+to form new ones. I also found it interesting to make a few lenses
+<!--#include virtual="/magic/AdInclude/info=/internet/deep/:yellow:right"-->
+that didn't do any painting, but were simply tools to modify other lenses.
+<p>
+First, let me introduce you to the applet. The left-hand side
+contains buttons that activate new lenses. These buttons
+are based on applet parameters that give the name of the button,
+as well as the class and value for the lens. 
+When a button is pushed, the class is
+ loaded at run time and added to the
+toolglass. The toolglass? If you remember from last week, that's an invisible
+layer above the application at which all the lenses reside.
+Adding new lenses is as easy as writing the lens class and adding those
+three parameters to the applet tag parameters.
+<p>
+Since all painting must be done through lenses, nothing can happen until
+you choose one. Start with the top one, a simple red drawing lens.
+When you click inside it, it is automatically added to the white
+drawing area to the right. Go ahead and click - you'll
+draw a small red dot. Now, add the blue lens. If you haven't moved either<table width=160 align=left><tr><td><hr size=2 noshade><TT><FONT color="#666666"><B>If you click inside
+the combined lenses, the two colors mix. Voila! You'll get purple
+dots.</B></FONT></TT><hr size=2 noshade></td></table>
+lens around, they should appear on top of each other. If you click inside
+the combined lenses, the two colors mix. Voila! You'll get purple
+dots.
+<p>
+If you click on the title bar of a lens, you can move it around on the
+toolglass. The inventors of the Magic Lens
+proposed using a trackball with the non-dominant hand to move the toolglass.
+<p>
+I don't know many people with two mouse-type devices, so I use the
+keys that surround "S"
+on the keyboard to move the toolglass. "Q" moves it northwest,
+"W" north, "D" east, etc. If you try it out,
+you'll see that the lenses move around in unison, with their
+relative positions remaining fixed. To increase or decrease the granularity
+of
+the movements, use the number keys at the top of the keyboard. As you
+can see, this is a less-than-ideal way to move the toolglass around, and a
+trackball would be preferable.
+<p>
+<applet code="LensDemo" codebase="." width=400 height=300>
+<param name="lenses" value="13">
+<param name="lens1" value="Red; ColorLens; ff0000">
+<param name="lens2" value="Green; ColorLens; 00ff00">
+<param name="lens3" value="Blue; ColorLens; 0000ff">
+<param name="lens4" value="Yellow; ColorLens; ffff00">
+<param name="lens5" value="Cyan; ColorLens; 00ffff">
+<param name="lens6" value="Magenta; ColorLens; 00ffff">
+<param name="lens7" value="White; ColorLens; ffffff">
+<param name="lens8" value="Black; ColorLens; 000000">
+<param name="lens9" value="Polygon; PolygonLens;">
+<param name="lens10" value="Preview; PreviewLens;">
+<param name="lens11" value="Magnify; MagnifyLens; 2">
+<param name="lens12" value="Inverse; InverseLens; ">
+<param name="lens13" value="Grayscale; GrayLens; ">
+</applet>
+<br>
+<font size=-1>As always, I didn't get as much done as I had hoped. Hey- I have
+a job here too, and so there are no lens-modifying lenses, and the
+color lens doesn't have the super-dope color wheel. There are also only
+dots and polygons, although it would be easy to write lenses for drawing
+lines, circles, boxes, etc.</font>
+<p>
+Drawing red and blue dots isn't much fun, so go ahead and play around
+with some of the other tools. Remember that all drawing
+must be done through a color lens; so if you want a red polygon, you must put the red lens on top of the polygon lens. By now, you may have noticed there are some little icons in the title bar for each lens, and they
+sometimes change. The little "x" will, of course, close the lens and
+remove it from your toolglass. The "lock" icon is used to lock and unlock
+a lens from its position on the canvas. When locked, it will not move
+when the toolglass is moved.  When two lenses of similar size are placed<table width=160 align=right><tr><td><hr size=2 noshade><TT><FONT color="#666666"><B>If you find yourself making lots of red polygons, it may be time to bite the bullet
+and create a "red polygon" lens. If you then decide you want to make purple polygons, combine the blue lens with your "red polygon" lens. The possibilities are endless.</B></FONT></TT><hr size=2 noshade></td></table>
+close together, the upper one will display a "J" in the title bar. The
+"J" stands for join; if you click on the J, the two will unite. For example,
+if you find yourself making lots of red polygons, it may be time to bite the bullet
+and create a "red polygon" lens. If you then decide you want to make
+purple polygons, combine the blue lens with your "red polygon" lens.
+The possibilities are endless: For instance, to get more
+magnification, join two magnification lenses.
+<p>
+<p>
+Before I talk about implementation, I should point out more 
+lens features. The preview lens is by far my favorite child.
+Try it out: place a red lens over the preview lens and draw a dot.
+The dot shows up as normal, but try moving the preview lens around.
+The dot should stay in the same relative position inside the lens.
+<p>
+The preview lens is kind of like a form of "undo," except you never "do." It allows you to queue up
+multiple actions, with the ability to remove any of them. After
+something is drawn, three icons appear for this lens. The first is a 
+double-down arrow, which takes all the queued-up actions inside the preview
+lens and applies them to the canvas at the current location of the lens.
+After you click this, nothing will look different, but the changes have been
+drawn. The second icon is a single-up arrow, which will remove the last
+drawing element you created inside the preview lens. Clicking this repeatedly
+will remove things one by one, until the preview lens is empty. The final
+icon, a double-up arrow, will remove all the previewed actions at once.
+<p>
+Two special lenses I would have liked to do are the lens-resizer and the lens-stacker.
+The lens-resizer can be placed over other lenses to change their sizes. The
+lens-stacker displays the current ordering of lenses and allows
+you to edit their positions.
+<p>
+<b>How it all works</b><br>
+Lenses that modify the display underneath them work just the way we
+demonstrated last week. First the canvas is painted, then the image is the
+passed through each lens it encounters on the way up until the scene is
+complete. In addition, a pointer to the original object is passed<table width=160 align=left><tr><td><hr size=2 noshade><TT><FONT color="#666666"><B>After working with
+the Magic Lens some more, I am not so sure it is the greatest thing to
+come along since the salad shooter.</B></FONT></TT><hr size=2 noshade></td></table>
+up, so a lens may render information not explicitly shown
+on the canvas. This is seen in the "mouse trails" lens. 
+<p>
+The main function of the lenses in this applet is not to change the display,
+but rather to modify events. I created my own PaintEvent, which is passed
+through each lens on its way down to the canvas.
+Each lens tests to see if the event is within it, then looks
+at the event to see if it can modify it. After it's done, it
+continues on its path through the lenses and down to the canvas, where
+hopefully it will draw something.
+<p>
+I urge anyone with <a href="01.html" target="define"><b>programming tendencies</b></a><sup>1</sup> to look at the source
+and program a simple lens, maybe one that takes "draw-point" events and creates something that instead draws a little "x."
+<p>
+One lens I did not make is the rose-colored one. After working with
+the Magic Lens some more, I am not so sure it is the greatest thing to
+come along since the salad shooter. The following complaints are
+mainly from my point of view and somewhat specific to my
+implementation. The originators of the Magic Lens interface may have already
+come up with solutions to some of these gripes.
+<p>
+<b>My first complaint:</b> Most people not only
+don't have a second trackball, but their operating systems have little or no
+support for multiple pointing devices. This might change over time,
+but it is difficult to introduce an application requiring a
+new piece of specialized hardware. The keyboard commands for moving the
+toolglass around are inadequate for speedy work.
+Also, since there is no easy way to move individual lenses around, I
+was forced to use the mouse, a fairly unclean way to perform this task. It
+would be much nicer if all mouse clicks went straight through to the application
+and another mechanism was available for <a href="02.html" target="define"><b>frobbing the lenses</b></a><sup>2</sup>.
+<p>
+<b>Another annoyance:</b> Even though the lenses are designed to be
+transparent, they get in the way visually; and they also can slow down the
+display.
+If a lens is on the screen but not currently being used, it 
+just slows everything down. On my machine, the magnifying lens slows down
+the whole works, so I tend to keep opening and closing it. 
+<p>
+A deeper problem is that the lenses force the user, to a certain extent, to
+understand what's going on behind the program. To become
+adept at working with the lenses in my applet, you must learn how the ordering
+of the lenses affects not only what you see, but how your painting
+events will be interpreted as they pass through each lens. 
+Forcing the user to understand the implementation is generally 
+a bad thing from a program-design standpoint, but fortunately this
+process follows a familiar metaphor: that of lenses. I hope most people
+won't have too much trouble figuring out how to make them do what they want.
+<p>
+On the whole, I think the Magic Lens is an interesting solution that could
+provide a rich set of tools for the right application. Initially, I 
+imagine people will just use the view-changing lenses,
+but over time they will think of ways to make use of more complex
+lenses.  I look forward to their incorporation into popular software.
+<a href="/internet/deep/" target="_top"><img src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a>
+
+<br>
+<font size=-1>Tons of source code,
+<A href="lenses-2.tar.gz">tar'd and gzip'd</a> or
+<a href="lenses-2.zip">zipped</a>.</font>
+
+<p><font size=-1>-- Ray <a href="mailto:ray@go2net.com">&lt;ray@go2net.com&gt;</a> is also known as "Sir Lens-a-lot." If you told him he was gullible, he'd probably believe you.</font> 
+</body>

@@ -1,0 +1,247 @@
+<head><title>go2net | internet | deep magic | Uncommon Lisp</title></head>
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="Uncommon Lisp">
+<p><font size=-1 color="#99CC66">19 March 1997</font>
+
+<p>Lisp is a nice little language with a long and illustrious
+history. Originally conceived by <a href="01.html" target="define"><b>John
+McCarthy in 1956</b></a><sup><font size="-1">1</font></sup> and
+perpetuated through various implementations until 1981 when everyone
+decided to get together and agree on what is now known as Common Lisp, it
+is a simple but powerful language.
+
+Illustrious histories aside, Lisp has the amicable characteristics of a
+very <a href="02.html" target="define"><b>simple syntax</b></a><sup><font
+size="-1">2</font></sup> and a small but flexible set of constructs with
+which to work.
+
+<p>The fundamental programming construct in Lisp is the list. Sure, you've
+got your integers and strings (also known as atoms), but the real action
+is in the lists. Everything is expressed in terms of a list. A program is
+a list of expressions. An expression is either a literal or a list of
+expressions. A function call is a list where the first element is the name
+of the function to call and the remaining elements of the list are <a
+href="03.html" target="define"><b>the arguments.</b></a><sup><font
+size="-1">3</font></sup>
+
+<p>To get a feel for the syntax, here is a little Lisp program:
+
+<pre>
+   (setq a 5)
+   (setq b (+ a 15))
+   (print "value of b = " b ", value of a = " a);
+</pre>
+
+<p>Given the extremely simple nature of the syntax, writing a parser for
+Lisp is great fun. Being the kind of person that likes to do great things
+especially when they're fun, I did just that. I'll be telling you how it
+all works in the rest of this installment of Deep Magic.
+
+<p><b>Scanning the horizon</b>
+
+<br>A program begins its life as a <a href="04.html"
+target="define"><b>sequence of characters</b></a><sup><font
+size="-1">4</font></sup>. As a first step in attempting to make some sense
+of it, the scanner breaks the text up into a sequence of chunks that are
+slightly more sensible than a plain old character. These chunks are called
+tokens and they are generally very simple themselves. Tokens are things
+like integer literals (like 25), string literals (like frobbotzim) and
+simple punctuation characters (like ().
+
+<p>Tokenizing is generally a very drudgerous process and fortunately, Java
+provides a built in class (java.io.StreamTokenizer) to do the job for
+me. I simply configured it to understand my brand of tokens and off I
+went. By default, the StreamTokenizer treats pretty much everything as its
+own token except strings enclosed by a user specified quote character and
+letters (a to z, upper and lower case) that have no spaces between them. I
+just had to let it know that underscores are a kosher token character (so
+that it will return my_function as one token instead of my, _, and
+function) and I was pretty much <a href="05.html" target="define"><b>all set</b></a><sup><font size="-1">5</font></sup>.
+
+<p><b>Parsing the parser</b>
+
+<br>Before I dive into how the parser is implemented, let's take a moment
+to consider how one would <a href="06.html" target="define"><b>represent a
+Lisp program</b></a><sup><font size="-1">6</font></sup> internally. It
+turns out to be very useful to regard everything as one polymorphic
+object. This object can either take the value of one of the primitive
+types (int, string, etc.) or be a list of said objects. Function
+definitions are simply lists with a particular form (name, argument list,
+statement list.) Function calls are similarly a simple list.
+
+<p>This uniformity allows for a very simple parser. It has to recognize
+simple literals and open and close parentheses. When it encounters an open
+parenthesis, it recursively calls itself to parse the contents of the list
+until it encounters a close parenthesis. For ease of later discussion, a
+parsed expression is called an <a href="07.html"
+target="define"><b>S-expression</b></a><sup><font
+size="-1">7</font></sup>. An S-expression can be as simple as a single
+integer literal or as complex as a function call whose arguments are
+function calls, whose arguments are function calls, ad infinitum. For the
+most part, it's whatever is between two parenthesis.
+
+<p>This particular implementation goes the extra mile and also handles the
+short-form of the quote function.  This means that it has to allow a tick
+before any terminal which indicates that the terminal should be
+interpreted literally (i.e. 'foo means the string "foo" not the variable
+foo and '(a b c) means a list containing three elements, not the
+invocation of function a with arguments b and c.)
+
+<p>The specifics of data representation are also of interest.
+java.lang.Object is used as an untyped object reference and atoms are
+objects of type Integer, String, Vector and Function (although Function
+objects are never part of the parse tree). This also allows the
+interpreter to utilize ClassCastExceptions to easily handle run-time type
+mismatches.
+
+<p><b>Interpret her? You brought her</b>
+
+<br>Now that I've parsed this once lowly sequence of characters into an
+elegantly structured list of lists of lists (of <a href="08.html"
+target="define"><b>lists</b></a><sup><font size="-1">8</font></sup>), I
+can set down to the task of interpreting it. Here the extant simplicity of
+Lisp abets me <a href="09.html" target="define"><b>once
+more</b></a><sup><font size="-1">9</font></sup>.
+
+<p>The whole program is one big S-expression the value of which is a
+quoted list of S-expressions. Every S-expression can be evaluated. In the
+case of an integer or string literal, it is the value of that literal. In
+the case of a quoted list, it is the list. In the case of a variable, it
+is the value bound to that variable. In the case of an unquoted list (a
+function call), it is the value obtained by evaluating the last statement
+of the function (after evaluating all the previous statements in the
+function of course.)
+
+<p>What you should be envisioning at this point is something along the
+lines of a little switch statement and a lot of recursion. This is exactly
+what the interpreter looks like. Its crux is a function by the name of <a
+href="10.html" target="define"><b>evaluateSExp</b></a><sup><font
+size="-1">10</font></sup> which does precisely what it claims. It gets a
+little help from it's friend functions when it comes to manipulating the
+values of variables and creating a local environment for a function call,
+but sooner or later, everyone ends up back at good old evaluateSExp.
+
+<p>Variable value manipulation is achieved very simply by storing the
+variable bindings in a Hashtable object. Lookups retrieve the atom from
+the hash table, sets store an atom into the hash table.
+
+<p>The interpreter uses dynamic scoping when binding values to variables.
+This means that when a value is bound to a variable, that value is visible
+in any code that is executed subsequently until the function in which the
+value was bound returns (if variables are bound at the top level, then
+they are visible everywhere for the duration of the execution of the
+program). Bear in mind that later on, another function could define a
+variable of the same name which would shadow the first value until the
+return of the second defining function.
+
+<p>To achieve this, when variables are bound, their previous value is
+placed into a shadowed table until the completion of the binding construct
+at which time their old values are restored to the environment. This
+implementation is known as shallow binding. Another implementation called
+<a href="http://www.ma.adfa.oz.au/Docs/Info/emacs/elisp/elisp_130.html"
+target="_blank">deep binding</a> achieves this same result but with lesser
+efficiency.
+
+<p>Function invocation is very simple as well. User defined functions are
+invoked by first storing any previously bound variables that are to be
+bound in this function invocation, then inserting the arguments to the
+function call into the environment under the appropriate names. Finally
+the interpreter is called recursively to evaluate the S-expression list
+that makes up the body of the function. The result of the evaluation of
+the last statement is returned as the result of the function invocation,
+and away we go.
+
+<p>Built-in functions are handled a little differently. If the interpreter
+looks up a function in the environment and does not find one, it then
+attempts to instantiate a Java class who's name is a derivative of the
+function name. If such a class is found (and that class derives from the
+class Function) it is then treated as a built-in function, inserted into
+the environment for future access and passed the current S-expression for
+<a href="11.html" target="define"><b>evaluation</b></a><sup><font
+size="-1">11</font></sup>.
+
+<p>There's one last thing to mention before we can proudly stand up and
+say "Look Mom, I know how this Lisp interpreter works!" That is: how do
+user defined functions end up in the environment so that they can later be
+called? As I described before, the parser just creates a big list of <a
+href="08.html" target="define"><b>lists</b></a><sup><font
+size="-1">8</font></sup>, it doesn't stick anything into the
+environment. Perhaps you were even thinking that this was conspicuously
+absent from my explanation until now, or perhaps you're just staring at
+the screen trying to figure out what all the squiggly lines mean.
+
+<p>In any case, that job is performed by the handy built-in function
+"defun". defun inteprets its first argument as a list of variables that
+make up the argument list and its subsequent arguments as a list of
+S-expressions that are the "statements" of this function. It packages
+those up into a UserFunction object and sticks it into the environment
+where it will later be found and called from Lisp code.
+
+<p>Since a function is simply another type of atom, we have another
+built-in function called "lambda" that returns a function defined by its
+arguments. This function can then be placed into the environment as the
+value of a variable. To elucidate, the following two pieces of code do the
+same thing:
+
+<pre>
+  (defun beavisp ()
+    (not (strcmp (says) "Uh, yeah. Huh-huh."))
+   )
+
+  (setq beavisp
+    (lambda ()
+      (not (strcmp (says) "Uh, yeah. Huh-huh."))
+     )
+   )
+</pre>
+
+<p>Now that you've got the straight dope on it all, try it out in the
+applet below. If you've never encountered Lisp before, take a look at some
+of the examples to get a feel for the language and then whip something up
+yourself.
+
+<p><applet archive="LispApplet.zip" code="LispApplet.class" width="100%" height="400">There would
+be a lovely Lisp interpreter applet here if your browser supported
+Java.</applet>
+
+<table cellspacing=0>
+<tr><th colspan=2><code>Implemented built-in functions</code></th>
+<tr><th><code>Operators</code></th>
+<td bgcolor="#99CC66"><code>+ - * / &lt; &lt;= &gt; &gt;= =</code></td>
+<tr><th><code>Built-ins</code></th>
+<td bgcolor="#99CC66"><code>add sub mul div lt lte gt gte eq if while setq defun print println</code></td>
+</table>
+
+<p>If you're feeling especially clever, you can write an editor in Lisp
+and then write some macros that make it easier to edit your lisp code. It
+would be sort of an "extensible editor" made up of a plethora of Editor
+MACroS that helped with the job of text editing. Oh wait, that's already
+been done before. Never mind.
+
+<p>In case you get any wild ideas about writing other interpreters in
+Java, you might want to take a look at what's already out there. Robert
+Tolksdorf has compiled a <a
+href="http://grunge.cs.tu-berlin.de/~tolk/vmlanguages.html"
+target="_blank">nice list</a> of interpreters written in Java and similar
+feats of programming prowess.
+
+<p>While it may not be the most efficient Lisp interpreter on the block,
+it sure was a lot of <a href="12.html" target="define"><b>fun to
+write</b></a><sup><font size="-1">12</font></sup> and it demonstrates some
+of the fundamentals of language parsing and interpreting. A more
+challenging endeavor would be to write a Lisp compiler that generates Java
+byte codes, but I think I'll leave that as an exercise for the reader.
+
+<a href="/internet/deep/" target="_top"><img border=0 align=absmiddle
+width=10 src="/global_images/green_thingy.gif" height=10 alt="*"></a>
+
+<p><font size="-1">-- Michael <a
+href="mailto:mdb@go2net.com">&lt;mdb@go2net.com&gt;</a> is now furiously
+working on a Java interpreter written in Lisp so that he may properly
+complete the circle.</font>
+
+<p><font size="-1">Source code to the lisp interpreter and applet as a <a
+href="Lisp.tgz">gzipped tar file</a> or a <a href="Lisp.zip">zip
+file</a>.</font>
+</body>

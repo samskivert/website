@@ -1,0 +1,191 @@
+<head>
+<title>go2net | internet | deep magic | HTTP/1.0: Bringing one bucket to the well</title>
+</head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="HTTP/1.0: Bringing one bucket to the well">
+<p><font size=-1 color="#99CC66">5 March 1997</font>
+
+<p>
+
+<img src="bonk.gif" align=left width=139 height=106 alt="[bonk! image]">The Hypertext Transfer Protocol (HTTP) is the software silk used to
+spin the World Wide Web. Unfortunately, modern browsers traverse our
+Web with the swiftness of flies trapped in Charlotte's.  Sadly, an
+elegant design often leads to poor performance.  A tasteful protocol
+like HTTP often experiences growing pains; new features could encumber
+the Web's original architectural grace.  Before the New Web is ready
+for public consumption, though, important extensions must be added for
+secure transactions and better performance. The Web has  been evolving
+rapidly and HTTP must adapt to support the Web's success.
+
+<P>HTTP was originally designed by physicist Tim Berners-Lee in 1989.
+Working at CERN, the European center for nuclear research, he needed to
+share reports and blueprints with collaborating physicists in other
+countries. The Internet was the solution to his problem; they just
+needed a new tool to locate documents and navigate through their work.
+Early browsers hid confusing Web idioms, such as URLs and HTML,
+allowing users to <a
+href="01.html" target="define"><b>work in peace</b></a><sup><font
+size="-1">1</font></sup>.
+
+<P>HTTP is a simple transport protocol for fetching files from remote
+machines.  A client sends an HTTP request specifying a single method
+to an HTTP server.  The most common methods are GET, POST, PUT, and DELETE.
+The GET method sends a request for a single file, such as an HTML page
+or an inline GIF graphic. The server returns the file with a <a
+href="02.html" target="define"><b>MIME</b></a><sup><font
+size="-1">2</font></sup>
+header identifying the type of file.  POST is typically used by HTML
+forms to send data to a back-end CGI script.  The PUT and DELETE methods
+are subject to the server's discretion.  Most servers would rather not
+have anonymous users modifying the server's files.  (Just ask the CIA!)
+<a
+href="03.html"><b>Have some fun with your new knowledge!</b></a><sup><font
+size="-1">3</font></sup>
+
+<P>Unfortunately, HTTP interacts poorly with TCP, the underlying transport
+protocol. HTTP is a "clean," stateless protocol and ignorantly creates
+a new TCP connection to fetch each file.  Each connection requires
+additional handshaking and flow-control between the client and server,
+increasing the overall transfer time. Server throughput is also
+hindered by each of these TCP connections; extraneous connections block
+other clients and increase the amount of state information the server
+must remember.
+
+<P>An enhanced version of HTTP could remedy some problems of the original
+HTTP design, while maintaining backwards compatibility. The Internet
+Engineering Standards Group is considering a draft proposal of
+<A HREF="http://www.w3.org/pub/WWW/Protocols/Overview.html" target="_blank">HTTP/1.1</A>, informally known as HTTP-NG.  HTTP/1.1 could enable
+you not only to buy your <a
+href="04.html" target="define"><b>girlfriend</b></a><sup><font
+size="-1">4</font></sup> flowers over the Web with complete
+peace of mind, but to do it quickly enough to make up for forgetting
+her birthday.
+
+<P>Mutual authentication will allow clients and servers to know with whom
+they're sharing privileged information. This information can be encased
+within encrypted HTTP messages and passed safely through untrusted
+networks.  Software hooks could allow users to plug in new payment
+mechanisms, such as DigiCash (or whichever ecash systems become popular.)
+
+<P>Performance is improved by streamlining the handshaking between clients
+and servers. Rather than creating a new TCP connection for each file
+request, HTTP/1.1 can multiplex a number of "virtual sessions" with a
+client over a single TCP connection. Once a server connection has been
+established, multiple file requests can be shuttled across the
+connection with little delay.
+
+<P>There are two strategies for transitioning from HTTP/1.0 to the proposed
+HTTP/1.1. The first is the "dual stack approach". New Web clients could
+support both versions of HTTP. When talking with an old HTTP/1.0
+server, the client could recognize the new HTTP/1.1 methods have
+confused the server. The client would resort to speaking HTTP/1.0 to
+retrieve the remaining files from the server. Unfortunately, the dual
+stack implementation offers no benefit to old Web clients.
+
+<P>Another transition strategy is to use an HTTP/1.0 proxy server. Old
+clients would ask the proxy servers for requested files and then the
+proxy server would fetch the files from the real HTTP/1.1 server. A big
+advantage of the proxy server approach is that old Web clients could
+unknowingly benefit from the performance improvements of HTTP/1.1 Web
+servers. Since the proxy server may often be running on the client's
+local network, the client can quickly retrieve files from the proxy
+server that have already been pre-fetched using HTTP/1.1
+optimizations!
+
+<P>Starry-eyed software companies have their own plans for the New Web.
+Trying to lug a tired rabbit out of a hat, Sun Microsystems has decided
+their Network File System (NFS) should replace HTTP as the language of
+the New Web.  NFS, spoken by veteran file servers of the LAN world, has
+been retooled for the web: enter <A HREF="http://www.sun.com/sunsoft/solaris/networking/webnfs" target="_blank">WebNFS</A>.
+
+<P>The original NFS was designed for local-area networks, where there is
+usually little need for error recovery or flow-control. The Big Bad
+Internet, however, requires big-time error recovery and flow-control.
+Stop signs may provide adequate flow-control for your residential
+neighborhood, but an <a
+href="05.html" target="define"><b>interstate highway</b></a><sup><font
+size="-1">5</font></sup> must deal with quite a
+different set of issues.
+
+<P>WebNFS is plain-vanilla NFS plus a couple easy assumptions. Minimizing
+the initial handshaking between clients and servers improves performance
+over <a
+href="06.html" target="define"><b>high-latency networks</b></a><sup><font
+size="-1">6</font></sup>.  A pedantic NFS client negotiates with a
+port-mapping service at well-known port 111 to determine the NFS server
+port.  Since most NFS servers use port 2049, the lazy WebNFS client might
+forgo port negotiation and head there directly.  The client can specify
+the full file pathname to a WebNFS server in a single HTTP URL.  Regular
+NFS clients must traverse a file path one directory at a time, a killer in
+high latency conditions.
+
+<P>Unfortunately, WebNFS is just a transfer layer protocol. As a
+lowest common denominator file system, NFS can't support all high-level
+features of HTTP.  For example, HTTP uses MIME headers to describe data
+files, allowing the browser to interpret each file intelligently. NFS
+can only retrieve raw binary files, forcing the browser to guess at the
+contents of files by, for example, hoping the filename extensions look
+familiar. If you don't mind the games Windows 95 plays with its "long"
+filenames, then you might not be bothered by these parlor tricks either.
+
+<P>While marketing departments are dreaming new schemes to "Webbify" their
+products, academic researchers are exploring more fundamental issues of
+Web expansion. Basic questions, such as how to integrate existing
+applications with the Web or how to maintain data coherency across the
+Web, are still unanswered. At the University of California at Berkeley,
+researchers are studying these problems as part of their
+<A HREF="http://now.cs.berkeley.edu/WebOS/" target="_blank">WebOS/WebFS</A> project.
+
+<P>The goal of the WebFS project is to create a file system abstraction
+for common Internet services. For example, a prototype WebFS for
+Solaris already enables unmodified binaries to reach for files across
+the Web.  The global Web namespace becomes part of the local file
+system; a kernel module quietly translates references to remote files
+into HTTP requests. WebFS clients don't need to know WebFS or HTTP
+syntax to access files over the Web, while Sun's WebNFS requires that
+clients and servers speak WebNFS. In fact, Berkeley's WebFS could be
+extended to support new transport protocols, including Sun's WebNFS.
+
+<P>With the entire Internet as your (and everyone else's) hard drive,
+cache coherence becomes a major concern. The WebFS project proposes
+using IP multicast to improve file caching and reduce network latency.
+Many applications, such as interactive games or stock prices, are only
+interested in file updates. Rather than bombarding a server with
+multiple requests, clients could ask the server to forward new
+information when it's available.  The server doesn't waste time
+processing redundant requests. The network routers aren't busy
+transmitting old information. The client can just sit back and relax,
+knowing it'll receive pertinent updates when they're available.
+Everybody's happy!
+
+<P>Unfortunately, IP multicast has some problems. Common browsers, such as
+Netscape Navigator and Microsoft Internet Explorer, don't support
+multicast yet. Also, clients must use a shared multicast address to
+receive message updates. The Internet Protocol (IP) has a limited
+number of addresses reserved for multicast groups, though the proposed
+IPv6 should have more than enough multicast addresses. Assuming
+multicast services become popular, network routers could become swamped
+as their routing tables grow too big to handle efficiently.
+
+<P>Defining the shape (and brand name!) of the New Web is a prize sought
+by many software companies. Netscape is developing Constellation, an
+Internet-ready replacement for the user's desktop interface. Microsoft
+projects like Nashville and ActiveDesktop will create the illusion of a
+<a
+href="07.html" target="define"><b>Web-like interface to your local file system</b></a><sup><font
+size="-1">7</font></sup>.
+
+<P>Independent Web developers may be left wondering which New Web
+technology is the True Grail. Every user has different demands,
+though, and the real answer may be "None of the above".  More
+likely the answer is "All of the above, sort of..."
+<a href="/internet/deep/" target="_top"><img
+src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a>
+
+<p><font size="-1">-- Chris <a href="mailto:cpeterso@cs.ucsd.edu">&lt;cpeterso@cs.ucsd.edu&gt;</A> sometimes wonders if the Web is actually
+browsing him.</font>
+
+</body>

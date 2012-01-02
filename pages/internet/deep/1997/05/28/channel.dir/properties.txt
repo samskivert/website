@@ -1,0 +1,4 @@
+#tranmitter properties
+host=dev.go2net.com
+ignore=*~,*.bak,*.java,*.pl,core,Makefile,*.html,*.gif,*.zip,*.tgz,dserver
+port=3113

@@ -1,0 +1,197 @@
+<head><title>go2net | internet | deep magic | The 0xC days of Christmas</title></head>
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+<img src="head.gif" width=271 height=41 alt="The 0xC days of Christmas"><br clear=left>
+<br>
+<font size=-1 color="#99CC66">08 January 1997</font>
+
+<p> 
+   The first piece of obfuscated code I ever encountered was this
+famous (<a href="01.html"
+target="define"><b>in some circles</b></a><sup>1</sup>) one liner, original author unknown.
+I don't think I was ever quite the same afterward.
+
+<P><code>char*s="char*s=%c%s%c;main(){printf(s,34,s,34);}";main(){printf(s,34,s,34);}</code>
+
+<P> If it isn't immediately obvious, this program prints out its own
+source code.  It's a member of the class of self-reproducing programs, and
+when I was new to computer science, I found it a startling fact in its own
+right that this class even has members.  This program has one of the
+primary virtues of great obfuscated code: When executed, it does something
+impressive.
+
+<P>   The true greats in the field, though, do much more.  A really
+fine obfuscated program will be artistic and inscrutable in source
+form, execute in a highly circuitous fashion, and produce output
+that (often only in hindsight) follows obviously from the source.  
+Two of my favorites have their source shaped into an ASCII square
+root sign and pi symbol.  Their outputs are left as rather trivial
+exercises for the reader.
+
+<P>   Obfuscated code has a special place in the heart of many hackers.
+The popularity of the annual 
+<A HREF="http://reality.sgi.com/csp/ioccc" target="_blank">"International Obfuscated C Contest"</A> (IOCCC)
+is the best evidence; some of the
+programs from years past obviously required herculean efforts by the
+entrants.  I was lucky enough to attend the unveiling of the winners
+at USENIX one year, and I sat transfixed, mouth unswayingly agape, as
+the ever more unbelievable winners were trotted across the stage.
+
+<P>   Writing an obfuscated program is such an interesting exercise
+because it's hard to break every rule of understandable programming,
+simultaneously.  Unintentionally, clarity slips through the cracks,
+comprehension becomes possible, and the flawed grokkable code must 
+be mercilessly hunted down and shaken apart.  An interesting
+walkthrough on writing an obfuscated "Hello World" is <A HREF="http://wwwtios.cs.utwente.nl/~kenter/obfuscate.html" target="_blank">here</A>.
+
+<P>   Now, obfuscation is itself a worthy subject, but I am here to talk 
+about my experience with the <a href="02.html"
+target="define"><b>deobfuscation</b></a><sup>2</sup> of a program that 
+turned out to be an IOCCC winner from 1988, though I did not know 
+that during its unravelling.  Someone had hacked the code to remove
+all the whitespace, introduced a small bug in the output, and posted
+it to Usenet sometime last year.
+
+<P>   The challenge was to fix the bug in <A HREF="christmas-obfus.c" target="_blank">this code</A>.  This version
+prints out the words to 'The Twelve Days of Christmas', but the partridge
+is in a 'per tree' instead of its expected 'pear tree.' I encountered
+it years ago, marvelled at it along with some friends, and left it
+in an archive, gone but not forgotten.  When I realized 
+<a href="03.html"
+target="define"><b>this column would appear on Christmas day</b></a><sup>3</sup>, its subject matter 
+suddenly became obvious.
+
+<P>   What to do? The first step was to introduce some sensible 
+whitespace.  I have limited experience
+with emacs, but having hung out with various wizards in my
+life, I knew it must hold some magic.  So I approached our
+resident emacs fanatic and solicited his wisdom.  He too was
+intrigued by the task, and we ended up hovering over his machine
+for the next several hours.
+
+<P>   We tried both the Unix program "indent" and some emacs
+modes, but neither was terribly fruitful, so we ended up adding
+most of the whitespace by hand.  This lent an appearance of
+readability without adding much in the way of insight, so we
+went on to rename the variables based on their positions in
+the parameter list: arg1, arg2, arg3.
+
+<P>   Interesting, but still a mess.  Pull out the two large string
+literals and #define them to variable names.  Some help.  Group the
+various expressions with parentheses, because there are few alive
+who can eyeball an expression like
+
+<P>  <code>t&lt;-50?_==*a?putchar(31[a]):main(-65,_,a+1):main((*a=='/')+t,_,a+1)</code>
+
+<P>and immediately know the order of evaluation.  A fair amount of help.  
+Take the glut of ternary operators (C's much loved "inline if-then-else")
+and change them to actual if-then-else constructs.  This was without a
+doubt the biggest step forward; a clear sort of state machine now
+emerged, with various key control flows altered by the values of the
+parameters to main.  Through a huge series of recursive calls with
+different parameters, the machine passed through all the states
+necessary to output the song.
+
+<P>But where was the song?
+
+<P>Obviously the string literals held the answer.  At first we thought
+perhaps the large string literal had all the information bit shifted
+or XORed with something else, possibly involving the smaller literal.
+I looked at the large literal in a hex editor to see if any obvious
+patterns emerged, but no dice.  Then we noticed that the end of the
+smaller string literal was composed of normal ascii letters, the sort
+that would go into typical English text.  Aha! It must be a translation
+table of some sort.  We counted 31 characters of weirdness and 31
+characters of normalcy in the 62 character string, lending further
+support to the theory.
+
+<P>The final confirmation lay in this nifty oneliner.
+
+<P>  <code>./xmas | perl -ne 'foreach(split(//,$_)) { print "$_\n"; };' | sort -u | wc -l</code>
+
+<P>The xmas binary was the compiled obfuscated C source.  This pipeline 
+counts the number of unique characters in the entire song, and -- wonder
+of wonders -- there were exactly 31.
+
+<P>What exactly was in the large string, then, such that this bizarre
+code was able to unravel it to produce the song? We wrote <A HREF="xlate.c" target="_blank">this C program</A>
+to find out.  It loops through the main string and uses the translation
+table in the second to determine output.  If I'd been at the keyboard 
+instead of the magic maker, this would have been written in Perl, but 
+what can you do.
+
+<P><A HREF="xlate-output.txt" target="_blank">This is the translated string</A>.  The '/' characters act as sequence
+points; the code operates by counting past various numbers of slashes
+before beginning to print.  Now we can see how it prints each verse,
+and of course it is quite clear how to fix the bug; simply introduce
+the missing (untranslated) character into the main string literal.
+
+<P>A call to main is identified as a "day starting" call if arg1 == 2.
+Then arg2 holds the value of the day to print (plus one.)  From this 
+point, "On the" is printed, then the ordinal number of the day, then 
+"day of Christmas my true love gave to me," all by calling main with 
+different trigger parameters.  Then, by stacking recursive calls to main,
+each telling it to count further back in the string before printing,
+the right number of phrases are printed.
+
+<P>Most of the numbers used to control the flow of execution are 
+arbitrary.  One rather clever trick is that the third argument
+to main is almost always ignored initially, then stealthily switched
+to a pointer to the large string literal containing the obfuscated
+song on a future call.  This allows the passing of red herring
+arguments like "%s %d %d" that actually do nothing.  Each character
+is output in a spectacularly wasteful manner; the untranslated
+character is compared to each one in the small string literal until
+a match is found, with each comparison involving a recursive call!
+Once it's identified, the character 31 later in the string is 
+actually output.
+
+<P>One last mystery remained.  How was the initial call to main
+distinguished from the later calls? There was no obvious means
+of distinguishing them, but execution obviously started with
+the first day.  Let's see, what are the values of the arguments
+to main on the initial call? The value of arg1 (argc) will be
+1 unless we supply arguments, and the argv and env pointers will
+point off at some arrays of strings.
+
+<P>Aha.  The first major if/then/else hinges on whether arg1 is 
+greater than 1, and a block in the else clause checks whether
+it is greater than 0.  The only way it can satisfy this is
+if it's exactly 1, and that code calls this:
+
+<P>  <code>return main(2, 2, "%s");</code>
+
+<P>The first 2 indicates the start of a day, and the second means
+to output the first day (it's always day + one.) <A HREF="christmas.c" target="_blank">Here</A>, finally, 
+is the fully commented and largely understandable version.
+
+<P>For the sheer thrill of it, and because there's supposed to be Java code 
+with all the Deep Magic articles, I translated the same version we 
+deobfuscated into Java (leaving the bug intact.) This was an interesting 
+task for a number of reasons.  Java is not fond of the cavalier way the
+original source interchanges integers and pointers.  Java has a real
+boolean type that it insists you use for such constructs as conditionals.
+And worst of all, Java has no comma operator.  We worked around all
+this, and added a bit of extra obfuscation in the process.
+<a href="Christmas.html">Have a look</A>.
+
+<P>This was a neat exercise.  True, it has no practical value, but
+neither do any number of other geek activities.  That's no reason
+not to do it!
+
+<P>May all the shrouds of obfuscation fall before your penetrating gaze. <a href="/internet/deep/" 
+target="_top"><img src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10 height=10 alt="*"></a>
+
+<P><font size="-1">Source code referenced in this article: <A HREF="http://reality.sgi.com/csp/ioccc/1988/phillipps.c" target="_blank">phillipps.c</A>
+
+(the actual IOCCC entry), <A HREF="christmas-obfus.c" target="_blank">christmas-obfus.c</A>, <A HREF="xlate.c" target="_blank">xlate.c</A>, 
+<A HREF="christmas.c" target="_blank">christmas.c</A>, 
+<A HREF="Christmas.java" target="_blank">Christmas.java</A></font>
+
+
+
+
+<p><font size="-1">-- Paul Phillips <a
+href="mailto:paulp@go2net.com">&lt;paulp@go2net.com&gt;</a>
+visualizes whirled peas.</font>
+
+</body>

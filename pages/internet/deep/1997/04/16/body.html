@@ -1,0 +1,234 @@
+<head>
+<title>go2net | internet | deep magic | Graphical haiku</title>
+</head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="Graphical haiku">
+<p><font size=-1 color="#99CC66">16 April 1997</font>
+
+<p>Various and sundry little <a target="_blank"
+href="http://www.wins.uva.nl/~mes/jargon/d/displayhack.html">display
+hacks</a> are floating around in the collective knowledge of computer
+scientists everywhere. Some are found in signatures, others are tucked
+deeply into the twisted folds of entries in the <a target="_blank"
+href="http://reality.sgi.com/csp/ioccc/index.html">IOCCC</a>, countless
+others are undoubtedly languishing in anonymity on some lonely hard
+drive. This week I've put together a collection of interesting graphics
+hacks I've encountered in various
+situations. Some I've only seen and had to reverse-engineer; some are from
+screen savers; others have just managed to ooze into my memory by osmosis.
+
+<p>I've tried to boil them down to their very essence for presentation in
+this article. To that extent, I present the core of the algorithm for your
+perusal in the text, and I've tried to encapsulate all the system-specific
+stuff into simple calls from that algorithm. The real source is only a
+click away, so feel free to peruse that if you feel something is not quite
+clear from the code excerpt. Without further ado, I present hacks:
+
+<p><b>Bent over backward</b>
+
+<br>First, we'll warm up with something easy. If you haven't seen this
+one, you shouldn't have much trouble figuring out what it's going to do
+from a glance at the <a href="Grid.java" target="source">code</a>.
+
+<pre>
+for (int x = 0, y = 0; x &lt; width;
+  x += width/LINES, y += height/LINES) {
+  drawLine(0, y, x, height);
+  drawLine(width, height-y, width-x, 0);
+}
+</pre>
+
+<p>Now that you've visualized it, take a look at the <a href="01.html"
+target="define"><b>real thing</b></a><sup>1</sup>. Pretty cute, isn't it.
+
+<p><b>Hey, I've got curtains like that!</b>
+
+<br>Now we'll break out the tried-and-true tool of <a href="02.html"
+target="define"><b>recursion</b></a><sup>2</sup>. <a href="Deco.java"
+target="source">This one</a> is no head-scratcher, but it sure looks cool.
+
+<pre>
+void deco (int x, int y, int w, int h, int depth)
+{
+  if ((random(MAXDEPTH) &gt; depth) || (w &lt; 8) || (h &lt; 8)) {
+    drawRectangle(x, y, w, h, _colors[random(COLORS)]);
+
+  } else {
+    if (random(100) &gt; 50) {
+      deco(x, y, w/2, h, depth-1);
+      deco(x+w/2, y, w/2, h, depth-1);
+    } else {
+      deco(x, y, w, h/2, depth-1);
+      deco(x, y+h/2, w, h/2, depth-1);
+    }
+  }
+}
+</pre>
+
+<p>It all starts with one call like so:
+
+<pre>
+deco(0, 0, width, height, MAXDEPTH);
+</pre>
+
+<p>Got it figured out yet? If you don't associate the `70s with some sort
+of bad experience, you should be able to fully appreciate this hack. Go
+ahead and have a look at <a href="03.html" target="define"><b>the
+output</b></a><sup>3</sup>. Clicking on the applet will cause it to
+generate <a href="04.html" target="define"><b>different
+output</b></a><sup>4</sup>.
+
+<p><b>The Golden Spiral</b>
+
+<br>Ok, enough with the easy stuff. Here's something that's just plain
+non-intuitive. Definitely evaluate the loop by hand a few times and figure
+out what the code is doing, because it will be all the more pleasing when
+you actually see what is displayed. To clarify, the drawCircle() function
+call takes an x coordinate, a y coordinate, a diameter and a color. Don't
+worry about the fact that the size of the circle is increasing as the loop
+iterates, though; this is just for effect and isn't crucial to the
+<a href="Spiral.java" target="source">algorithm</a>.
+
+<pre>
+double GOLDEN_NUMBER = (Math.sqrt(5.0)-1.0)/2.0;
+double GOLDEN_ANGLE  = 2*Math.PI * (1.0-GOLDEN_NUMBER);
+
+double side = (double)Math.min(width, height), th = 0.0;
+for (double r = 0.05; r &lt; 0.5; r += 0.001) {
+  drawCircle((int)(r * Math.sin(th) * side) + width/2,
+             (int)(r * Math.cos(th) * side) + height/2,
+             Math.max(side / 25.0 * Math.sqrt(r), 1.0),
+             colors[(int)(r * 2 * (double)COLORS)]);
+  th = th + GOLDEN_ANGLE;
+}
+</pre>
+
+<p>If you think you know what's going to happen, <a href="05.html"
+target="define"><b>find out</b></a><sup>5</sup> if you're right. This
+unexpected multiple-spiral effect is the result of the carefully chosen <a
+href="06.html" target="define"><b>angle of
+increment</b></a><sup>6</sup>. If this pattern looks familiar to you, it
+should. It is the same pattern made by sunflower seeds as they grow on a
+sunflower. (Consequently, that is the motivation for the slowly increasing
+radii of the circles, to simulate the growth of the sunflower seed.) The
+golden mean is a fascinating topic, and much better <a target="_blank"
+href="http://galaxy.cau.edu/tsmith/kw/golden.html">introductions</a> to
+the subject have been put together than I could present here.
+
+<p><b>Circular interference</b>
+
+<br>To make up for the density of that last hack, this next one is nice
+and sparse. Unfortunately (or perhaps fortunately), that doesn't mean its
+results are any less interesting. This one, too, benefits from a close
+scrutiny of the code. Since the colors <em>are</em> important this time,
+I'll let you in on what is not explicitly shown in the code excerpt: The
+variable <code>colors</code> is an array of Color objects that are spread
+through the color spectrum to achieve a smooth transition from red to
+green to blue, back to red. The constant <code>COLORS</code> is the number
+of colors in the array (in this case, 64). Finally, the
+<code>drawPixel()</code> function takes a Color object as its first
+argument and draws the pixel in that color. So now that you've got <a
+href="Circles.java" target="source">the details</a>, try to figure out
+what's going to happen.
+
+<pre>
+int factor = random(10) + 1;
+for (int y = 0; y &lt; height; y++) {
+  for (int x = 0; x &lt; width; x++) {
+    drawPixel(colors[((x*x+y*y)/factor) % COLORS], x, y);
+  }
+}
+</pre>
+
+<p>Not sure what in the heck is going on? <a href="07.html"
+target="define"><b>Find out.</b></a><sup>7</sup> If you click the mouse in
+the applet, it will choose a different random divisor and regenerate the
+display. Try it a couple of times. Knowing the divisor is chosen to be a
+random integer from 1 to 10 should clue you in to what's going on at the
+primary level. That still doesn't explain the crazy interference patterns.
+
+<p><b>Pixel-elation</b>
+
+<br>This last one is a little longer than the others, but I think it still
+fares well enough by the <a href="08.html" target="define"><b>display hack
+metric</b></a><sup>8</sup>. If you're worn out from deciphering the
+previous hacks, then it's all right if you skip <a target="source"
+href="Plasma.java">the analysis</a> this one time.
+
+<pre>
+final static int[] _scale = { 1, 2, 4, 6, 10, 14, 18 };
+
+int mutate (int value, int depth)
+{
+  return (value + random(_scale[depth]) -
+          _scale[depth]/2 + COLORS) % COLORS;
+}
+
+int avg2 (int x0, int y0, int x1, int y1)
+{
+  return (getPixel(x0, y0) + getPixel(x1, y1))/2;
+}
+
+int avg4 (int x0, int y0, int x1, int y1)
+{
+  return (getPixel(x0, y0) + getPixel(x0, y1) +
+          getPixel(x1, y0) + getPixel(x1, y1))/4;
+}
+
+for (int depth = 6; depth >= 0; --depth) {
+  for (int y = 0; y < SIZE; y += (1 << depth)) {
+    int ny = y + (1 << depth), hy = y + (1 << depth)/2;
+    for (int x = 0; x < SIZE; x += (1 << depth)) {
+      int nx = x + (1 << depth), hx = x + (1 << depth)/2;
+      setPixel(mutate(avg2(x, y, nx, y), depth), hx, y);
+      setPixel(mutate(avg2(x, y, x, ny), depth), x, hy);
+      setPixel(mutate(avg4(x, y, nx, ny), depth), hx, y);
+    }
+  }
+}
+</pre>
+
+<p>Have a look at this final example's <a href="09.html"
+target="define"><b>output</b></a><sup>9</sup>. Pretty keen eh? In case you
+didn't figure it out for yourself, what's going on here is that the four
+corners of the square are filled with random colors. Then the color of
+each point halfway between those four corners (and the center point) is
+set to the average of the colors of the points it's between.
+
+<p>The catch is that it's not exactly the average. The color is mutated a
+little bit away from the exact average. In the first iteration, it has the
+possibility of being mutated a lot, however as we splice the squares
+further and further, the range of mutation becomes smaller and smaller. By
+the time we're mutating pixels that are right next to each other, the
+mutation range is down to one. So no two neighboring pixels have a sharp
+color difference.
+
+<p><b>E pluribus unix</b>
+
+<br>I've put together a few interesting graphics hacks for your scrutiny
+and appreciation; hopefully, you've found them at least mildly
+enjoyable. So now I want you to pitch in and send me any of those clever
+little hacks you once saw and tucked away in a file for safekeeping. I'll
+put them together in subsequent articles like this one and everyone can
+read them and be amused. Don't worry if they're not written in Java, or
+even if they're not graphics hacks. I can take care of translating them
+into a Web-presentable format. Also, if you can point me toward a
+definitive author for anything you send in, that would be great; but I'd
+much rather have things unattributed than incorrectly attributed.
+
+<p>Happy hacking. <a href="/internet/deep/" target="_top"><img
+src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a>
+
+<p><font size="-1">-- Michael <a
+href="mailto:mdb@go2net.com">&lt;mdb@go2net.com&gt;</a> just fell off the
+turnip truck (again).</font>
+
+<p><font size="-1">Source code to the hacks as a <a href="hacks.tar.gz">gzipped tar file</a>
+or a <a href="hacks.zip">zip file</a>.</font>
+
+<!-- prevent netscape from cutting off the last line due to its ingenious
+scrollbar handling --><br><br><br>
+</body>

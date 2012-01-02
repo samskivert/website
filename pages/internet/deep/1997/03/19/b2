@@ -1,0 +1,3 @@
+<applet archive="LispApplet.zip" code="LispApplet.class" width="400" height="400">There would
+be a lovely Lisp interpreter applet here if your browser supported
+Java.</applet>

@@ -1,0 +1,179 @@
+<head>
+<title>go2net | internet | deep magic | The prisoner's dilemma</title>
+</head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="The prisoner's dilemma">
+<p><font size=-1 color="#99CC66">26 February 1997</font>
+
+<p>
+
+Building on my <a href="/internet/deep/1997/01/29/body.html">previous foray</A> into paradoxical situations, I choose
+to focus this week on one of the most interesting, applicable, and
+insoluble problems of all; the Prisoner's Dilemma.  Credited to Melvin
+Dresher and Merrill Flood, the Prisoner's Dilemma is a classic example
+from the research field of <A HREF="http://william-king.www.drexel.edu/top/class/histf.html" TARGET="_blank">Game Theory</A>.  Game Theory has officially
+existed for quite some time; John von Neumann proved the basic <a
+href="01.html" target="define"><b>minimax
+theorem</b></a><sup><font
+size="-1">1</font></sup> in 1928. The Prisoner's Dilemma, while a trivial example in
+many respects, is a fascinating study in logic and a useful
+stepping-stone to more complex discussions on Game Theory.  The principles
+behind it are relevant to many fields, including sociology, philosophy and
+political science.  Consider, then, the following situation:
+
+<P>You (also known as <a
+href="02.html" target="define"><b>P1</b></a><sup><font
+size="-1">2</font></sup>) and your friend (<a
+href="03.html" target="define"><b>P2</b></a><sup><font
+size="-1">3</font></sup>) are trapped in a
+dank, gloomy dungeon awaiting sentencing for committing a most heinous
+crime.  Amidst the clanking chains, scampering rodentia, and endlessly
+dripping water, a welcome light shines upon your forehead.  The only door
+to the dungeon cell swings open, and a guard peers through the cobwebs
+spanning the door frame.  He clambers inside and drags you out after him,
+mercilessly scraping your shins on the stones in his haste.
+
+<P>The guard wishes to determine whether you and your friend committed the
+crime in question.  He leers evilly, snickering as he describes the
+punishment to be doled out:
+<br><br>
+<center><table cellspacing=0>
+<tr bgcolor="#99cc66"><th colspan=2>Action</th><th colspan=2>Payoff</th>
+<tr bgcolor="#99cc66"><td><b>P1</b></td><td><b>P2</b></td><td><b>P1</b></td><td><b>P2</b></td>
+<tr bgcolor="#ccff99"><td>Cooperate</td><td>Cooperate</td><td>-1</td><td>-1</td>
+<tr bgcolor="#99cc66"><td>Cooperate</td><td>Defect</td><td>-3</td><td>0</td>
+<tr bgcolor="#ccff99"><td>Defect</td><td>Cooperate</td><td>0</td><td>-3</td>
+<tr bgcolor="#99cc66"><td>Defect</td><td>Defect</td><td>-2</td><td>-2</td>
+</table></center><br>
+
+<P>In this table, called a <i>Payoff Matrix</i>, "Cooperate" means the
+prisoner chooses to remain silent when queried about the crime.  "Defect"
+means the prisoner confesses guilt, implicating the other prisoner in the
+crime as well.  The "Payoff" represents the number of years the prisoners
+will be forced to spend in jail as a result of their actions.  Payoffs are
+negative here as they represent a loss, rather than a gain.
+
+<P>You should first note that the punishment depends on both your response
+<i>and</i> that of your friend.  The punishments seem oddly biased, do
+they not?  In the interest of minimizing the prison time for <b>both</b>
+you and your friend, you would like to cooperate with him, staying silent
+and hoping he remains silent as well.  However, if your friend were to
+take advantage of your silence and proclaim guilt, he would suffer
+<i>no</i> prison time while you would find yourself incarcerated for
+the maximum prison sentence.  This situation is easily reversed; should
+you, then, take advantage of your friend's possible trust and declare
+guilt in an attempt to avoid any prison time?  Worst of all, if you
+<i>both</i> attempt to take advantage of each other's expected trust,
+you will both be <a
+href="04.html" target="define"><b>jailed</b></a><sup><font
+size="-1">4</font></sup> for a substantial, non-minimal period of
+time.  A quandary, indeed!
+
+<P>The crucial realization is that each prisoner can gain by double-crossing
+the other.  You have no opportunity to speak with your friend, and so you
+cannot come to any agreement in advance.  As you puzzle and weigh the
+decisions, a glittering whirlwind of electrons forms about you and your
+computer.  You suddenly find yourself swimming in Java as you live and
+breathe the <a
+href="example1.html" target="define">Iterated Prisoner's Dilemma!</A>.
+
+<P>In this first instance of the Prisoner's Dilemma, your friend randomly
+chooses whether to cooperate or defect.  You should quickly discover that
+you're generally best off if you <a
+href="05.html" target="define"><b>always defect</b></a><sup><font
+size="-1">5</font></sup> so as to limit your
+potential prison time to either 0 or 2 years.  Isn't it naturally
+desirable, though, for you and your friend to help each other out?  Were
+you both to cooperate, you would each spend <a
+href="06.html" target="define"><b>only 1 year in jail</b></a><sup><font
+size="-1">6</font></sup>.  The
+crux of the dilemma revolves around the lack of trust between the two
+prisoners.  Unfortunately, it is this distrust which often leads to
+non-optimal actions and results for all those involved.
+
+<P><b>Preventive Measures in the Face of Perpetual Punishment</b><p>
+
+The <i>Tit-For-Tat</i> strategy is one well-known way to deal with the
+Prisoner's Dilemma.  In this technique the player initially cooperates,
+but as soon as the other prisoner defects the first prisoner retaliates in
+kind.  In essence, the player using this strategy simply cooperates
+initially, and thereafter duplicates the other prisoner's action from the
+previous round.  Despite the apparent simplicity, this will always remove
+any disparity between the prisoners' "total punishment amount," beating
+out many far more complex strategies.  However, it will never allow the
+player to surpass his opponent.  The ever-nifty Java programming language
+allows us to once again demonstrate the Prisoner's Dilemma, but this time
+the player is confronted with a wily <a
+href="example2.html" target="define"><i>Tit-For-Tat</i> opponent</A>.  Egads!
+
+<P>We demonstrate other simple strategies for the Prisoner's Dilemma here;
+the <a
+href="example3.html" target="define"><i>Golden Rule</i></a>, in which the player always cooperates, and the
+<a
+href="example4.html" target="define"><i>Iron Rule</i></a>, in which the player always defects.  After trying the Java
+demonstrations of each, it should be clear that a perpetually-cooperating
+P2 is easily taken advantage of; P1 may forever defect, earning no prison
+time while the "sucker" prisoner P2 accumulates prison time rapidly.
+Similarly, a hard-nosed P2 bent on always defecting leaves P1 with no
+better choice than to resign himself to sharing an equal, non-minimal
+amount of prison time with P2.
+
+<P>The intriguing point here is to note that most, or even all, of the
+preceding discussion of choices and decisions map directly onto
+innumerable real-world situations.  This includes almost any scenario in
+which the "payoff" with respect to certain actions is in favor of one
+person over another.  Specific examples include such <a
+href="07.html" target="define"><b>surprises</b></a><sup><font
+size="-1">7</font></sup> as
+<A HREF="http://www.spectacle.org/995/bus.html" target="_blank">business</A>, <A HREF="http://www.spectacle.org/995/love.html" target="_blank">love</A>, and <A HREF="http://www.spectacle.org/995/sw.html" target="_blank">software development</A>.
+
+<P><b>Pandora's Box of Dilemmas</b><p>
+
+The interested reader should be sure to utilize <a href="/search/" target="_top">go2search</A>, as there
+is a wealth of information available on the web regarding Game Theory and
+various well-known dilemmas.  There are also a great many books available
+in your local bookstore or library ; one which comes highly recommended is
+Robert Axelrod's <u>The Evolution of Cooperation</u>.
+
+<P>Some of the more relevant and engaging web sites include:
+
+<P><b>*</b> B. Brembs discusses <A HREF="http://www.biozentrum.uni-wuerzburg.de/~brembs/ipd/ipd.html" target="_blank">Chaos, Cheating and Cooperation: Potential
+Solutions to the Prisoner's Dilemma</A>.  This is a must-read for those
+interested in a multitude of real-world examples of the Iterated
+Prisoner's Dilemma.
+
+<P><b>*</b> <A HREF="http://www.spectacle.org/995/index.html" target="_blank">The Ethical Spectacle</A> is home to a range of interesting articles
+pertaining to the Prisoner's Dilemma, related problems, applications, and
+studies.  Some are linked to in this article; all are worth reading.
+
+<P><b>*</b> Patrick Grim's <A HREF="http://www.sunysb.edu/philosophy/faculty/pgrim/SPATIALP.HTM" target="_blank">"Undecidability in the Spatialized Prisoner's
+Dilemma"</A> research utilizes a cellular automata (the topic of a
+<a href="/internet/deep/1997/01/15/body.html">previous Deep Magic article</a>) to generate graphical displays in
+support of his findings.
+
+<P><b>*</b> Xerox PARC's  <A HREF="ftp://parcftp.xerox.com/pub/dynamics/dynamics.html" target="_blank">Dynamics of Computation Area</A> has information on
+detailed computer modeling of issues relating to cooperation, along with
+many related research papers and links.
+
+<P>In conclusion, I <a
+href="08.html" target="define"><b>might argue</b></a><sup><font
+size="-1">8</font></sup> that there is at least one pure solution
+to the class of dilemmas presented in this article.  Indeed, in <i>The
+Princess Bride</i>, the Dread Pirate Roberts uses careful planning
+and forethought to triumph in one particular <A HREF="http://hardees.rutgers.edu/~tre/princess.html" target="_blank">scene</A>.  We would do
+well to take the Pirate's lesson to heart; learn to overcome even utter
+defeat, and the world is truly your oyster.
+ <a href="/internet/deep/" target="_top"><img
+src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a>
+
+<p><font size="-1">-- Walter <a
+href="mailto:shaper@cerf.net">&lt;shaper@cerf.net&gt;</a> has, thus
+far, always cooperated, but soon expects to defect.</font>
+
+<p><font size="-1">Source code to the applet written for this article as
+a <a href="prison.tar.gz">gzipped tar file</a>.</font>
+
+</body>

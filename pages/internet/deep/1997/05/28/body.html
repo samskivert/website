@@ -1,0 +1,197 @@
+<head><title>go2net | internet | deep magic | Playing with words</title></head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+<font size="+3"><b>Playing with words</b></font><br>
+<font size="-1">by: Michael D. Bayne</font><br clear=left>
+<br><font size=-1 color="#99CC66">28 May 1997</font>
+
+<p><a href="/internet/deep/1997/05/21/body.html">Last week</a>, I
+described a distributed-object system and implemented a simple chat
+applet. If you recall, I promised something a little more exciting than a
+chat applet to demonstrate the true usefulness of the distributed-object
+system. This week is upon us, and I present to you something <a
+href="01.html" target="define"><b>very exciting
+indeed</b></a><sup>1</sup>.
+
+I have written, for your amusement, a <a href="02.html"
+target="define"><b>multiplayer networked game</b></a><sup>2</sup>. True to
+my claims, all player interaction takes place through the use of
+distributed objects. In fact, with a few small additions, last week's
+distributed-object system became this week's <a href="03.html"
+target="define"><b>foundation for networked
+games</b></a><sup>3</sup>. Without further ado, we'll dive right into how
+it works.
+
+<p><b>The management</b><br>
+
+Most of the server functionality is encapsulated into manager
+classes. Last week, I described the <a href="04.html"
+target="define"><b>function of the
+<code>DObjectManager</code></b></a><sup>4</sup>.  Another manager was
+lurking around that I didn't mention. That was the <a target="code"
+href="dserver/ClientManager.java"><code>ClientManager</code></a>. This
+manager sits around listening for client connections and keeps track of
+clients while they're connected to the server. It tracks them in a
+distributed object, which is how the chat applet manages to display a list
+of all the other people connected to the server. This week, a new manager
+has been introduced to the staff, that being the <a target="code"
+href="dserver/GameManager.java"><code>GameManager</code></a>.
+
+<p>The game manager keeps track of all the games in two objects. One
+contains all the games that are waiting for players, and the other tracks
+games in progress. Each game has its own distributed object that contains
+at least a list of the players and couple of other simple
+attributes. Subscribed to each game-distributed object is a <a
+href="05.html" target="define"><b><code>Game</code>
+object</b></a><sup>5</sup>. The <a target="code"
+href="dserver/Game.java"><code>Game</code></a> object performs basic state
+management for a game from the server side (waiting until the correct
+number of
+
+<table width=180 align=right>
+<tr><td width=10><br></td>
+<td><br><hr size=1><b><tt><font size="+1" face="arial"><i>Through the
+magic of dynamic class-loading, we can create a new client and a new
+server-side game handler and start them all up
+automagically.</i></font></tt><br></b><hr size=1><br></td>
+</table>
+
+people have joined the game, making the game-distributed object go away if
+all the players leave the game). A real game will not use the default
+<code>Game</code> object but instead will derive from <code>Game</code> to
+implement state-management functionality specific to that game. In our
+case, we have the <code>WordGameGame</code> class, which I'll get to in a
+moment.
+
+<p>One last thing to note about the server architecture is that it needn't
+be re-compiled or even restarted to add a game to its repertoire. Through
+the <a href="06.html" target="define"><b>magic of dynamic
+class-loading</b></a><sup>6</sup>, we can create a new client and a new
+server-side <code>Game</code> handler and start them all up
+automagically. When a client creates a game, it specifies the class name
+of the handler for that game, then the server loads that class and
+instantiates it.
+
+<p><b>WordGame me this</b><br>
+
+Before I get into the mechanics of this game implementation, I suppose I
+should explain the game for those of you who've never played or heard of
+WordGame (classic as it may be).
+
+<p><table align=right hspace=3 vspace=3>
+<tr><td align=center bgcolor="#99CC66"><font size="-1"><b>A sample WordGame board</b></font></td>
+<tr><td><img src="board.gif"></td>
+<tr><td bgcolor="#99CC66">&#160</td>
+</table>
+
+The game starts by "rolling" a bunch of dice with letters on their sides
+and arranging them into a <a href="07.html" target="define"><b>5x5
+grid</b></a><sup>7</sup> for all to see. Then a three-minute timer starts
+and everyone frantically writes down as many words as they can construct
+from adjacent letters on the 5x5 board. The rules for constructing words
+are that the consecutive letters in the word must be next to each other on
+the board (diagonal connections are legal) and you can't use the same spot
+on the board twice (meaning you can't pass twice through a particular
+letter in order to spell your word).
+
+<p>When the three minutes expire, everyone compares their list of words
+and any words written down by two or more people are stricken from
+everyone's lists. "Words" that <a href="08.html" target="define"><b>aren't
+real words</b></a><sup>8</sup> are also stricken from the lists. Then
+everyone adds up
+
+<table width=180 align=left>
+<tr><td width=10><br></td>
+<td><br><hr size=1><b><tt><font size="+1" face="arial"><i>The PREROUND
+state is just a short splash screen that gives the user a moment to
+prepare for the WordGame-mania that will shortly
+ensue.</i></font></tt><br></b><hr size=1><br></td>
+</table>
+
+their scores, one point for four-letter words, two for five, three for
+six, five for seven, and 11 for eight. The first person to break 100
+points wins (the highest scorer winning when more than one person breaks
+100 in the same round).
+
+<p><b>How it works</b><br>
+
+Aside from the plentitude of user-interface code, the game consists mainly
+of two classes: <a href="wordgame/WordGame.java"
+target="code"><code>WordGame</code></a> and <a href="wordgame/WordGameGame.java"
+target="code"><code>WordGameGame</code></a>. The <code>WordGameGame</code>
+class runs on the server and coordinates the transition between rounds and
+different states in each round. The <code>WordGame</code> class responds to
+coordination events from the server and runs the game on the client side.
+
+<p>The game progresses in rounds of three states
+each. <code>PREROUND</code>, <code>INROUND</code> and
+<code>POSTROUND</code>. The <code>PREROUND</code> state is just a short
+splash screen that gives the user a moment to prepare for the WordGame-mania
+that will shortly ensue.  The server generates a random board and
+transmits it to all the clients (by setting an attribute on the
+game-distributed object), then changes the state to
+<code>INROUND</code>. At this point, all the clients display the <a
+href="wordgame/Board.java" target="code"><code>Board</code></a> and the <a
+href="wordgame/WordPanel.java"
+target="code"><code>WordPanel</code></a>. This displays the board and
+allows users to type in words they see on the board. It's useful to note
+that the word panel does not allow users to enter words that cannot be
+created from the current board; this checking is implemented in the <a
+href="wordgame/Pieces.java" target="code"><code>Pieces</code></a> class. It
+does not, however, know anything about the <a href="09.html"
+target="define"><b>validity of words</b></a><sup>9</sup>.
+
+<p>The <code>WordPanel</code> also runs the three-minute timer. When the
+user's timer has expired, the word panel sends the list of words generated
+by the user back to the game handler by setting an attribute on the
+game-distributed object. When all the clients have done this, the game
+handler transitions the game to the <code>POSTROUND</code> state, combines
+the words, removes duplicates and forks off a perl script to look all the
+words up in a dictionary. Meanwhile, since the word lists were
+communicated via the game-distributed object, all the clients received
+each other's word lists. Upon entering the <code>POSTROUND</code> state,
+they start up the <a href="wordgame/CrossOutPanel.java"
+target="code"><code>CrossOutPanel</code></a> which makes an animated
+display of removing duplicate words. As the game handler receives invalid
+words back from the perl script, it communicates those invalid words to
+the client and the <code>CrossOutPanel</code> crosses those out as well.
+
+<p>When the whole word-validation phase is over, the clients communicate
+their respective scores back to the game handler, who determines whether
+to enter another round or to enter the <code>GAMEOVER</code> state. This
+of course, depends on whether someone has broken 100 points and is not
+tied for first.
+
+<p>That about sums up the game implementation. I didn't mention the actual
+mechanism used to look up words in the dictionary, but you can peruse the
+<a href="validate.pl" target="code">validate.pl</a> script to find out how
+that works.
+
+<p><a href="wordgame.html">Play</a> the game.
+
+<p><b>Praise for distributed objects</b><br>
+
+As I've said <a href="10.html" target="define"><b>again and
+again</b></a><sup>10</sup>, distributed objects make an extremely useful
+paradigm for implementing distributed applications. They make it easy to
+transmit messages between clients and servers, and they provide
+data-sharing among those clients. These two things are common requirements
+of distributed software. To top it all off, this all comes in a package
+not too different from the object-oriented paradigm with which people are
+now becoming comfortable.
+
+<p>So, dust off your editor and write that multiplayer game you've been
+thinking about. You've got all the tools you need now, and a nice little
+example to boot.
+
+<a href="/internet/deep/" target="_top"><img
+src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a>
+
+<p><font size="-1">-- Michael Bayne <a
+href="mailto:mdb@go2net.com">&lt;mdb@go2net.com&gt;</a> hereby challenges
+his readers to a no-holds barred cage-match WordGame extravaganza</font>
+
+<p><div align=right><font size="-1">Source code as a <a href="wordgame_src.tgz">gzipped tar
+file</a> or a <a href="wordgame_src.zip">zip file</a>.</font></div><br>
+</body>

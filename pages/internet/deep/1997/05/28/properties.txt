@@ -1,0 +1,16 @@
+#
+admin=mdb@go2net.com
+author=mdb@go2net.com
+code=dclient.Rendevous
+description=A word game in which you make as many legal word combinations from a 5x5 grid of letters against up to 6 other players. Points are scored by finding words that no one else can find.
+height=300
+hide=false
+install.inactive=ignore
+main=marimba.channel.AppletViewer
+name=WordGame
+publish.time=866890106939
+type=Applet
+update.action=ignore
+update.active=never
+update.inactive=never
+width=500

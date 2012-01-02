@@ -1,0 +1,204 @@
+<head><title>go2net | internet | deep magic | Data Compression:Bits, Bytes and Beefalo</title></head>
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+<img src="head.gif" width=271 height=41 alt="Data Compression:Bits, Bytes and Beefalo"><br clear=left>
+<br>
+<font size=-1 color="#99CC66">01 January 1997</font>
+
+<p> Data compression is a necessity nowadays, particularly with the advent of
+the Internet and its wealth of information (on <a href="01.html"
+target="define"><b>beefalo</b></a><sup>1</sup>, for instance.)  A variety of
+popular compression utilities are available for every computing platform,
+utilizing such diverse algorithms as <a
+href="http://spwww.mcit.med.umich.edu/projects/video/tech/compress.html"
+target="_blank">Huffman</a>, <a
+href="http://spwww.mcit.med.umich.edu/projects/video/tech/compress.html"
+target="_blank">Lempel-Ziv</a>, and a multitude of variants thereof.  In this
+article we take a close look at an elementary algorithm called <a
+href="http://cs.wpi.edu/~matt/courses/cs563/talks/gformats.html"
+target="_blank">Run-Length Encoding</a> in order to better understand some of
+the principles behind compression.  We then examine a more complex algorithm
+called Huffman compression.
+
+<p> Compression has been used since computers were first applied to
+large-scale data manipulation tasks.  It is important to bear in mind that the
+success of a compression algorithm is heavily dependent on the data being
+compressed; that is, one compression algorithm may compress a specific set of
+data extremely well, while the same algorithm applied to other data may either
+fail to reduce the data size at all, or perhaps even increase the data size.
+
+<p> We illustrate our compression algorithm discussion with live
+demonstrations written in Java.  These demonstrations will more clearly show
+the process which takes place when data is compressed and decompressed, while
+also pointing out some of the strengths and weaknesses of the presented
+algorithms.
+
+<p> <b>Run Long, Run Deep</b>
+
+<p> Run-Length Encoding (RLE) is one of the simplest compression techniques.
+This algorithm simply analyzes the data to be compressed, looking for <a
+href="02.html" target="define"><b>runs</b></a><sup>2</sup> of repeated
+characters; it then stores these runs as a single character, preceded by a
+number representing the number of times this character is repeated in the run.
+Note that random data will not compress well; if there are no runs of repeated
+characters, this algorithm (implemented intelligently) cannot perform any
+compression at all.  Implemented poorly, RLE will increase the data size
+(i.e., the string &quot;ABAB&quot; will become &quot;1A1B1A1B&quot;, twice the
+length of the original!)
+
+<p> The RLE compression algorithm steps are:
+
+<ol>
+<li> Step through the source data from beginning to end, watching for repeated
+     sequences of characters.
+<li> Build the compressed data string as we read our source data:
+   <ol>
+   <li> As we find each lone character (or sequences of run length = 2),
+        we see we cannot benefit by compressing them (as it requires at
+        least two characters to store an encoded representation), and so
+        we simply append them to the end of our compressed data string.
+   <li> Runs of data are changed into a (number, character) pair,
+        where number represents the length of the run.  This pair is
+        then appended to the end of our compressed data string.
+   </ol>
+</ol>
+
+<p> Assume, for simplicity, that our input alphabet consists of only the
+characters 'A' and 'B'.  We can then represent our data using a bitmap image.
+We choose to represent 'A' with black bits and B with blue bits.  Since
+compressed data is stored using the (number, character) pair mentioned above,
+we also use the digits '0' through '9', displayed as yellow bits, to denote
+(only in compressed data) the run length of the character following the digit.
+Using this representation, we can demonstrate a <a href="03.html"
+target="define"><b>very successful</b></a><sup>3</sup> application of RLE
+compression.  A <a href="04.html" target="define"><b>somewhat
+successful</b></a><sup>4</sup> compression job is more common, and if we are
+particularly unlucky we may be faced with some cases of <a href="05.html"
+target="define"><b>incompressible data</b></a><sup>5</sup>.
+
+<p> RLE has the advantage of being simple to implement, but it is incapable of
+achieving high levels of compression for most data.  Although some graphics
+images may compress well using RLE, most textual data does not contain long
+runs of repeated characters (unless one is compressing a <a href="06.html"
+target="define"><b>cartoon script</b></a><sup>6</sup>, with frequent
+exclamations such as, "Aiyeeeeeeeeee.........".)  We certainly wouldn't deign
+to forbid the application of RLE to such glamorous writings as these.
+
+<p> <b>Mind Your Tries and Queues</b>
+
+<p> Compression algorithms grow rapidly more complex.  In order to achieve
+better data space savings, additional data structures and data analysis are
+often utilized.  The Huffman compression algorithm, described by D. Huffman in
+1952, achieves much better compression by taking into account the frequency
+with which characters appear in the input data.  However, in order to do this,
+the algorithm must make use of a <a href="07.html" target="define"><b>priority
+queue</b></a><sup>7</sup> and an <a href="08.html" target="define"><b>encoding
+trie</b></a><sup>8</sup>, while also analyzing the data in much more depth
+than is necessary in RLE compression.
+
+<p> The Huffman compression algorithm consists of the following steps:
+
+<ol><li>Count the frequency of each character in the source data.
+    <li>Insert the character frequencies into a priority queue allowing the
+        removal of the minimal-frequency element present in the queue.
+    <li>Build an optimal encoding trie from the priority queue.
+    <li>Generate minimal bit-length codes representing each character in the
+        source data.
+    <li>Translate each character in our source data into its equivalent
+        code representation.
+</ol>
+
+<p> Huffman compression thus achieves its data savings by enabling characters
+to be represented by a smaller sequence of bits.  <img src="figure1.gif"
+align=left hspace=10 vspace=5  alt="[sample encoding trie image]"> In textual data, a normal character is commonly
+stored as 1 byte (8 bits), or 2 bytes (16 bits) for <a href="09.html"
+target="define"><b>Unicode</b></a><sup>9</sup> characters.  We consider only
+1-byte characters hereafter (and in our Huffman applet as well.)  Using the
+encoding trie, the most frequently-appearing characters in the source data are
+located near the root of the trie, resulting in a shorter bit encoding.  The
+most common characters may have an encoding of only one or two bits, versus 8
+bits without compression.
+
+<p> The optimal placement of frequently-accessed characters in the encoding
+trie is due to the way in which step 3, above, is performed.  Huffman
+discovered a way to create an encoding trie, based on particular input data,
+which results in a bit string of minimal length representing the input data.
+To build the optimal encoding trie:
+
+<img src="figure2.gif" align=right vspace=5 alt="[ex. creation of encoding trie image]">
+<ol><li>Remove the two smallest frequencies from the priority queue.
+    <li>Create a new element with a frequency equal to the sum of both
+        elements, make the two removed elements children of the new element,
+        and place the new element in the priority queue.
+    <li>Repeat steps 1 and 2 until the priority queue is empty.
+</ol>
+
+<p> In order to decompress the data, we need to store the final character
+codes generated in step 4 of the main Huffman compression
+algorithm. Therefore, for input data which results in a large trie (and thus
+large bit-encodings), we must have a sufficiently large quantity of data to be
+compressed so as to make up for the size of the code <a href="10.html"
+target="define"><b>storage space</b></a><sup>10</sup>.  Since the space
+required by the codes is negligible when we have a large amount of relatively
+compressible input data, we disregard it in calculating the compression
+savings for our Huffman applets below.  One should keep in mind, though, that
+for very small quantities of input data the encoding trie storage space may
+render Huffman compression ineffective.
+
+<p> If there are a number of redundant characters in the data to be
+compressed, Huffman can save <a href="11.html" target="define"><b>quite a bit
+of space</b></a><sup>11</sup>.  If all characters present in the string are <a
+href="12.html" target="define"><b>equally represented</b></a><sup>12</sup>,
+our compression savings decrease, although we still save a great deal.  In
+fact, most textual data will achieve compression of at least 40% to 50% with
+Huffman compression (yes, even text like <a href="13.html"
+target="define"><b>"Aiyeeee."</b></a><sup>13</sup>) Unlike RLE, the level of
+compression is <a href="14.html" target="define"><b>totally
+unrelated</b></a><sup>14</sup> to the ordering of the characters in the data.
+Huffman compression is clearly superior to RLE compression for most textual
+data, but it is far more complex to implement and the actual
+compression/decompression process takes longer.
+
+<p> <b>Other Data-Squishing Methodology</b>
+
+<p> Although we've presented an <a href="15.html"
+target="define"><b>amazing</b></a><sup>15</sup> amount of information thus
+far, even compression has its limits.  We therefore end our discussion with a
+brief look at related topics and future research possibilities for the
+interested reader.
+
+<p> The trie data structure is useful in many other areas, such as storing
+large quantities of information while allowing rapid lookup (i.e.,
+computerized dictionaries, libraries, etc.)  Both the <a href="16.html"
+target="define"><b>PATRICIA tree</b></a><sup>16</sup> and the <a
+href="http://lenti.med.umn.edu/MSU.Ath/htree/htree-paper.ss.html"
+target="_blank">Suffix tree</a> address this problem and utilize the trie data
+structure.
+
+<p><a href="http://spwww.mcit.med.umich.edu/projects/video/tech/compress.html"
+target="_blank">Lempel-Ziv</a> compression schemes (the two most common
+variants being LZ77 and LZ78) are the next logical step in our look at data
+compression algorithms.  There are several pointers in this article to more
+information on Lempel-Ziv, and <a href="http://quest.jpl.nasa.gov/zlib/"
+target="_blank">free source code</a> is also available demonstrating one
+possible implementation.
+
+<p> Finally, USENET offerings for more information include the newsgroups <a
+href="news:alt.comp.compression" target="_blank">alt.comp.compression</a>, <a
+href="news:comp.compression" target="_blank">comp.compression</a>, and <a
+href="news:comp.compression.research"
+target="_blank">comp.compression.research</a>.
+
+<p> Stay compact. <a href="/internet/deep/"
+target="_top"><img src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10 height=10 alt="*"></a>
+
+<p><font size="-1">-- Walter <a
+href="mailto:shaper@cerf.net">&lt;shaper@cerf.net&gt;</a> has been known to
+compress his peanut butter and jelly sandwiches before eating them.</font>
+
+<p> <font size="-1">Source code to the applets written for this article (in
+order of appearance): <br> <a href="BaseApplet.java"
+target="_blank">BaseApplet.java</a>, <a href="RLE.java"
+target="_blank">RLE.java</a>, <a href="Huffman.java"
+target="_blank">Huffman.java</a></font>
+
+</body>

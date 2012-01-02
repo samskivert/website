@@ -1,0 +1,221 @@
+<head><title>go2net | internet | deep magic | The certainty of depth and axes</title></head>
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+<img src="head.gif" width=271 height=41 alt="The certainty of depth and axes"><br clear=left>
+<br>
+<font size=-1 color="#99CC66">18 December 1996</font>
+
+
+<P>
+
+Ever since Doom came out, most games have had three things in common:
+dimensions.  Now you could argue that Doom isn't
+<A href="01.html" target="define"><b>truly 3D</b></a><sup>1</sup> and that
+plenty of games before it were three dimensional, but Doom really started
+a trend. Almost every popular new game is some kind of 3D
+shoot-everything-that-moves bloodfest. Bloodfests are fun, but they may
+come and go: 3D is here to stay. Game players want much more than
+something that looks real, they want games that behave real -- games that
+feel real in their motion and physics as well as the way they look.
+<P> 
+
+3D graphics have become ubiquitous outside of games. Even television
+and movies have been flooded with the new breeds of photorealism that can
+be attained from new techniques and advanced hardware available today. The
+power to create impressive three dimensional images and animation now lies
+jointly in the hands of programmers, artists, and graphic designers.
+Hardware that has been optimized for graphics speed combined with advanced
+software tools have made it possible for anyone to create spectacular
+images. Invest a little time in learning the tools, and you will be able to
+render fantasy worlds on your screen that are limited only by your
+imagination.
+<P>
+
+With graphics hardware becoming faster and cheaper, and specialized
+visualization tools becoming a commodity, why should we invest our time in
+learning about the arcane mathematics of graphics? For the same reason we
+play with dry ice: because it's cool. The simplest things can be done
+quickly with only a small math background. 3D graphics research is also a
+growing and very exciting field, and new techniques for improving speed
+are <a href="02.html" target="define"><b>still being developed</b></a><sup>2</sup>.
+This article is the first in a possible
+series in which I will explore the basics behind 3D graphics, and endeavor
+to demonstrate some of the tricks and short cuts that have made it one
+of the most stimulating fields in computer science. 
+<P>
+
+Let's start with the basics.  How does a three dimensional object get onto
+a two dimensional screen? Think about a shadow. When a light shines on an
+object the object will cast a projection of itself on a nearby surface.
+The shadow is a flattening of the three dimensional shape into two
+dimensions. When the shape moves or rotates, the shadow will also change
+shape with the changes. If it weren't for the fact that the shadow only
+shows detail on its edges, we could fool the human eye into thinking that
+it was a three dimensional object. 
+<P>
+
+<a href="04.html" target="define"><b>Here are some 3D cubes</b></a><sup>4</sup>.
+Since your screen is only two dimensional, you are just seeing
+a &quot;shadow&quot;, but I am
+able to color them as if they were real three dimensional objects.
+Go ahead and click on them and drag the mouse to rotate them.
+Let me step you through
+the creation of this simple applet. 
+<P>
+
+Here is my simple <b>Vertex</b> class:
+<pre>
+public class Vertex {
+
+    public float x, y, z;
+    public int   screenX, screenY, screenZ;
+ 
+    public Vertex(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+}
+</pre>
+<P>
+
+The main component of any three dimensional picture is the vertices.
+They are the 'control points' for the whole picture.
+The Vertex class has an x, y, and z coordinate specifying its exact
+location in space. It also has 3 "screen" coordinates that are filled in
+when it gets transformed to screen coordinates. 
+<P>
+
+Each side of the cubes is a polygon that is an instance of the <b>Face</b>
+class:
+<pre>
+class Face implements Sortable {
+
+    // the vertices that make up this face.
+    private Vertex[]        verts;
+
+    //the color to render this face in.
+    private Color           color;
+
+</pre>
+    [*portions cut for clarity and brevity*]
+<pre>
+
+    // here we have to figure out the Z anyway,
+    // so we also 
+    // prepare the x's and y's for rendering.
+    public void preRender() {
+        z = 0;
+        for (int ii=0; ii < verts.length; ii++) {
+            xs[ii] = verts[ii].screenX;
+            ys[ii] = verts[ii].screenY;
+            z += verts[ii].screenZ;
+        }
+        z /= verts.length;
+    }
+
+    //do the painting thing.
+    public void render(Graphics g) {
+        g.setColor(color);
+        g.fillPolygon(xs, ys, xs.length);
+    }
+}
+</pre>
+<P>
+
+The Face class holds references to all the vertices that are a part of it,
+and can render itself to a Graphics after those vertices have been
+transformed into screen coordinates. The 3D model is a list of Vertex's
+and a list of Face's. In this example, the vertices are the corners
+of each of the cubes.
+<P>
+
+The vertices get translated from their real coordinates to screen
+coordinates through a transformation matrix. This matrix is a compilation
+of all the modifications we want to make to each point. Each face is made
+up of several line segments, and if each of those is translated to screen
+coordinates, then the face will have been translated. Similarly, each line
+segment is simply a joining of two vertices.  If each vertex gets
+translated, then the line segment will have been translated. Therefore, we
+don't need to translate every possible point on the object being rendered;
+only the vertices used in the picture.
+<P>
+
+Here is the transformation and painting code from the Applet.
+<pre>
+// reset the transformation matrix
+// of the model.
+md.mat.unit();
+
+// Translate the model to the origin, so
+// that the center of it lies right on the
+// origin. Without this our rotations will
+// be about the origin, which is bad if
+// the model is nowhere near it.
+md.mat.translate(-(md.xmin + md.xmax) / 2,
+                 -(md.ymin + md.ymax) / 2,
+                 -(md.zmin + md.zmax) / 2);
+
+// Multiply the model by the rotation
+// matrix
+md.mat.mult(amat);
+
+// Expand the size of the model so that
+// it is close to the size of the window
+md.mat.scale(xfac, -xfac, 16 * xfac / w);
+
+// Translate it away from the origin
+// so that we can see it.
+md.mat.translate(w / 2, h / 2, 8);
+</pre>
+<P>
+
+Now we translate each of the points, and then tell the faces to 
+render themselves.
+<P>
+
+<pre>
+mat.transform(verts);
+
+// render them.
+for (int ii=0; ii < faces.length; ii++) {
+    faces[ii].render(g); 
+}
+</pre>
+<P>
+
+The procedure is very simple: I compile all of the transformations
+I want to make to each point into one matrix, so that I can apply
+all the transformations at once. I
+multiply every vertex by that matrix to get the screen coordinates, and
+render each of the faces to the screen in the order of decreasing distance
+away from the screen, so that the ones in back are covered by the ones in
+front.  This completes the illusion and brings a 3D image to the computer
+screen! 
+<P>
+
+This example is very primitive -- it is intended only to demonstrate the
+principles behind 3D rendering. For further understanding, I direct the
+inquisitive reader to the full source code. In future articles, I hope to
+cover more advanced issues such as shading and better algorithms for
+rendering the vertices in back before those in front. While you
+are not yet ready to program the next Quake, you can fool around with
+the sample code and master the basics before we move on to other
+things.&#160;<a href="/internet/deep" target="_top"><img
+src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a> 
+
+<p><font size="-1">-- Ray
+<a href="mailto:ray@go2net.com">&lt;ray@go2net.com&gt;</a>
+is a Dreamer of Dreams at go2net. If you told him he was gullible,
+he'd probably believe you.</font><P>
+
+<font size="-1">Source code for the 3D applet demonstrated in this
+article: <br> <a
+href="Face.java" target="_blank">Face.java</a>, <a
+href="Matrix3D.java" target="_blank">Matrix3D.java</a>, <a
+href="QuickSort.java" target="_blank">QuickSort.java</a>, <a
+href="Sortable.java" target="_blank">Sortable.java</a>, <a
+href="ThreeD.java" target="_blank">ThreeD.java</a>, <a
+href="Vertex.java" target="_blank">Vertex.java</a></font>
+
+</body>

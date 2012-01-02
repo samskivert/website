@@ -1,0 +1,237 @@
+<head>
+<title>go2net | internet | deep magic | Vive l'evolution</title>
+</head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="Vive l'evolution">
+<p><font size=-1 color="#99CC66">12 February 1997</font>
+
+<p> Evolutionary computing is a blanket term
+encompassing a host of methodologies and philosophies, all based upon the
+premise that mother nature is darned good at solving problems. The world
+is literally crawling with problem solvers of infinite variety. Although
+Charles Darwin planted the idea in 1859 with the publication of <u>The
+Origin of Species</u>, the concept of mimicking mother nature's problem
+solving techniques didn't start to flower until the mid-1960s, when the
+computing power to actually investigate such techniques was <a
+href="01.html" target="define"><b>readily available.</b></a><sup><font
+size="-1">1</font></sup>
+
+<p><b>The evolution of an algorithm</b><br>
+
+Genetic algorithms were the first form of <a href="02.html"
+target="define"><b>EC</b></a><sup><font size="-1">2</font></sup> to really
+take hold of the computer science research community. In my new found
+spirit of not beating around the bush, I'll jump right into their
+explanation.
+
+<p>Suppose that you have a function along the lines of:
+
+<p><code>f(x) = cos(14.5 * x - 0.3) + (x + 0.2) * x</code>
+
+<p>And you want to find the value of x that gives you the smallest value
+for f(x). You would be hard pressed to determine that value <a
+href="03.html" target="define"><b>analytically</b></a><sup><font
+size="-1">3</font></sup>. We take the bits of the floating point value
+that a computer would use to represent a value of x and we call that a <a
+href="04.html" target="define"><b>gene.</b></a><sup><font
+size="-1">4</font></sup> In most cases, we have multiple genes, each gene
+being one value in the equation. Since our equation is only of one value,
+we have only one gene in our genome. We'll also be referring to the genome
+as DNA.
+
+<p>We begin with generation zero. Generation zero is made up of a
+population of completely random values. We then go through and compute
+f(x) for all of our individuals. In our case, f(x) defines the fitness of
+each individual. The smaller the value of f(x) for an individual's x, the
+more fit the individual because we want to find the smallest f(x)
+possible.
+
+<p>Now we create the next generation of individuals by crossover and
+mutation. Crossover involves picking two members of the population, making
+copies of them and then swapping their DNA at some random point along the
+strand. One of the children is discarded and the other becomes a member of
+the next generation. Mutation involves the random twiddling of a couple of
+bits in the individual's DNA. A popular convention is to breed a child
+using crossover and then mutate that child's DNA to create the member of
+the next generation.
+
+<p>The choice of parents is important. For each new member of the next
+generation we pick two parents at random where the probability that we
+pick a particular parent is proportional to that parent's <a
+href="06.html" target="define"><b>fitness value.</b></a><sup><font
+size="-1">6</font></sup> For example, if a particular individual's fitness
+is 5 and the sum of the fitness values of all individuals in the
+population is 100 then we would pick that individual as a parent 5 percent
+of the time. The idea behind this selection method is that probability of
+reproduction should be proportional to fitness (as should probability of
+<a href="07.html" target="define"><b>failure to
+reproduce</b></a><sup><font size="-1">7</font></sup>).
+
+<p>This process is then repeated on this new generation and continues to
+be repeated until we are happy with the fitness value of the most fit
+member of our population. This termination condition is intentionally
+vague. In some cases, we may be content to let the simulation run until
+some large number of generations fail to produce increasingly more fit
+individuals. In this case we can feel relatively sure that we have
+converged on the optimal solution. However, other cases may involve time
+constraints and we just take the best solution that comes up after some
+fixed number of generations. In general there are some constraints that
+motivate us to find a solution as quickly as possible.
+
+<p>In that spirit, a vast multitude of refinements to the basic premise of
+genetic algorithms have been and continue to be investigated. These
+include varying the probability of mutation over the course of the
+solution search (usually with higher probability at the beginning
+gradually becoming lower and lower toward the end), encoding the genome in
+Gray code so that bit mutations change gene values in a more predictable
+manner, and modifications to the parent selection method to avoid
+domination by super-individuals. One of the more interesting techniques
+involves including the mutation probability in the genome so that the
+algorithm modifies its own strategy in its search for an optimal solution.
+
+<p><b>Genetic hackery</b><br>
+
+Surprisingly enough, not every problem can be represented as the
+optimization of some function with one or more <a href="08.html"
+target="define"><b>parameters.</b></a><sup><font size="-1">8</font></sup>
+We can apply the same philosophy of survival of the fittest to a much more
+flexible framework now known as <a href="10.html"
+target="define"><b>genetic programming</b></a><sup><font
+size="-1">10</font></sup>.
+
+<p>We first define a simple programming language in which we believe a
+solution to our problem could be written. Then we generate random programs
+in this language and apply the genetic functions of crossover and mutation
+to the individuals in our population in a search for a program that best
+solves our problem. Voila, we have genetic programming.
+
+<p>Although this may seem quite simple, it is in fact one of the most
+flexible machine-learning problem-solving techniques postulated to
+date. Plus, it's just pretty darned neat. So hold on to your browsers
+kids, we're going to do a little genetic programming.
+
+<p>The problem we'll tackle in this article is not entirely a real world
+problem, but one that I think yields interesting results as well as giving
+one a feel for what a randomly generated program <a href="11.html"
+target="define"><b>looks like</b></a><sup><font size="-1">11</font></sup>.
+
+<p>Suppose we have a bunch of organisms on a two-dimensional grid. Each
+organism's goal is to stay alive as long as possible, this is our measure
+of fitness. To achieve that goal, the organisms are controlled by a
+genetic program. The catch is that they must wander around looking for
+food that is scattered about the grid. They can only wander so long
+without eating more food lest they expire.
+
+<p>The language in which control programs will be evolved as well as its
+execution environment must be <a href="12.html" target="define"><b>defined
+carefully</b></a><sup><font size="-1">12</font></sup>. We don't want our
+little organisms to dump core if our random programs run astray. <a
+href="14.html" target="define"><b>Koza</b></a><sup><font
+size="-1">14</font></sup> originally developed simple lisp expression
+trees whereby an organism's entire program was one big function being
+passed the results of other functions. Crossover, in this case, is
+performed by picking two points on two function trees and swapping the
+subtrees.
+
+<p>Depending on the problem domain, one would either evaluate this
+expression tree and evaluate the result for fitness (for example if one
+were trying to evolve a function that matched a data set) or they would
+define functions that had side effects on the environment and accomplished
+things in their own right. They would repeatedly evaluate the expression
+tree for some fixed number of iterations and then determine fitness based
+on this program's performance in the environment (for example if one were
+modeling a little creature trying to locate food to stay alive).
+
+<p>We are going to do things a bit differently because the expression tree
+method does not lend itself well to incremental execution. We want to have
+a number of organisms competing simultaneously in the same
+environment. Thus we need to be able to step through each of their
+individual programs at the same time.
+
+<p>Our organisms will be controlled by a very simple virtual machine. This
+virtual machine will understand the following instructions:
+
+<p><center><table cellspacing=0>
+<tr bgcolor="#99cc66"><th>OpCode</th><th>Action</th>
+<tr bgcolor="#ccff99"><td>TRL</td><td>Turn left</td>
+<tr bgcolor="#99cc66"><td>TRR</td><td>Turn right</td>
+<tr bgcolor="#ccff99"><td>MVF</td><td>Move forward</td>
+</table></center>
+
+<p><a name="play">Check the instructions for a description of the
+parameters that you can tweak and then jump right in and play:</a>
+
+<p><center><table>
+<tr><th bgcolor="#99cc66" colspan=2><font size="-1">Super-Duper GP Critter Simulation</font></th>
+<tr><td><applet archive="sim.zip" code="SimApplet" width=100 height=20></applet></td><td><a href="instructions.html">Instructions</a></td>
+<tr><td bgcolor="#99cc66" colspan=2><font size="-1">&#160;</font></td>
+</table></center>
+
+<p>The applet displays the first generation and then rapidly executes all
+the generations up until the last one without displaying them and finally
+displays the last generation. This should give you a feel for the
+difference between completely random behavior (the initial population)
+and the very fit individuals that are the result of many generations of
+breeding.
+
+<p>The results are quite dramatic even in this simple simulation. Random
+individuals barely consume 5 percent of the available food source before
+expiring. The evolved population, on the other hand, rarely leaves 5
+percent of the food uneaten.
+
+<p>Try varying food density and population size parameters to see the
+different strategies that organisms develop to effectively gather food. If
+you find this extremely entertaining, you could go as far as extending the
+virtual machine with new instructions to see what influence different
+capabilities have on the evolved strategies.
+
+<p>An interesting scenario to investigate is that of <a href="15.html"
+target="define"><b>cooperation</b></a><sup><font size="-1">15</font></sup>
+among the organisms. You could cause the organisms to emit pheromones when
+their energy level is high (presumably right after eating). And then each
+organism could evolve two separate programs, one that was in control when
+they were within close range of the pheromone and one that was in control
+when they were not. One might see cooperative techniques for locating food
+stores evolve instead of the chiefly greedy techniques that evolve without
+such an addition.
+
+<p>As you might have already surmised, genetic programming starts to
+wander into the realms of artificial life and emergent behavior in
+addition to its more well-established goal of automatic function
+generation.
+
+<p>As usual, I didn't manage to sneak in all sorts of useful links to
+other evolutionary computing resources in the text of the article. So I'll
+be extremely creative and list a few good ones here for those of you who
+really dig this stuff:
+
+<ul>
+<li><a href="ftp://alife.santafe.edu/pub/USER-AREA/EC/FAQ/www/index.html" target="_blank">The Hitch-Hiker's Guide to Evolutionary Computation</A> 
+
+<li><a href="http://www-cs-faculty.stanford.edu/~koza/" target="_blank">John Koza's Home Page</a>
+
+<li><a href="http://www.ifh.ee.ethz.ch/~gerber/approx/default.html" target="_blank">A Genetic Programming Applet</A>
+
+<li><a href="http://www-mitpress.mit.edu/jrnls-catalog/evolution.html" target="_blank">Journal of Evolutionary Computation</A>
+</ul>
+
+<p>The applications of genetic programming are various and sundry, and a
+little digging around at the sites above will unearth a wealth of research
+going on in the area, some of which is <a href="16.html"
+target="define"><b>especially intriguing</b></a><sup><font
+size="-1">16</font></sup>. It seems that once again nature has provided us
+with a powerful technique to use in the development of solutions to our
+own problems. <a href="/internet/deep/" target="_top"><img
+src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a>
+
+<p><font size="-1">-- Michael <a
+href="mailto:mdb@go2net.com">&lt;mdb@go2net.com&gt;</a> is busily refining the GP that will be writing his future columns.</font>
+
+<p><font size="-1">Source code to the applet written for this article
+(archived): <br> <a href="gp.tar.gz">tarred and gzipped</a> or <a
+href="gp.zip">zipped</a>.</font>
+
+</body>

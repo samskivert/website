@@ -1,0 +1,120 @@
+<head>
+<title>go2net | internet | deep magic | Lenses that work Magic</title>
+</head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="Lenses that work Magic">
+<p><font size=-1 color="#99CC66">23 April 1997</font>
+
+<p>
+Remember the first time you used a mouse? I do. I had just acquired my
+Apple IIGS, and it came with a demo that introduced users to "the mouse,"
+and let them practice using it. Turned out there's more to it than just pushing
+around a hunk of plastic. There's a whole
+user-interface system to be mastered.
+<p>
+By now, of course, the features and uses of window-based 
+interfaces are second-nature to me. If I want to move a window around,
+I just click the "title bar" with the left mouse button, hold it down, 
+and move (or "drag") the mouse. The whole window moves, and when
+I've got it where I want it, I release the mouse button.
+Voila! It all seems so
+easy now, we don't even realize we're
+doing it, much less <i>how</i>.
+<p>
+We use pull-down menus, icons, scrollbars, and drag-and-drops so much that
+we may forget they are merely the latest in the evolution of
+popular user-interface paradigms. Someone had to think this stuff up.
+Who thought of such modifications as "dimming out" unselectable
+items from a menu, or cascading pull-down menus? 
+<p>
+Much of the original research that resulted in the windowing systems
+we know and love originated at Xerox PARC, a locale surrounded by 
+<a href="http://www.publishnet.com/html/june_20__1996.html" target="_blank">much lore.</a>
+At <a href="01.html" target="define"><b>SIGGRAPH</b></a><sup>1</sup> 93, some
+researchers at PARC
+presented their latest work: the See-Through Interface. They proposed a
+set of <a href="02.html" target="define"><b>widgets</b></a><sup>2</sup> that would provide a new way of working in applications.
+They're called Magic Lenses(tm), and they can be
+arranged on what are called <a href="03.html" target="define"><b>Toolglasses(tm)</b></a><sup>3</sup>.
+<p>
+<P>
+<b>The beginning of a <i>really</i> tasteless episode of Pepe le Pew...</b><br>
+<applet code="LensDemo" codebase="." width=345 height=228>
+<param name="image" value="possum.jpg">
+</applet>
+<br><font size=-1>Click and drag the gray bars to move the lenses about.<br>
+This applet doesn't seem to work on Macs. I'm trying to figure out if I care.
+Check back later and I may have fixed it.</font>
+<P>
+This introductory applet offers a few Magic Lenses that let
+you view something not normally visible in the scene. It demonstrates
+some simple viewing-filter lenses. A lens can behave like a viewing filter; 
+it can modify the mouse or keyboard "events" that pass through it; or both.
+<p>
+The Toolglass is merely a way of arranging the Magic Lenses. The simplest use
+might consist of one Toolglass covering the entire working area of your
+<a href="04.html" target="define"><b>application</b></a><sup>4</sup>, although you could have several Toolglasses, perhaps
+with groups of related lenses.  A user could tile the lenses on the
+glass, next to each other, or overlap them haphazardly.  When the
+Toolglass is moved, the relative positions of the lenses are
+preserved. The Toolglasses cover whatever you are working on, but they
+don't get in the way because they're transparent.
+<p>
+To move the Toolglass around, the PARC guys and gals propose a secondary
+positioning and input device, such as a trackball, for your non-dominant
+hand.
+This sounds like it will work out well, allowing rapid, yet somewhat coarse
+positioning of the individual lenses. The lenses would be big enough that
+positioning them in somewhat the right location would be adequate, and the
+mouse could move in for the fine-grained work within the lens.
+<p>
+The Magic Lens user interface is impressive.  Lenses can offer localized
+views of onscreen objects with surrounding context.  A magnification lens
+can be moved around on screen, and you can easily see what is around the
+magnified portion, without needing a whole new window with another
+small context view. 
+<p>
+Besides making tools that are easier to use, the Magic Lens project is
+intended to reduce the time it takes to do operations. This
+is a noble goal, no matter how you slice it.
+<p>
+In many applications, work is done in localized areas, and often the
+user switches between a small subset of tools. For example, in a paint
+program, you might choose a tool to pick up a color from the canvas,
+then zoom into a region and paint a few carefully placed
+pixels in that color. With Magic Lenses, you could overlap a color-grabbing
+lens with a zoom lens, and do all your work easily and at the same time.
+<p>
+The other cool thing about Magic Lenses is the implementation. As a scene
+passes through each lens, it can be rendered, modified or replaced by a
+different
+representation of the data. The code for a lens can be simple and
+modular.  Combining lenses would be easy, too: just create a meta-lens
+with pointers to two other lenses, each of which it calls, in turn,
+for any rendering or mouse-event handling.
+<p>
+Combining lenses is a powerful idea. Simple functions
+can be built into more complex ones. The user is
+empowered to mix code to get more complicated uses than the programmer
+explicitly designed!
+<p>
+Next week, I implement some application of my choosing with
+a fairly complex set of lenses and talk about the 
+use of my interfaces. Two weeks of Deep Magic on the same subject!?! Yes, I
+know it's unusual,
+but the topic "lens" itself to further exploration, and next week's
+edition should be fairly large.  Until then, I leave you to play with
+some other <a href="http://www.parc.xerox.com/istl/projects/MagicLenses/" target="_blank">applets and read the recent papers</a> written by the Magic
+Lens team at Xerox.
+<a href="/internet/deep/" target="_top"><img src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a>
+
+<br>
+<font size=-1>Source code, <A href="lenses-1.tar.gz">tar'd and gzip'd</a> or
+<a href="lenses-1.zip">zipped</a>.</font>
+
+<p><font size=-1>-- Ray <a href="mailto:ray@go2net.com">&lt;ray@go2net.com&gt;</a> is a Dreamer of Dreams at go2net. If you told him he was gullible, he'd probably believe you.</font>
+
+</body>

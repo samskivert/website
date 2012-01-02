@@ -1,0 +1,177 @@
+<head>
+<title>go2net | internet | deep magic | NEW TITLE HERE</title>
+</head>
+
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="String `em along">
+<br clear=left>
+<br><font size=-1 color="#99CC66">14 May 1997</font>
+
+
+<p>
+
+<table width=128 align=left hspace=2><tr><td><img src="image.gif" width=124 height=124 border=0 align="LEFT"></td> <tr><td align=center><b><font size="-1" face="Helvetica"></font></b></td></table>
+
+
+String manipulation has long been a staple of everyday programming. 
+Much of the popularity perl has acquired in recent years stems from the
+ease with which strings can be munged, sought, found, folded, spindled,
+and mutilated.  But back in the day, before Larry Wall, before A W and K,
+when the Sleestaks roamed free, programmers didn't have perl's magic =~
+operator. 
+And algorithms for string searching mattered. 
+<p>
+   By string searching I do not mean full regular expression matching, which is
+typically done through the construction and lazy evaluation of a
+finite automaton. Yes, a worthwhile subject, but today's lesson harks back 
+to a more primitive world, where our task is less general: <a href="01.html" target="define"><b>given</b></a><sup>1</sup> search
+text "a" of length N and a pattern "p" of length M, where (if at all) does
+p occur within a? In all cases we will assume that M &lt;&lt; N (M is very
+small
+compared to N.)
+<p>
+   As with many tasks, there is a straightforward method for the this one
+that's hard to
+screw up.  As usual, we call it <a href="02.html" target="define"><b>"brute force."</b></a><sup>2</sup> If performance is not
+a consideration (for example, if the string lengths are known to be very
+small),
+or if you believe <a href="03.html" target="define"><b>simplicity is more important than actually completing
+the task at hand</b></a><sup>3</sup>, brute force may be entirely satisfactory.  The
+mechanism is to iterate over "a" and, at each letter, compare the sequence
+against "p" until all letters match (success) or the end of the alphabet
+is reached (failure.) <a href="04.html" target="define"><b>See it in action</b></a><sup>4</sup>. 
+<p>
+   Unfortunately, brute force string searching can reach <a href="05.html" target="define"><b>nearly N*M</b></a><sup>5</sup>
+comparisons in the worst case.  This lacks.  It's rather unlikely that you'll
+hit
+such a limit, particularly if the alphabet is large, but when dealing with
+small alphabets or (heaven forbid) binary data, the number of comparisons
+could be many times N. For example, check out this unfortunate <a href="06.html" target="define"><b>worst-case
+scenario</b></a><sup>6</sup> search.  Ouch. 
+<p>
+   It seems silly to
+repeatedly compare the pattern to the same input
+text.  For example, in the preceding example, after 00001 failed to match
+against 00000, why do we take up again at the second zero in the search
+text? We already know that the first three zeroes will match.  The
+Knuth-Morris-Pratt algorithm, our next customer, takes advantage of the
+information provided by failures. It does so by <a href="07.html" target="define"><b>building a table of
+values</b></a><sup>7</sup> that correspond to places the pattern might fail to match. 
+The values in the table indicate where the matching process should resume
+once the pattern has been advanced.  There is an initial cost to building
+this table, but fortunately it is proportional to M and therefore
+inconsequential.  <a href="08.html" target="define"><b>Watch it fly</b></a><sup>8</sup> on the very case that gave our
+Neanderthal algorithm hives. 
+<p>
+   One subtle but important advantage of the Knuth-Morris-Pratt algorithm
+is that it never backs up over the text being searched; it only moves
+forward.  This implies that the worst case requires N + M comparisons, but
+also that it can be used effectively on sequential access media such as
+<a href="09.html" target="define"><b>tape drives</b></a><sup>9</sup> without performing extensive buffering (or for that
+matter, any at all.)
+<p>
+   Great! We have a linear search.  On the surface, all is right with the
+string world.  But the bogeyman of the real world lurks.
+Knuth-Morris-Pratt is unlikely to do much better than brute force on
+typical real world string searches, because normal searches do not involve
+seeking repetitive patterns within repetitive text.  And most of us don't
+do much searching straight off the tape drive, so backing up is normally
+not a problem. 
+<p>
+   Let's get clever.  Since we're advancing the pattern from left to right
+through the search text, perhaps we can profit by doing our comparisons
+from right to left.  In this way, we spot a mismatch further along in the
+process than we would by comparing from left to right.  We'll also
+capitalize on more information we haven't been using: the character in
+the search text that caused the mismatch. 
+<p>
+   Thus we arrive at the Boyer-Moore algorithm.  We'll <a href="10.html" target="define"><b>build another
+table of values</b></a><sup>10</sup>, one for each letter that could occur in the text or
+pattern (this is the "alphabet.") The value for each letter is the number
+of characters forward the pattern can be skipped if the mismatch was due
+to that character in the search text.  Stand agape as you <a href="11.html" target="define"><b>watch this
+one</b></a><sup>11</sup> and realize that, although it has a worst case of N + M
+comparisons, it will <a href="12.html" target="define"><b>often</b></a><sup>12</sup> take only N/M comparisons. 
+<p>
+   Our final algorithm takes a totally different approach, using cool
+properties of mathematics to earn its linear nature.  Imagine for a moment
+that we were to build a giant hash table, where the keys were all possible
+M-character sequences from the search text.  Once built, we could just
+look up the pattern in the hash table and be done! Unfortunately this
+would potentially require significant memory, and force us into the
+worst-case. Also, it would seem that computing the hash value of each
+sequence would be as expensive as simply comparing it to the pattern. 
+Looks like a big loser. 
+<p>
+   But wait! Math is our friend.  There are a few things we can do here. 
+We don't actually have to store the hash table values; if we precalculate
+the hash value of the pattern, and then compare each value from the text
+against it, we can quit once we have a match.  And, more importantly, we
+can calculate the hash value for a sequence starting at the nth character
+in the text by utilizing the hash value of the sequence starting at the
+(n-1)th character and applying a couple simple operations. The mathematics
+involved are beyond the scope of this article, but cryptography literature
+abounds with applications. 
+<p>
+   So we arrive at the Rabin-Karp algorithm.  The size of the theoretical
+hash table can be as large as we want, since we don't need storage; I'll
+choose a really big number that will still fit in a long (with room for
+the operations done upon the current hash value.) Take a look at the
+<a href="RK.java" target="_blank">source</a> to appreciate the mathematical wizardry involved, and then
+check out the <a href="13.html" target="define"><b>algorithm in action</b></a><sup>13</sup>.
+<p>
+   The alert reader will have noticed that this search is not completely
+reliable.  A match indicates that the pattern has the same hash value as
+the identified text, but despite our very large value of q, hash
+collisions are possible.  To be correct, upon a hash collision we should
+verify that the pattern 
+and text are identical.  Because of this,
+Rabin-Karp has a technical worst-case of M*N (because we could have a hash
+collision everywhere, and require M comparisons to check each one out) but
+will typically be linear. 
+<p>
+   Each of these algorithms has advantages.  Brute force is the simplest
+to implement, Knuth-Morris-Pratt the fastest on binary data, Boyer-Moore
+the fastest in the typical case, and Rabin-Karp could (if the hash table
+were actually built) enable constant time searches for multiple patterns
+if they were of a fixed length.  Identifying other pluses and minuses is
+left as an exercise for the reader. 
+<p>
+   I leave you with this thought: the Java library function
+<tt>java.lang.String.indexOf(String str, int fromIndex)</tt> uses brute force to
+determine whether the supplied string is a substring of the object.  Our
+high-tech algorithms were not interesting to the authors of the Java
+String class. 
+Perhaps they decided that the overhead that these algorithms require for
+their precalculations was too great to be worthwhile in the common case. 
+Perhaps they had to rush it out the door.  Who knows? Believe whatever
+helps you sleep at night. <a href="/internet/deep/" target="_top"><img src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10 alt="*"></a>
+<p>
+
+Hey kids! Try your own searches! Just don't make the search text
+too long...
+<center>
+<form action="/cgi-bin/stringSearchApplet" method="GET" target="define">
+
+<table><tr><td>Search Text:</td><td><input type=input name="text"></td>
+<tr><td>Search Pattern:</td><td><input type=input name="pattern"></td>
+<tr><td colspan=2><input type=submit name="button" value="Brute Force">
+<input type=submit name="button" value="Knuth-Morris-Pratt"></td>
+<tr><td colspan=2><input type=submit name="button" value="Boyer-Moore">
+<input type=submit name="button" value="Rabin-Karp"></td></table>
+
+</form>
+</center>
+
+
+<p><font size="-1">-- Paul Phillips <a
+href="mailto:paulp@go2net.com">&lt;paulp@go2net.com&gt;</a>
+has a ball with strings.</font><br>
+<font size="-1">Source to this article, as a 
+<a href="strings.tar.gz">gzipped tar file</a> or
+<a href="strings.zip">zip file</a>.</font>
+
+</body>
+

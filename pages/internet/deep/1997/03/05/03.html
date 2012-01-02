@@ -1,0 +1,38 @@
+<head><title>go2net | internet | deep magic</title></head>
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<tt>With telnet client in hand, you can spoof a Web server into thinking
+you're a proper Web browser! Enter the following incantation of magical
+Unix commands (you type the stuff in bold face):
+
+<br><br><b>% telnet www.go2net.com 80</b><br>
+Trying 199.170.0.150...  <br>
+Connected to www.go2net.com. <br> 
+Escape character is '^]'.  <br>
+<b>GET /index.html HTTP/1.0</b> 
+
+<br><br>... followed by an extra return and then let the fun begin!
+
+<br><br>You can also supply your own HTTP headers to the server.  The editor
+who is adding this paragraph used to mess with the "BrowserWatch" 
+type services by making up his own browsers and new, non-existent
+versions of popular browsers.  So, before you type that second return,
+you could add something like this...
+
+<br><br>User-Agent: Netscape/5.0alpha2 (X11; I; SunOS 5.5.1 sun4u)
+
+<br><br>or maybe this...
+
+<br><br>
+Referer: http://www.playboy.com/
+
+<br><br>See <A HREF="http://www.ics.uci.edu/pub/ietf/http/rfc1945.html#HeaderFields" target="_blank">section 10 of RFC 1945</A> for the complete list of standard
+HTTP/1.0 headers.  I suggest you change the "www.go2net.com" in the
+example above to something else before going too wild.  Insert
+metaphor about not biting the handwriting on the wall here.
+</tt>
+<p>
+<b><a href="body.html">Back</A> to the article</b> <a href="/internet/deep/" target="_top"><img
+src="/global_images/green_thingy.gif" border=0 align=absmiddle width=10
+height=10></a>
+</body>

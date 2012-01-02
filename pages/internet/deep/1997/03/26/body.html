@@ -1,0 +1,189 @@
+<head><title>go2net | internet | deep magic | The many dialects of color</title></head>
+<body link="#0066FF" alink="#FFFF33" vlink="#FF0033" bgcolor="#FFFF99">
+
+<img src="head.gif" width=271 height=41 border=0 alt="The many dialects of color">
+<p><font size=-1 color="#99CC66">26 March 1997</font><P>
+
+The yellowy color in the background of this frame is specified in the HTML
+as #FFFF99. This, of course, is the popular RGB color-encoding scheme,
+easily understood by computer and <a href="01.html" target="define"><b>HTML freaks the world over</b></a><sup><font size="-1">1</font></sup>. In the above representation, each color component is expressed as a
+two-digit hexidecimal number. A more readable representation might be
+(255, 255, 153), which means the red value is 255 (all the way on),
+blue is 255, and green is 153. All black would be (0, 0, 0), and pure red
+would be (255, 0, 0). 
+
+<P>RGB is the most obvious way to represent color on a
+computer. Why? Because that's how a monitor works. 
+<P><P>
+
+<table width="100%" cellpadding=2 cellspacing=0 border=0 align=center><tr>
+<td bgcolor="#99CC66">
+<table width="100%" cellpadding=2 cellspacing=0 border=0 align=center><tr>
+<td bgcolor="#FFFF99">
+<P><img src="image.jpg" width=124 height=124 border=0 align="LEFT" alt="Hey Kids! Its Ray!">
+<center>
+<font size="+3" color="#99CC66">You Can!</font><br>
+<font size="-1">with Geekman</font><P>
+</center>
+
+Each week Geekman answers your science questions.
+
+
+<br clear=left><P>
+<blockquote>
+<tt>
+Dear Geekman, 
+<br><br>
+When I sneeze on my monitor, I see all these cool colors on an otherwise
+white screen, why?
+<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jeff Johnson<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;San Diego, CA<br>
+</tt></blockquote>
+
+<P>Dear Jeff,
+
+<P>   Funny, after I sneeze I see either little stars or complete blackness
+for a few seconds! Ha, ha, ha! 
+
+<P>
+<img src="dots.gif" width=133 height=95 align=left>
+You may be surprised to learn that on a normal CRT monitor, a pixel is
+actually made up of three smaller dots of different colors.  These
+dots are bits of phosphor paint and are
+either red, blue or green. When the electron ray inside the monitor hits
+them, they light up for a brief time, forming the pixel's color. You can
+make any color you want by mixing red, blue, and green in the right
+combinations. 
+
+<P>Normally, these dots are so close together that you see them as one color.
+But when you sneeze on your monitor, the droplets act like tiny
+magnifying glasses, bending the light and making the red, green, and blue
+dots visible. You might actually see the separate components of each pixel.
+Another thing you can
+try is to put your face REALLY close to the monitor and look at a
+white line. If your monitor is poorly adjusted, it sometimes will have a
+small red shadow to the lower right, and a fainter blue shadow to the
+upper left. If you stare long enough, YOU WILL GO BLIND! Ha, ha, just
+another joke, kids; actually you'll only need really thick glasses. 
+
+<P>Now, because each color is in a certain position, I can make a
+picture -- composed entirely of red, blue and green -- that appears white. 
+<P>
+<center>
+<table width="80%" border=0 cellpadding=0 cellspacing=0><tr><td>
+<a href="whiteline.gif"><img border=0 align=left src="whiteline.gif"></a><img align=right src="whitelineZ.gif">
+<br clear=all>
+On the left is a "white line", on the right is a zoom-in on this line.
+If you don't trust me you can download that image and zoom for yourself.
+This is just a trick exploiting the positions of the smaller components
+of a pixel.
+</td></tr></table></center>
+<P>
+
+<P>So next time you sneeze on the monitor, take a few moments to examine
+the beauty that your mucus has exposed.
+
+<pre>
+                            -Geekman
+</pre>
+</td></tr></table>
+</td></tr></table>
+
+<P>RGB is common on computers because the software uses it to tell the
+hardware how to paint a color. The electron gun needs to know
+how brightly to light up each dot within a pixel.
+This brightness is represented in 8 bits, which gives 256 
+brightness values for each color, for a total palette of exactly
+16,777,216 colors.<P> 
+
+So RGB was chosen because it directly corresponds to the medium. In other
+mediums, different color-encoding schemes have been used. For example, in
+paper printing, something known as CMYK is used. The C stands for cyan, the M
+for magenta, and the Y for yellow. K is for black; I suppose because they
+thought B would look like Blue. CMYK is a subtractive color system,
+because you start out with white, the color of the paper. If you want to
+print green, you <a href="02.html" target="define"><b>mix cyan and yellow</b></a><sup><font size="-1">2</font></sup>.
+
+<P>Years of using RGB has made it second-nature to me, but many people find it
+cumbersome. An alternate color encoding, HSV, is based on the more readily
+understood concepts of
+tint, shade and tone. Three-dimensionally, think of HSV as a
+cone. H, or hue, is a number between 0 and 360 -- the angle around
+the vertical axis. Value, V, is a number between 0 and 1 -- the
+distance from tip to base of the cone. S is shade -- the distance
+from the center line. Because of the conic shape, brightness values near 0
+have less shade information.<P>
+
+<applet code="rgb2hsv" codebase="." width=300 height=300>
+<param name="bgcolor" value="ffff99">
+</applet>
+<P>(Note- if you are viewing this in a low-color environment, the HSV
+circle might look funky, and you won't get the most out of this)
+
+<P>Notice that V is only as strong as the strongest component of RGB. 
+
+<P>While RGB is the best format for encoding graphics for
+computers, it is not the most efficient. Many bits are wasted
+in the lower brightness levels. The human eye has a tough time
+distinguishing (0, 0, 22) from (0, 0, 21) or any of the other
+low-brightness colors, though they are given equal importance to bright red
+under
+RGB. An encoding system very similar to RGB is YIQ, which is used on your
+television set. YIQ is simply RGB re-encoded for transmission efficiency
+and compatibility with black-and-white television signals. The
+way it works is fairly simple: Since your eye is most sensitive to
+brightness, that gets the most bits of encoding. Only the brightness, Y, is
+picked up by black-and-white televisions. I and Q get
+significantly fewer bits, and are used only in color televisions. 
+
+<P>Computer file formats also require efficient encoding. If this can
+save a few bits for each pixel, it
+can significantly reduce the overall size of the image. There are quite
+a few ways to do this, and JPEG files use one of them: YCbCr. This scheme
+is closely related to YIQ, with <a href="03.html" target="define"><b>the Cb and Cr rotated about the Y axis</b></a><sup><font size="-1">3</font></sup>.
+
+<P>The JPEG format (<a href="04.html" target="define"><b>JFIF</b></a><sup><font size="-1">4</font></sup>) can save significant space because typical
+digitized photographs have areas of similar brightness. The file
+format specifies a brightness for a 64-pixel area
+with one value, then uses a few bits to adjust the luminance up or
+down from this value for each pixel. This bit of trickery normally is
+great, but it fails to encode simply colored items like this single line. 
+<P>
+<center>
+<table width="80%" border=0 cellpadding=0 cellspacing=0><tr><td>
+<img border=0 align=left src="redline.gif"><img align=right src="redline.jpg">
+<br clear=all>
+On the left is a simple red line, saved as a gif. On the right, the same
+image has been re-saved as a jpg.
+</td></tr></table></center>
+<P><P>
+As you 
+can see, JPEG makes some assumptions about what is important and what
+isn't, and it assigns bits accordingly. The
+extra information gets thrown away, and there is no way to get it back
+when the image is decompressed. Once you know what is assumed, it is easy
+to construct a lot of examples like this. 
+<P><P>
+ 
+<P>So next time you use color in a computer program, remember: RGB isn't the
+only kid on the block, just the first one. There are as many ways to
+encode color as there are colors themselves. If you would like more
+information, I recommend reading <a href="http://www.inforamp.net/~poynton/notes/colour_and_gamma/ColorFAQ.html" target="_blank">Poynton's Colour FAQ</a>.
+
+<P>
+RGB-derci!&nbsp;<a href="/internet/deep/" target="_top"><img border=0 align=absmiddle
+width=10 src="/global_images/green_thingy.gif" height=10 alt="*"></a>
+<p><font size=-1>-- Ray
+<a href="mailto:ray@go2net.com">&lt;ray@go2net.com&gt;</a>
+is a Dreamer of Dreams at go2net. If you told him he was gullible, he'd
+probably believe you.</font>
+
+<p><font size="-1"><a href="rgb2hsv.java" target="_blank">Source code to the applet.</a>
+<br>
+
+"You Can! with Geekman" is a parody of <a href="http://www.nbn.com/youcan/" target="_blank">You Can with beakman</a></font><br>
+
+
+
+</body>

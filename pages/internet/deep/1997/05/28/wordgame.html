@@ -1,0 +1,52 @@
+<head><title>go2net | internet | deep magic | A mind wordgamer</title></head>
+<body bgcolor="#FFFF99">
+<img src="head.gif" width=271 height=41 border=0 alt="A mind wordgamer"><br clear=left>
+<br><font size=-1 color="#99CC66">28 May 1997</font>
+
+<p>The article has come and gone and you punks didn't play much anyway. So
+we took down the servers. However, that doesn't mean that you can't
+download the code and run your own server. Being magnanimous sorts, we let
+anyone have the source code to things written in Deep Magic. Feel free to
+bend, fold and mutilate.
+
+<p>Pick your flavor: <a href="wordgame_src.tgz">gzipped tar file</a> or <a
+href="wordgame_src.zip">zip file</a>.
+
+<p>Once you've got it downloaded, unpacked, and compiled, you need to do
+three things:
+
+<ul>
+<li>Create an html file with an applet tag that loads the wordgame applet:
+<pre>
+&lt;applet width=500 height=400
+ codebase="/wherever/you/put/wordgame_src/"
+ code="dclient.Rendevous"&gt;&lt;/applet&gt;
+</pre>
+
+<li>Run the wordgame server on the machine from which you will serve the
+wordgame applet:
+
+<pre>
+% cd /path/to/wordgame_src/
+% java dserver.Server
+</pre>
+
+<li>Create a dictionary for the <code>validate.pl</code> script to use
+when validating words. This is done with the <code>create_dict.pl</code>
+script. I'll let the cat out of the bag that I'm a Unix weenie and warn
+you that it's a Unix-centric script. It expects an input file formatted
+like <code>/usr/dict/words</code> (a list of words, one per line) with
+which to seed the dictionary. It also expects to be able to place a
+dictionary in <code>/var/preserve/words</code>. A resourceful hacker
+should easily be able to modify these two scripts to function on her
+system without problem.
+
+<pre>
+% ./create_dict.pl /usr/dict/words
+</pre>
+</ul>
+
+<p>That's all there is to it. Good luck! <a href="/internet/deep/"
+target="_top"><img src="/global_images/green_thingy.gif" border=0
+align=absmiddle width=10 height=10 alt="*"></a>
+</body>
