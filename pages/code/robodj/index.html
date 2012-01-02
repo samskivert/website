@@ -1,0 +1,75 @@
+<!--#set var="title" value="robodj"-->
+<!--#set var="subtitle" value="client/server mp3 jukebox"-->
+<!--#include virtual="/header.html"-->
+
+<h3>What is it?</h3>
+
+<p> RoboDJ is an unabashed reimplementation of the ever so popular MP3
+jukebox wheel written for no other reason than to satisfy my very
+particular needs. It has the following features and limitations:
+
+<ul>
+  <li><p> The music repository (the mp3 files), the music server and
+  the music database (MySQL in my case) are all accessed via the
+  network so that they can run on a headless machine wired into one's
+  stereo.
+    
+  <li><p> The CD importing client and music browsing and queueing
+  client can be run on any machine in the network, simultaneously and
+  by many people (generally only people on your local area network,
+  but you could let people on the Internet control your music server
+  if you felt the need).
+
+  <li><p> Music can be imported by any node on the network and is then
+  uploaded to the music server.
+</ul>
+
+RoboDJ thus manifests itself as a music server, a SQL database and
+clients for browsing and importing music that call out to Unix command
+line tools to do the CD ripping (cdparanoia) and MP3 encoding (lame).
+Uploading music to the music server must currently be done manually (I
+use rsync).
+
+<h3>Screenshots</h3>
+
+<p>Importing a CD: <a href="shots/import-cddb.png">setting track
+names</a>, <a href="shots/import-progress.png">ripping and
+converting</a>
+
+<p>Browsing and playing:
+<a href="shots/chooser-playlist.png">editing the playlist</a>,
+<a href="shots/chooser-browse.png">browsing the repository</a>,
+<a href="shots/chooser-search.png">searching the repository</a>.
+
+<h3>Downloading</h3>
+
+<p> Little attempt has been made to make RoboDJ easy to install, but
+if you're crazy enough to want to give it a try, you should download
+the source. The source is managed with
+<a href="http://subversion.tigris.org">Subversion</a>:
+
+<p><code>% svn checkout svn://samskivert.com/robodj/trunk robodj</code>
+
+<p> Once you have the database set up, a music repository directory
+created and everything is working. You can run the clients using Java
+Web Start with these links:
+
+<p><a href="chooser.jnlp">Music Chooser</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="importer.jnlp">Music Importer</a>
+
+<p> They will ask for configuration information the first time they
+are run (or if they cannot communicate with the music database or
+daemon).
+
+<p> RoboDJ is released under the
+  <a href="http://www.fsf.org/licenses/gpl.html">GPL</a>. Stop
+  whining, it's good for you. The most recent version of the project
+  should always be available <a
+  href="http://samskivert.com/code/robodj/">here</a>.
+
+<h3>Contribution</h3>
+
+<p> Contributions are welcome. Mail patches to
+<a href="mailto:mdb@samskivert.com">mdb@samskivert.com</a>.
+
+<!--#include virtual="/footer.html"-->

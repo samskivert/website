@@ -1,0 +1,92 @@
+<!--#set var="title" value="jikan"-->
+<!--#set var="subtitle" value="a calendar and journal"-->
+<!--#set var="descrip" value="Calendar and list management tool."-->
+<!--#include virtual="/header.html"-->
+
+</div><div> <!-- circumvent stock page width -->
+
+<img src="jikan.png" style="margin-left: 10px; float: right">
+<h3>What is it?</h3>
+
+<p> Jikan is a calendaring and list management tool that works the way
+I want, rather than the way everyone else in the world seems to think
+that such tools should work. Specifically:
+
+<ul>
+  <li><p> The calendar shows the current and upcoming weeks rather
+  than giving me a pointless week or month view which become
+  increasingly useless toward the end of the time period in question.
+
+  <li><p> My appointments are shown in a list so I can see the next
+  ten or so appointments regardless of how far into the future they
+  are. Additional appointments are just a button click away.
+
+  <li><p> It has support for a daily journal wherein I keep track of
+  stuff I did. Some people probably aren't this anal, but I find it to
+  be interesting and useful. Even more so when I eventually add
+  searching support.
+
+  <li><p> It's data can be shared between computers by instructing
+  Jikan to store its files in your
+  <a href="http://getdropbox.com">Dropbox</a> folder (or any other
+  magically mirrored directory). Jikan will detect when files are
+  updated and reload things appropriately. I regularly have it running
+  on at least three computers.
+
+  <li><p> It syncs your appointments out to a Google Calendar. At some
+  point I'm going to implement bi-directional syncing, but for now if
+  you create (or update) an appointment in Jikan it will get written
+  out to your Google Calendar (assuming you log into your Google
+  account when it starts up).
+</ul>
+
+I've been using it for half a decade or so and find it to be pretty
+functional. A few things to note:
+
+<ul>
+  <li><p> Right click on a date to create a new blank appointment
+  entry for that date. Then edit the appointment below to fill in the
+  details.
+
+  <li><p> The date and time parsing code is fiddly. You have to enter
+  in "HH:MM xM" exactly or it will fail to parse. In the future, I'm
+  going to write a graphical widget for setting the date and time.
+
+  <li><p> Right click on list items to delete them. Events do not
+  automatically expire after they have passed, you have to manually
+  delete them. Perhaps someday I'll automatically archive them in the
+  journal.
+
+  <li><p> It used to also have categorized TODO lists but I nixed
+  those in favor of using separate TODO software. Jikan now focuses on
+  maintaining appointments that have a date and time and on recording
+  a journal of your daily activities.
+</ul>
+
+<h3>Try It!</h3>
+
+<p> You'll need
+<a href="http://www.java.com/en/download/index.jsp">Java 1.6</a>
+installed. Download the installer appropriate to your platform:
+<ul>
+<li> Linux: <a href="jikan-install.bin">jikan-install.bin</a>
+<li> Mac OS X: <a href="jikan-install.dmg">jikan-install.dmg</a>
+<li> Windows: coming soon! <!-- <a href="jikan-installer.exe">jikan-installer.exe</a> -->
+</ul>
+
+<p> You can also inspect and build it from the source, which is
+managed with <a href="http://subversion.tigris.org">Subversion</a>:
+
+<p><code>% svn checkout svn://samskivert.com/jikan/trunk jikan</code>
+
+<p> Jikan is released under the
+  <a href="http://www.fsf.org/licenses/gpl.html">GPL</a>. The most
+  recent version of the project should always be
+  available <a href="http://samskivert.com/code/jikan/">here</a>.
+
+<h3>Contribution</h3>
+
+<p> Contributions are welcome. Send suggestions or patches to
+<a href="mailto:mdb@samskivert.com">mdb@samskivert.com</a>
+
+<!--#include virtual="/footer.html"-->

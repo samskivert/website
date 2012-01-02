@@ -1,0 +1,74 @@
+<!--#set var="title" value="lookuplet"-->
+<!--#set var="subtitle" value="Making your life more efficient, one keystroke at a time"-->
+<!--#include virtual="/header.html"-->
+
+<h3>What is it?</h3>
+
+<p> <img src="images/lookuplet.png" align="right"> lookuplet provides
+  an easily accessible, unified interface for looking things up. There
+  are many applications (desktop and web-based) in which you enter
+  some text and they return some information based on that
+  text. Examples include:
+
+<ul>
+  <li> Looking a word up in a dictionary
+  <li> Performing a web search
+  <li> Performing a more specific search (searching Debian packages or
+    on freshmeat.net, etc.)
+  <li> Looking up an address in a mapping service
+</ul>
+
+<p> lookuplet aims to make all of those services readily accessible in
+  as efficient a manner as possible.
+
+<p> When invoked, the lookuplet grabs the current selection and sticks
+  it into a text field for potential editing. You then press a key
+  combination that you have previously configured and the text is sent
+  either as an argument to an application or URL encoded and
+  substituted into a URL which is then opened with your preferred web
+  browser.
+
+<p> This interface is based on the emacs principle of typing as few
+  characters as possible to perform tasks that are done frequently. I
+  find myself looking things up in various applications all of the
+  time and the overhead of creating a new browser window, selecting a
+  bookmark, clicking into the text entry field, entering the text and
+  then pressing submit struck me as tremendously inefficient.
+
+<p> The expectation is that you'll configure your window manager to
+  launch lookuplet at the press of some key combination so that from
+  any application, you can simply highlight text, press the lookuplet
+  key combination and then press the key combination of your desired
+  service.  With such a configuration, the process of looking up
+  information becomes extremely efficient in terms of key presses and
+  mouse clicks.
+
+<p> The key combinations used by lookuplet and the associated launch
+  configuration are maintained via a simple graphical user interface.
+
+<h3>Documentation</h3>
+
+Documentation and screenshots are available on the
+<a href="using.html">using lookuplet</a> page.
+
+<h3>Downloading</h3>
+
+lookuplet is only available in source form given that it's wildly out
+of date and in various stages of abandoned rewrite:
+
+<p><code>% svn checkout svn://samskivert.com/lookuplet/trunk lookuplet</code>
+
+<h3>Distribution</h3>
+
+<p> lookuplet is released under the
+  <a href="http://www.fsf.org/licenses/gpl.html">GPL</a>. The most
+  recent version of the program should always be available
+  <a href="http://samskivert.com/code/lookuplet/">here</a>.
+
+<h3>Contribution</h3>
+
+<p> Contributions are welcome. Email
+  <a href="mailto:mdb@samskivert.com">mdb@samskivert.com</a> with
+  comments or patches.
+
+<!--#include virtual="/footer.html"-->

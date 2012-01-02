@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- JNLP File for RoboDJ music importer -->
+
+<!-- If you're seeing this in your web browser, you probably need to
+     download and install the Sun JRE 1.4 and/or Java Web Start from
+     http://java.sun.com/j2se/ -->
+
+<jnlp spec="1.0+" codebase="http://www.samskivert.com/code/robodj/" href="importer.jnlp">
+  <information>
+    <title>RoboDJ Importer</title>
+    <vendor>Seuss and Asseusciates</vendor>
+    <homepage href="index.html"/>
+    <icon href="icon.png"/>
+    <description kind="short">
+      Music importing for the whole family!
+    </description>
+    <description>
+      Reads CDs and converts the music to MP3 for the RoboDJ system.
+    </description>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.4+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="robodj.jar"/>
+    <jar href="commons-io.jar"/>
+    <jar href="commons-lang.jar"/>
+    <jar href="mm.mysql-2.0.14-bin.jar"/>
+    <jar href="samskivert.jar"/>
+  </resources>
+  <application-desc main-class="robodj.importer.Importer"/>
+</jnlp>

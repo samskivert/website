@@ -1,0 +1,82 @@
+<!--#set var="title" value="banana user interface"-->
+<!--#set var="subtitle" value="A user interface toolkit for the jMonkeyEngine"-->
+<!--#include virtual="/header.html"-->
+
+<h3>What is it?</h3>
+
+<p> The Banana User Interface toolkit is built atop the
+<a href="http://www.jmonkeyengine.com">jMonkeyEngine</a> (JME), a 3D
+engine for Java that is currently built on top of
+<a href="http://www.lwjgl.org">LWJGL</a>. BUI aims to provide an
+interface toolkit with the following characteristics:
+
+<ul>
+<li> A component hierarchy and event dispatch model familiar to users
+     of Swing and the AWT
+<li> An easily customizable look and feel to allow game developers the
+     necessary flexibility to create an interface consistent with
+     their game's art style
+<li> As full-featured as possible a user experience, providing
+     standard UI functionality such as focus, cut and paste, keyboard
+     navigation and control and so forth (we have a long way to go on
+     this front)
+<li> An open source license that allows the toolkit to be used and
+     extended at no cost by developers working on personal and
+     commercial projects
+</ul>
+
+<p> BUI is presently in the very early stages, but is being rapidly
+expanded in conjunction with a commercial game. As functionality is
+needed within the game, support will be added to the toolkit.  See the
+Contribution setion below if you would like to help with the project.
+
+<p> Here's a quick screen shot:
+<center><img src="images/bui-2005-09-15.png"></center>
+
+<h3>Downloading</h3>
+
+The BUI source code is available for download. The latest version of
+the code is available from the Subversion repository and some
+inevitably out of date version is available as a zip archive.
+
+<p><table cellpadding="4" width="800">
+<tr><td colspan><b>Documentation</b></td>
+<td>online: <a href="jme-bui/docs/api/overview-summary.html">API
+docs</a> or downloadable:
+<a href="jme-bui-docs.zip">jme-bui-docs.zip</a></td></tr>
+<tr><td><b>Binary</b></td>
+<td><a href="jme-bui/dist/jme-bui.jar">jme-bui.jar</td></tr>
+<tr><td valign="top"><b>Source</b></td><td>
+The library is available in source code form via
+<a href="http://subversion.tigris.org">Subversion</a>:
+
+<p><code>% svn checkout svn://samskivert.com/jme-bui/trunk jme-bui</code>
+</td></tr>
+<tr><td valign="top"></td><td>
+A zip file is also available: <a href="jme-bui.zip">jme-bui.zip</a>.
+</td></tr>
+</table>
+
+<p> BUI is released under the
+<a href="http://www.fsf.org/licenses/lgpl.html">LGPL</a>. The most
+recent version of the library should always be available at
+<a href="http://samskivert.com/code/jme-bui/">
+http://samskivert.com/code/jme-bui</a>.
+
+<h3>Building</h3>
+
+Building BUI requires <a href="http://jakarta.apache.org/ant/">ant</a> and an
+up-to-date build of JME. Place the JME and LWJGL jar files in the
+<code>lib/</code> directory of the BUI source tree and run <code>ant
+dist</code> to build the library.
+
+<h3>Contribution</h3>
+
+<p> Contributions are welcome. Discussion generally takes place in the
+<a href="http://www.jmonkeyengine.com/jmeforum/index.php?board=11.0">GUI
+forum</a> of the JME website. Patches and enhancements can be
+discussed there and sent to
+<a href="mailto:mdb@samskivert.com">mdb@samskivert.com</a> for
+inclusion in the library.
+
+<!--#include virtual="/footer.html"-->

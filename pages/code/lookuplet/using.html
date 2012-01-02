@@ -1,0 +1,111 @@
+<!--#set var="title" value="lookuplet"-->
+<!--#set var="subtitle" value="Making your life more efficient, one keystroke at a time"-->
+<!--#include virtual="/header.html"-->
+
+<h3>Using lookuplet</h3>
+
+<p> lookuplet aims to be simple to use, but can also be a bit
+non-obvious to the first time user because of it's goals of being
+unobtrusive and efficient. To help initiate you, our lovely target
+audience, into the wonderful world of lookuplet, we provide this handy
+tutorial.
+
+<p> Assuming you've installed lookuplet, go ahead and invoke it now
+  (by running the program named <code>lookuplet</code>) and you'll see
+  a window that looks something like this:
+
+<div align="center"><img src="images/lookuplet.png"></div>
+
+<p> The text in the text entry box may be different or blank
+  (depending on what was active in the X Windows selection at the
+  time). Regardless, go ahead and type something into the text field
+  and press <code>Control-g</code> (that means holding down the
+  control key and pressing the g key at the same time). This should
+  make lookuplet go away and a browser window should shortly appear
+  with a <a href="www.google.com">Google</a> search on whatever terms
+  you had entered into the text box before pressing
+  <code>Control-g</code>.
+
+<p> This is the essence of lookuplet. You enter some text or other,
+  and press some key combination and lookuplet either does a web
+  lookup or runs some application with the text you entered as an
+  argument. It seems simple, but if you're like me and you're
+  constantly using web services to look things up, you'll find that
+  the time you save by not having to open a browser window, type in a
+  URL (or select a bookmark), wait for the query page to load, type in
+  the query and then click submit, is substantial.
+
+<p> The real power of lookuplet comes when you configure it to launch
+  queries for the services that you use frequently. To do that, we
+  turn to the inconspicuous little button next to the text window that
+  is labeled <code>Prefs</code>. Run lookuplet again and click on the
+  prefs button. This should pop up a window that looks something like
+  this:
+
+<div align="center"><img src="images/prefs.png"></div>
+
+<p> You probably won't have the exact same entries that are shown
+  here, but some of them should be the same. These are all of the
+  mappings that lookuplet currently has configured. The left column
+  describes the key combination that must be pressed to invoke the
+  mapping and the right column is a descriptive name of the mapping.
+  To see more closely what's involved in a mapping, let's edit the
+  <code>Google search</code> mapping by clicking on it and then
+  clicking on the <code>Edit...</code> button.
+
+<p> You should now see a window that looks like this:
+
+<div align="center"><img src="images/binding.png"></div>
+
+<p> Here we can see exactly what's going on when we invoke the Google
+  search binding. The <code>Key</code> field shows us what key we
+  press to invoke the binding, the <code>Name</code> field shows the
+  descriptive name of the binding. The <code>URL</code> dropdown shows
+  us that we're going to be launching a URL rather than executing a
+  program, and the text box next to the <code>URL</code> dropdown
+  shows us exactly what URL it is that we're going to launch.
+
+<p> The important thing about the URL, aside from the fact that it's
+  the URL that is shown at the top of your browser when you do a
+  Google search, is that it contains <code>%U</code>. That is where
+  the words that you type in will be substituted into the URL before
+  it is sent to your web browser.
+
+<p> So as you can imagine, any web service where you type in some
+  query terms and the result is displayed in your browser, can be made
+  to work in lookuplet. You simply perform some search on the service,
+  then copy the URL from your web browser, create a new binding in
+  lookuplet and paste the URL into the box. Then look for the part of
+  the URL that contains your search terms. It's usually best to search
+  for a single, uncommon word so that you can see exactly where it
+  shows up in the URL. You replace that word with the string
+  <code>%U</code> and away you go.
+
+<p> Note that some web services are structured in such a way that you
+  can't just grab their URL and use it in a program like lookuplet
+  (probably because they want you to see the ads or other marketing
+  information on their main page if you're using their service). If
+  you perform a search on a service and the words you used in your
+  search don't appear in the URL of the results page, then you've
+  probably run into such a service. In most cases, you can reverse
+  engineer the URL used by the service to make the search request and
+  create a configuration for lookuplet that will work with this
+  service. The <code>IMDB Title search</code> was reverse engineered
+  thus. But the method by which this is accomplished requires a
+  sophisticated understanding of how web browsers interact with web
+  servers and is beyond the scope of this tutorial. Find a friendly
+  neighborhood geek to figure out the URL for you if you can.
+
+<p> That's about all there is to say. Have a look at the other
+  examples to get a better idea of what different bindings might look
+  like. I should also mention that while you use <code>%U</code> when
+  substituting terms into a URL, you can use <code>%T</code> when
+  substituting terms into a command line (for executing a program
+  rather than launching a URL). <code>%T</code> doesn't URL encode
+  your search terms it just inserts them as-is.
+
+<p> Enjoy...
+
+<p> Back to <a href="index.html">project page</a>.
+
+<!--#include virtual="/footer.html"-->
