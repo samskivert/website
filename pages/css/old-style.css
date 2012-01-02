@@ -1,0 +1,52 @@
+body { 
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+i, em {
+  font-style: italic;
+}
+
+th, td, center, div { /* ns 4 */
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+pre, code {
+  font-family: Courier;
+}
+
+table {
+  border-collapse: collapse;
+  border-width: 0;
+}
+
+#banner, #footer {
+  font-weight: bold;
+  margin: 0px 0px;
+  text-align: center;
+}
+
+#footer {
+  border-top: 1px solid #CCCCCC;
+  padding: 6px;
+  font-weight: normal;
+  font-size: medium;
+}
+
+#page {
+  width: 750px;
+  margin: 0px auto;
+}
+
+.big {
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-size: x-large;
+}
+
+.small {
+  font-size: small;
+  font-weight: normal;
+}
+
+.underline {
+  text-decoration: underline;
+}
