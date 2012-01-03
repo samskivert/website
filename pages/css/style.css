@@ -112,3 +112,7 @@ h3 {
 #page-navigation .right {
   float: right;
 }
+
+#page-navigation .clear {
+  clear: both;
+}
