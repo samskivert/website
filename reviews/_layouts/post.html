@@ -7,6 +7,20 @@ layout: default
 {{ content }}
 </div>
 
+<div id="page-navigation">
+  <div class="left">
+  {% if page.previous.url %}
+    <a href="/blog{{page.previous.url}}" title="Previous Post: {{page.previous.title}}">&laquo; {{page.previous.title}}</a>
+  {% endif %}
+  </div>
+
+  <div class="right">
+  {% if page.next.url %}
+    <a href="/blog{{page.next.url}}" title="next Post: {{page.next.title}}">{{page.next.title}} &raquo; </a>
+  {% endif %}
+  </div>
+</div>
+
 <!--
 <div id="disqus">
   <div id="disqus_thread"></div>
