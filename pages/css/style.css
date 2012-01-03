@@ -70,9 +70,8 @@ h3 {
     letter-spacing: 0;
 }
 
-#banner, #footer {
-  font-weight: bold;
-  margin: 5px 0px 0px;
+#banner {
+  margin: 0px 0px;
 }
 
 #footbox {
@@ -83,10 +82,12 @@ h3 {
 
 #footer {
   border-top: 1px solid #CCCCCC;
-  padding: 6px;
   font-weight: normal;
+  margin: 5px 0px 0px;
+  padding: 6px;
   font-size: medium;
   text-align: center;
+  clear: both;
 }
 
 #page {
@@ -111,8 +112,4 @@ h3 {
 
 #page-navigation .right {
   float: right;
-}
-
-#page-navigation .clear {
-  clear: both;
 }
