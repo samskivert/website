@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Automatic Documentation Inference for Exceptions – Buse and Weimer"
+category: papers
+---
+
+<p><b>Summary</b><br>
+Presents a two phase technique for statically inferring the conditions under which exceptions are thrown by Java code and automatically generating Javadoc documentation for same. Performs interprocedural, context sensitive analysis. Evaluation on two-plus million lines of Java code.</p>
+<p><b>Comments</b><br>
+This looks pretty useful. Indeed, the reason I read the paper is because it’s related to a project I’m working on now to use the results of numerous analyses to augment Javadoc documentation for poorly or undocumented libraries. We even talked about doing essentially this same analysis when brainstorming useful analyses at the start of the project. Peskily they don’t provide source code, which probably means their tool is mostly duct-tape and baling wire. We’re hoping to produce a generally usable tool but I’m already losing hope on that front as we try to integrate numerous existing analyses that are very duct-tape and baling wire themselves. I haven’t totally given up hope, and we’ll be releasing the source to our tool one way or the other. It may just come with a verbose instructions on how to get the underlying analyses to run on your source code and what to do if they keel over.</p>
+<p><b>Source:</b> <a href="http://www.cs.virginia.edu/~weimer/p/weimer-issta2008-docinf.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1390664">ACM</a></p>

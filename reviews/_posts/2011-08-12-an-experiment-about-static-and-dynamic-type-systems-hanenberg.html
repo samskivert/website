@@ -1,0 +1,10 @@
+---
+layout: post
+title: "An Experiment About Static and Dynamic Type Systems – Hanenberg"
+category: papers
+---
+
+<p>Hanenberg describes an experiment where a largish group of students (49) were split in twain and given a moderately sized programming task (write a scanner and parser for Mini Java). The task was to be implemented in a minimalist, Smalltalk-like programming language with a basic IDE. One group’s language was dynamically typed and the other’s was statically typed. The dynamically typed version got the basic functionality of the scanner done significantly faster, and both groups performed about the same in terms of completeness/correctness (time being a limiting factor).</p>
+<p>I don’t think major conclusions can be drawn from the results, even though they confirm some of my own biases that I’d like to believe were based in fact. They noted that the mean time from observed type failure (be it dynamic or static) to successfully executed test was not significantly different between the static and dynamic groups. The expectation was that the static type checker users would discover and fix such errors faster (that arguably being the prime directive of static type systems). However, these things are very difficult to measure. The times they reported from failure to fix were exceedingly large (nearly two hours in some cases) which makes me think that using this measurement as a proxy for efficiency in error correction is not especially valid. The environment also did not provide immediate visual feedback for type errors (like any modern IDE does), which needlessly squanders a level of efficiency that can be had with static types that is much harder to achieve with dynamic types.</p>
+<p>Anyhow, it’s a useful data point and a good reminder that our preferences for static or dynamic type systems are far from empirically supported.</p>
+<p><b>Source:</b> <a href="http://portal.acm.org/citation.cfm?doid=1869459.1869462">ACM</a></p>

@@ -1,0 +1,17 @@
+---
+layout: post
+title: "Access Path Selection in a Relational Database Management System – Selinger, et. al."
+category: papers
+---
+
+<p><b>Summary</b><br>
+System R is introduced. SQL statement processing summarized: parsing, optimizing, code generation, execution. Research Storage System is introduced, supported scans summarized: segment and index scan. Costs for single relation access paths outlined along with general formula for estimating cost. Selectivity factor introduced, approximations provided for supported predicates (c = v, c &gt; or &lt; v, c1 &lt; v &lt; c2, c in l, c in subquery, or, and, not). Search algorithm plus heuristics for join access path selection summarized. Method for calculating costs is provided along with full walk-through of example join. Handling of nested queries is explained.</p>
+<p><b>Comments</b><br>
+If you’ve ever wondered about the gory details of how a relational database decides precisely how to process a query, this is a great place to start. They give good formulas for estimating the cost (in disk reads) of various query predicates based on limited statistics about the indexes and relations, and a robust method for combining that information together as you consider different potential join orders. The whole gamut of query optimization has produced many PhDs over the last thirty years and is accordingly pretty complex, but this is the solid foundation on which it all rests.</p>
+<p>I also discovered correlation subqueries (select NAME from EMPLOYEE X where SALARY &gt; (select SALARY from EMPLOYEE where EMPLOYEE_NUMBER = X.MANAGER)), which I never knew about (or never had a query that needed such a thing, I suppose). My mind balks at how expensive they are to compute (they talk about some possible optimizations), but they definitely increase the expressive power of SQL.</p>
+<p>A couple of amusing anecdotes:</p>
+<ul>
+<li> These guys were talking about subqueries in 1979. How long did it take MySQL to support them?
+<li> Even these authors, which include one of the inventors of SQL, can’t decide whether to say “a SQL statement” or “an SQL statement”.
+</li></li></ul>
+<p><b>Source:</b> <a href="http://www.cs.berkeley.edu/~brewer/cs262/3-selinger79.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=582099">ACM</a></p>

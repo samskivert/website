@@ -1,0 +1,12 @@
+---
+layout: post
+title: "The Semantics of x86-CC Multiprocessor Machine Code – Sarkar, et al."
+category: papers
+---
+
+<p><b>Abstract</b><br>
+Develops a rigorous and accurate semantics for x86 multiprocessor programs, from instruction decoding to relaxed memory model, mechanized in <a href="http://hol.sourceforge.net/">HOL</a>. Tests the semantics against actual processors and the vendor litmus-test examples, and gives an equivalent abstract-machine characterization of the axiomatic memory model. For programs that are (in some precise sense) data-race free, proves in HOL that their behavior is sequentially consistent. Also contrasts the x86 model with some aspects of Power and ARM behavior.</p>
+<p><b>Comments</b><br>
+Processor architecture memory models are historically underspecified and this is a noble effort at remedying that. Not only did they pore over vendor documentation, they built tools for doing empirical testing to help resolve ambiguities and beat the bushes inside and outside Intel to get what information they could. Interestingly, the model presented in this paper turned out to have some problems, and based on spec refinements from Intel and more testing, they developed a new model based on <em>total store order</em> rather than <em>causal consistency</em> which more accurately reflects reality. They also provide source for many of their tools and their mechanized proofs on their <a href="http://www.cl.cam.ac.uk/~pes20/weakmemory/">website</a>.</p>
+<p>The whole business is dauntingly complex. The concrete examples demonstrating the axioms in the axiomatic semantics show just how difficult it can be to reason about relaxed memory models. The axiomatic semantics itself was a bear for me to comprehend, but that’s more the double whammy of unfamiliar notation and the complexity of the underlying memory models. They are also working on a machine model which is far nicer for developing an intuition, though less useful for proofs. Fortunately, most of us don’t have to think about all this because we can just use locks to avoid data races and rely on the (proven) fact that data race free programs see sequentially consistent memory, but VM and OS implementers will no doubt appreciate unambiguous answers to tricky edge cases.</p>
+<p><b>Source</b>: <a href="http://www.cl.cam.ac.uk/~pes20/weakmemory/popl09.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1480881.1480929">ACM</a></p>

@@ -1,0 +1,8 @@
+---
+layout: post
+title: "Counterexample-Guided Abstraction Refinement – Clarke, et al."
+category: papers
+---
+
+<p>This paper was part of my introduction to model checking. It introduces an idea that has gotten a lot of mileage in the program analysis and model checking community. To wit: start with a rough (but soundly over-approximating) abstraction, if said abstraction demonstrates a violation figure out whether the violation is real (you’re done) or spurious, in the latter case use the spurious example to refine your abstraction as little as possible. Repeat until your abstraction is sufficiently refined to find a real violation or no violations.</p>
+<p><b>Source</b>: <a href="http://reports-archive.adm.cs.cmu.edu/anon/2000/CMU-CS-00-103.pdf">PDF</a> <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.19.407">CiteSeerX</a></p>

@@ -1,0 +1,13 @@
+---
+layout: post
+title: "The Multi-Principal OS Construction of the Gazelle Web Browser – Wang, et al."
+category: papers
+---
+
+<p><b>Summary</b><br>
+Presents Gazelle, a secure web browser that makes use of an OS-like browser kernel that exclusively manages resources and cross-principal (cross-site) sharing. Security model, architecture described. Display sharing and event dispatch details provided. Prior known vulnerabilities considered for new architecture. Implementation details provided: C# kernel, IE7 Trident rendering engine. Performance and memory use evaluated. Selection of backwards-incompatible security improvements discussed.</p>
+<p><b>Comments</b><br>
+I think the architecture they describe in this paper—a fully isolated web browser kernel that enforces all resource management and cross-site sharing decisions based on simplified abstractions—is inevitable. That’s the model we use for operating systems and web browsers are an even scarier place than the desktop with greater need for security.</p>
+<p>Their discussion of how to sanely share the 2D resources of a rendered page among different principals (sites) was interesting. Clearly we’ve gone too far in allowing arbitrary transparent overlap between totally different sites, but they propose a reasonably low-impact reigning in (essentially disallowing transparency when overlapping a cross-principle region) which helps a bit. I still suspect that allowing any overlap will allow nefarious persons to construct websites that fool people into giving away sensitive data. Even the ability to arbitrarily embed any website within any other, regardless of whether the embedee intended it, seems dangerous. Perhaps the solution lies in some sort of cooperation on the part of the embdee with an explicit declaration that “I’m meant for embedding.” Then one could hope that people might be encouraged to be more careful when creating web content that is designed to be embedded in other sites (like not ever asking the user to enter sensitive information into the UI on the embed). That’s probably wishful thinking.</p>
+<p>I also think they’re going overboard by isolating subdomains from one another. While it is nice that a bug in news.google.com can’t result in leakage of information from mail.google.com, I think that’s putting the cart before the horse. Google should move their products to different top-level domains, and web application architects should not lose the ability to make use of separate subdomains in the construction of a single application without paying a mammoth performance penalty.</p>
+<p><b>Source:</b> <a href="http://research.microsoft.com/pubs/79655/gazelle.pdf">PDF</a> <a href="http://research.microsoft.com/apps/pubs/default.aspx?id=79655">MSR</a></p>

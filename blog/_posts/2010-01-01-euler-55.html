@@ -1,0 +1,19 @@
+---
+layout: post
+title: "Euler 55"
+---
+
+<p><a href="http://projecteuler.net/index.php?section=problems&amp;id=55">Problem 055</a>:</p>
+<pre>
+object Euler55 extends EulerApp {
+  def ispal (n :String) = n.take(n.length/2) == n.takeRight(n.length/2).reverse
+  def islychrel (n :BigInt, iter :Int = 0) :Int =
+    if (iter &gt; 0 &amp;&amp; ispal(n.toString)) 0
+    else if (iter == 50) 1
+    else islychrel(n + BigInt(n.toString.reverse), iter+1)
+  println((1 to 9999).map(n =&gt; islychrel(n)).sum)
+}
+</pre>
+<p>Nothing much to see here, other than that I took advantage of a couple of nice features of Scala 2.8 while cleaning this up for posting.</p>
+<p>The first is the use of a default argument to <code>islychrel</code> so that when I call it non-recursively, I don’t have to manually specify 0 for the 0th iteration. I do still have to explicitly write <code>n =&gt; islychrel(n)</code> because I’m taking advantage of the implicit conversion to BigInt. In theory I could do <code>map(BigInt.apply).map(islychrel)</code> but, not surprisingly, that causes Scala’s implicit argument support to do le freak out.</p>
+<p>The other nice 2.8ism I’m taking advantage of is that <code>RichString.take</code> and <code>RichString.takeRight</code> both return <code>String</code>, so where I used to be calling <code>mkString</code> to get the faster string comparison, I no longer need to do so. Yay!</p>

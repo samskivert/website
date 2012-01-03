@@ -1,0 +1,19 @@
+---
+layout: post
+title: "Operating System Support for Database Management – Stonebraker"
+category: papers
+---
+
+<p><b>Summary</b><br>
+Various operating system services correspond to services needed by DBMSs and yet lack just enough functionality or performance that they end up being reimplemented by DBMS vendors. The paper outlines those features and the mismatches in question.</p>
+<ul>
+<li>Buffer pool management suffers from poor performance, an inability for the DBMS to provide hints to the replacement and prefetch mechanisms and a lack of control over flushing to disk needed for correct crash recovery.</li>
+<li>The file system provides a variable length character array abstraction which is not ideal for databases and utilizes two tree structures (i-nodes and directory trees) on top of the trees used by a DBMS index.</li>
+<li>Process scheduling is suboptimal in that context switches are expensive and a DBMS can often make intelligent more decisions about context switching like not switching out a process that holds an important buffer pool lock as all other processes will likely simply queue up behind that process if they are scheduled for execution.</li>
+<li>IPC message sends have poor performance which limits the architectural choices that a DBMS might make to achieve higher throughput with multiple disks and better support a multiuser DBMS.</li>
+</ul>
+<p>Limitations on having the operating system provide transaction exist in relation to crash recovery. Paged virtual memory systems also suffer some of the same problems as buffer pool management, and have additional page table memory overhead.</p>
+<p><b>Comments</b><br>
+This paper dates from 1981 and is talking mainly about early versions of UNIX on PDP-11s and VAXen, thus its appeal is mainly historical. Many of the issues have simply disappeared thanks to Moore’s law applied to CPU speed and memory size. Having a 100K page table when mmap-ing a 100M file would seem no longer to be an issue. Similarly context switching overhead and IPC message sends have taken a back seat from a performance standpoint to efficiently utilizing multiple processors and optimally making use of multi-tier memory architectures.</p>
+<p>One problem that has not gone away is dealing with disk subsystems. For a time DBMS vendors tried using raw disk I/O to achieve maximum performance, but advances in file system technology coupled with an explosion in disk drive technologies (RAID, drives with huge memory caches and complex controllers, SAN, NAS, SSD, etc.) have reduced the viability of that approach. It remains the purview of familiar-with-the-state-of-the-art DBAs to know how to best configure a database and a disk subsystem to achieve good performance.</p>
+<p><b>Source:</b> <a href="http://www.cs.berkeley.edu/~prabal/resources/osprelim/Sto81.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=358703">ACM</a></p>

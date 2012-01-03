@@ -1,0 +1,8 @@
+---
+layout: post
+title: "Lackwit: A Program Understanding Tool Based on Type Inference – O’Callahan and Jackson"
+category: papers
+---
+
+<p>Another crazy use of type systems. Here the idea is to completely ignore the declared types of variables and instead just run a type inference algorithm (Milner’s Algorithm W) on the program and see what types you get. Instead of using primitive operations (like addition) to constrain variables to representation types (like <code>int</code>), you just constrain variables to the same type. Naturally, assignment and function calls cause type unification as well. You end up with a bunch of abstract types assigned to variables that reflect whether they are “related”. The idea is that this helps you to understand where values flow through your program and what might be impacted when making changes. It sounds like an interesting idea; I have no idea if it would be useful in practice.</p>
+<p><b>Source</b>: <a href="http://www.cs.ucdavis.edu/~su/teaching/ecs289c/papers/lackwit-a-program-understanding.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=253228.253351">ACM</a></p>

@@ -1,0 +1,18 @@
+---
+layout: post
+title: "Constrained Types for Object-Oriented Languages – Nystrom, et. al."
+category: papers
+---
+
+<p><b>Summary</b><br>
+Constrained types introduced as extension to standard OO type systems and form of dependent type. Implemented as part of X10 language. Classes have typed <em>properties</em> (reified as public final fields), boolean expressions on those properties can be expressed as a constraint on the type of the class. Constraints can appear on class declarations (providing class invariants), method arguments (providing preconditions), return types (providing postconditions), properties, fields and local variables. Pluggable constraint systems are used to evaluate constraints, multiple systems may be combined in a given constraint declaration. Checking of separately compiled classes also supported. Syntax and semantics explained, implemented constraint systems (equality, presburger, set constraints) described, implementation described (translation to Java), formal semantics provided (CFJ extension of FJ) along with soundness proof. Related work: constraint-based type systems, dependent types, pluggable types.</p>
+<p><b>Comments</b><br>
+This seems like a very powerful technique for concisely specifying the sort of thing that one tends to resort to increasingly incomprehensible machinations to express using parameterized types. If you’ve ever seen an encoding of the naturals in a type using Church numerals, you can really appreciate how nice it would be to just say <code>C{i &gt; 0}</code>, not to mention something like, say:</p>
+<pre>
+class List&lt;T&gt;(length: int{self &gt;= 0}) {
+    def get (idx :int{self &gt;= 0 &amp;&amp; self &lt; this.length}) :T = { ... }
+}
+</pre>
+<p>I am also intrigued by the idea of expressing pre- and postconditions as constraints on the types of method arguments, but I wonder how well that would work out in practice. The authors specifically mention the utility of using constraints to enforce constructor preconditions rather than the common pattern of runtime assertion checking.</p>
+<p>One concern is how quickly does the constraint solving part of the compilation process become horribly slow and how frequently does one bump into divergence in checking types? At least the separation of the constraint solvers from the compiler implementation means that they can be (and already are) highly optimized by people other than the compiler authors.</p>
+<p><b>Source</b>: <a href="http://www.nanocow.com/nystrom/papers/oopsla08.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1449800">ACM</a></p>

@@ -1,0 +1,12 @@
+---
+layout: post
+title: "Object and Reference Immutability using Java Generics – Zibin, et al."
+category: papers
+---
+
+<p><b>Summary</b><br>
+Proposes an extension to Java’s type system (<em>Immutable Generic Java</em>, or <em>IGJ</em>) for checking class, object and reference immutability. The type system supports transitivity (properties hold for entire object graph), it is static (nothing tracked or checked at runtime), it supports polymorphism (abstracting over mutability), and it’s fairly simple (adds a mutability type parameter and a few annotations). Syntax and typing rules are described. Various wrinkles covered: constructing read-only objects, covariant and no-variant type parameters, allowing mutation of non-state (caches, memos). Proof of soundness included (at no extra charge!).</p>
+<p><b>Comments</b><br>
+I like the idea of expressing mutability constraints and having them enforced by the compiler. Class and object immutability are also great, especially in the wild world of parallelism, because you sometimes want to be sure that no one is going to mutate an object, not just whether or not you are allowed to do so. The use of the first type parameter to communicate mutability is clever and works nicely with the existing generic type system.</p>
+<p>It’s not clear whether using such a system is all-or-nothing. Can I just use mutability annotations in places where I feel the need to be explicit? Is everything else “mutable by default”? I also don’t have a good feeling for whether communicating and enforcing mutability restrictions is worth the syntactic overhead. I’d have to put this in action on a decent size codebase to really tell. Fortunately, I can since there’s a <a href="http://types.cs.washington.edu/checker-framework/">checker</a> for it. Another item for the list of things to do once I’m out of the woods on my current research project.</p>
+<p><b>Source</b>: <a href="http://www.zibin.net/publications/FSE07-igj.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1287637">ACM</a></p>

@@ -1,0 +1,12 @@
+---
+layout: post
+title: "A Type and Effect System for Deterministic Parallel Java – Bocchino, et al."
+category: papers
+---
+
+<p><b>Summary</b><br>
+Describes a language, <a href="http://dpj.cs.uiuc.edu/DPJ/Home.html">Deterministic Parallel Java</a>, which extends Java with parallel constructs (<code>cobegin</code> and <code>foreach</code>) and a type and effect system that guarantees deterministic semantics for said constructs. Describes region-based type and effect system including: named regions, region parameters, disjointness constraints, method effect summaries (for modular checking), region path lists (for describing nested regions), partially specified regions (for describing recursive algorithms), index-parametrized arrays, and sub-arrays. Manual commutativity annotations can be added to communicate invariants inexpressible in the type system.</p>
+<p><b>Comments</b><br>
+Providing light-weight parallelized primitives is clearly an important step toward more wide-spread use of parallelism in every day programs. If you have problems amenable to parallel divide-and-conquer solutions, then <code>cobegin</code> and <code>foreach</code> are going to be your friends, and index-parametrized arrays and sub-arrays will allow you to express your algorithm in a way that DPJ can prove has no data races.</p>
+<p>When things get messier and you have a mishmash of computations where some are parallelizable and some are just concurrently executable (maybe they block on disk or network I/O) and you want to weave these all together with a type system to point out any “sharing accidents”, I’m not sure how useful something like DPJ is going to be. That’s not to say that there’s obviously a better approach that does reconcile a more ad hoc workload, and maybe DPJ is a step toward such a thing. It may be that something like <a href="http://www.malhar.net/sriram/kilim/">Kilim</a> is a more appropriate abstraction for general-purpose computing. Or perhaps these approaches are orthogonal.</p>
+<p><b>Source</b>: <a href="http://dpj.cs.uiuc.edu/DPJ/Publications_files/DPJ-OOPSLA-2009.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1640089.1640097">ACM</a></p>

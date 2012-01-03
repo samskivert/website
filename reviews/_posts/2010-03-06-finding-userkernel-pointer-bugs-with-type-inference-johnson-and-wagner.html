@@ -1,0 +1,9 @@
+---
+layout: post
+title: "Finding User/Kernel Pointer Bugs With Type Inference – Johnson and Wagner"
+category: papers
+---
+
+<p>More fun with type systems! Here they use type annotations to distinguish between pointers under user control and pointers under kernel control, and type inference to allow them to only add annotations on system calls and on functions where passing a user pointer is safe and where it’s not. The type inference fills in everything in between, or rather specifically identifies places where user pointers are used unsafely. They then run this on all 1.4 million lines of the Linux kernel. That’s a pretty impressive case study.</p>
+<p>One of the cool things about this paper is that they mostly focus on how they improved an existing analysis tool to eliminate false positives (as well as characterizing the false positives they were unable to avoid), which provides object lessons in why you care about things like context sensitivity, flow sensitivity, field sensitivity, and so forth.</p>
+<p><b>Source</b>: <a href="http://www.eecs.berkeley.edu/~daw/papers/cquk-usenix04.ps">PS</a> <a href="http://portal.acm.org/citation.cfm?id=1251384">ACM</a></p>

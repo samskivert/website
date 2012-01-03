@@ -1,0 +1,19 @@
+---
+layout: post
+title: "Euler 037"
+---
+
+<p><a href="http://projecteuler.net/index.php?section=problems&amp;id=37">Problem 037</a>:</p>
+<pre>
+object Euler37 extends <a href="http://samskivert.com/code/euler/EulerApp.scala">EulerApp</a> {
+  val primes = genprimes(1000000);
+  def isrtrunc (prime :Int) :Boolean =
+    (prime == 0) || ((primes(prime) != 0) &amp;&amp; isrtrunc(prime/10));
+  def isltrunc (prime :String) :Boolean =
+    prime.isEmpty || ((primes(prime.toInt) != 0) &amp;&amp; isltrunc(prime.substring(1)));
+  def istrunc (prime :Int) = isrtrunc(prime) &amp;&amp; isltrunc(prime.toString)
+  println(primes.drop(10).filter(0.!=).filter(istrunc).foldRight(0)(_+_));
+}
+</pre>
+<p>I cheated a little and turned the integer into a string in order to easily truncate it from the left, it would perhaps have been more elegant to take the value modulo 10<sup>digits-1</sup> but the code would have been longer and I feel an irrational desire for brevity in these solutions.
+</p>

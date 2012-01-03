@@ -1,0 +1,20 @@
+---
+layout: post
+title: "Euler 007"
+---
+
+<p><a href="http://projecteuler.net/index.php?section=problems&amp;id=7">Problem 007</a>:</p>
+<pre>
+object Euler7 extends Application {
+  var numbers = List.range(2,110000);
+  var primes = List(2);
+  while (primes.length &lt; 10001) {
+    val prime = primes.head;
+    numbers = numbers.filter((b) =&gt; (b%prime != 0));
+    primes = numbers.head :: primes;
+  }
+  println(primes.head);
+}
+</pre>
+<p>My numbering system encouraged the incorporation of a certain British Secret Service Agent into my solution, but imagination failed me.
+</p>

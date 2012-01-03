@@ -1,0 +1,42 @@
+---
+layout: post
+title: "Euler 017"
+---
+
+<p><a href="http://projecteuler.net/index.php?section=problems&amp;id=17">Problem 017</a>:</p>
+<pre>
+object Euler17 extends Application {
+  val ones = Array(&quot;&quot;, &quot;one&quot;, &quot;two&quot;, &quot;three&quot;, &quot;four&quot;,
+                   &quot;five&quot;, &quot;six&quot;, &quot;seven&quot;, &quot;eight&quot;, &quot;nine&quot;);
+  val tens = Array(&quot;ten&quot;, &quot;twenty&quot;, &quot;thirty&quot;, &quot;forty&quot;,
+                   &quot;fifty&quot;, &quot;sixty&quot;, &quot;seventy&quot;, &quot;eighty&quot;, &quot;ninety&quot;);
+  val teens = Array(&quot;ten&quot;, &quot;eleven&quot;, &quot;twelve&quot;, &quot;thirteen&quot;, &quot;fourteen&quot;,
+                    &quot;fifteen&quot;, &quot;sixteen&quot;, &quot;seventeen&quot;, &quot;eighteen&quot;, &quot;nineteen&quot;);
+
+  def speak (number :Int) :String = {
+    if (number &gt;= 1000) {
+      return &quot;onethousand&quot;;
+    } else if (number &gt;= 100) {
+      if (number % 100 == 0) {
+        return speak(number/100) + &quot;hundred&quot;;
+      } else {
+        return speak(number/100) + &quot;hundredand&quot; + speak(number%100);
+      }
+    } else if (number &gt;= 20) {
+      if (number % 10 == 0) {
+        return tens(number/10-1);
+      } else {
+        return tens(number/10-1) + speak(number%10);
+      }
+    } else if (number &gt;= 10) {
+      return teens(number-10);
+    } else {
+      return ones(number);
+    }
+  }
+
+  println(List.range(1, 1001).foldRight(0) { (a, b) =&gt; (b + speak(a).length) });
+}
+</pre>
+<p>Nothing too exciting here.
+</p>

@@ -1,0 +1,17 @@
+---
+layout: post
+title: "Euler 009"
+---
+
+<p><a href="http://projecteuler.net/index.php?section=problems&amp;id=9">Problem 009</a>:</p>
+<pre>
+object Euler9 extends Application {
+  for (a &lt;- List.range(1, 1000);
+       b &lt;- List.range(a, 1000);
+       c &lt;- List.range(b, 1000);
+       if (a*a + b*b == c*c &amp;&amp; a+b+c == 1000))
+    println(a*b*c);
+}
+</pre>
+<p>Sequence comprehensions coming in handy here.
+</p>

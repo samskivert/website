@@ -1,0 +1,9 @@
+---
+layout: post
+title: "Compiling Structural Types on the JVM – Dubochet and Odersky"
+category: papers
+---
+
+<p>Aside from describing how Scala structural types are implemented (via reflection), this paper shows that such an approach isn’t wildly slower than an approach that generates shim classes on the fly. Certainly it’s not ideal for the programmer to have to remember that some kinds of method calls are three times slower than others, but the shim class approach is not without drawbacks either. In addition to the problem of the type of <code>this</code>, it has performance related problems as well, as <a href="http://groups.google.com/group/jvm-languages/browse_thread/thread/dbc3a4a382868904">discussed</a> by Charles Nutter of JRuby fame.</p>
+<p>Two interesting developments may change the landscape here: <a href="http://blogs.sun.com/jrose/entry/interface_injection_in_the_vm">interface injection</a>, which would solve the problem outright, but has low odds of ever seeing the light of day in a shipping JVM, and <a href="http://blogs.sun.com/jrose/entry/notes_on_an_architecture_for">invokedynamic</a> which could make a reflection-like approach more performant, and should ship with Java 7 (assuming Java 7 ever ships).</p>
+<p><b>Source</b>: <a href="http://portal.acm.org/citation.cfm?id=1565829">ACM</a> <a href="http://infoscience.epfl.ch/record/138931/files/2009_structural.pdf">PDF</a></p>

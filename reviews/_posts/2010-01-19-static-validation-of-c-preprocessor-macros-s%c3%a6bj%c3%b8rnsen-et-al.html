@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Static Validation of C Preprocessor Macros – Sæbjørnsen, et al."
+category: papers
+---
+
+<p><b>Summary</b><br>
+A technique is described for validation of C preprocessor macros based on similarity of normalized abstract syntax trees generated from macro applications. Applications of the same macro that result in differing normalized trees are likely to represent an error. A tool implementing the technique is described and evaluated on a number of subject programs.</p>
+<p><b>Comments</b><br>
+The idea sounds compelling. Their evaluation mainly shows detection of injected errors rather than actual errors, but the subject programs were certainly very mature and likely to have ironed out most bugs in their macro declarations. The technique does rely on correlating multiple uses of macros to establish an “intended” usage and flag deviations from that usage as potential errors. So it would mainly be useful for frequently used macros. Nonetheless, if you are in the unfortunate circumstance of having to use C or C++ and CPP macros, this seems like a low-cost additional protection against screwing up. Not being familiar with the wild and woolly world of C macro research, I am inclined to believe that AST-based macros rather than token-replacement macros are a better choice for future language designers. They’re not prone to the class of errors this tool aims to detect, though they may not be ideal for non-<a href="http://en.wikipedia.org/wiki/Homoiconicity">homoiconic</a> languages.</p>
+<p><b>Source</b>: <a href="http://www.cs.ucdavis.edu/~su/publications/ase09.pdf">PDF</a></p>

@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Strongtalk: Typechecking Smalltalk in a Production Environment – Bracha and Griswold"
+category: papers
+---
+
+<p>This is a great paper about the addition of static types to Smalltalk. Bracha’s papers are always entertaining, because he’s not afraid to let his opinions find their way into his academic writing.</p>
+<p>I find it fascinating that at the time it was considered sane to allow subclasses to override methods with type-incompatible signatures. They argue against such shenanigans in this paper, and I would say history has taken their side. They have a nice chart of the degrees of lenience in this regard. In between allowing “Changes that are inherited type compatible” and “Changes that can be shown to be type-safe with non-local type analysis” (crazy!) they have the very tantalizing “Future type systems”. Mmm… future type systems. Alas, here we are in the future, and they’re nowhere to be found. Indeed, most everyone is still a few rungs up the ladder from Strongtalk in the “No changes are allowed” camp (though Java does now allow covariance of return types). To be fair, there are also a few new entrants in the “All changes are allowed” camp, but I’m focusing on statically typed languages.</p>
+<p>I think the separation of the notion of subtyping (interface inheritance) and subclassing (implementation inheritance) is also an interesting one. I can see how it complicates things, but mashing everything together also results in the occasional misfortune. Maybe the popular mashup approach is for the best, but I’d be interested in at least thinking about alternative compromises.</p>
+<p>Most of the stuff I review here isn’t worth your precious time, dear reader, but if you have an interest in object oriented programming languages, this one is recommended.</p>
+<p><b>Source</b>: <a href="http://www.bracha.org/oopsla93.ps">PS</a> <a href="http://portal.acm.org/citation.cfm?id=165893">ACM</a></p>

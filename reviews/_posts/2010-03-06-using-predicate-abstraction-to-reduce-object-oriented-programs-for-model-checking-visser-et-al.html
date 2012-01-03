@@ -1,0 +1,8 @@
+---
+layout: post
+title: "Using Predicate Abstraction to Reduce Object-Oriented Programs for Model Checking – Visser, et al."
+category: papers
+---
+
+<p>My introduction to predicate abstraction (not the first work to make use of it), another interesting technique. Basic idea is: you have some complicated state in your program that is causing your model checker to blow up (i.e. consider too many states), replace it with a predicate over that state that captures whatever it is that your program cares about. Maybe you have two timer variables that could in theory each take on any 64-bit value, but all you care about is whether one is greater than the other. You can reduce 2^128 possible states to 2. Big win. In this case, they used it to apply model checking directly to the source code of a real-time OS kernel.</p>
+<p><b>Source</b>: <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.26.3201&amp;rep=rep1&amp;type=pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=349360.351125">ACM</a></p>

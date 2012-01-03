@@ -1,0 +1,17 @@
+---
+layout: post
+title: "Optimizing Programs with Intended Semantics – von Dincklage and Diwan"
+category: papers
+---
+
+<p><b>Summary</b><br>
+Frequently, unintended program semantics limit optimization opportunities. Programmer supplied additional assumptions that clarify a programmer’s <em>intended</em> semantics can enable optimizations. <em>IOpt</em> is an interactive tool for iterative solicitation of intended semantics clarifying assumptions and subsequent program optimization that accounts for those assumptions. Main ideas: interaction with programmer, tracing optimization failure to programmer understandable <em>reasons</em>, ranking and filtering reasons, constructing and generalizing assumptions that enable optimizations, ranking and filtering offered assumptions. Examples, implementation details and evaluation on two subject programs are provided.</p>
+<p><b>Comments</b><br>
+This is nitpicky but there were numerous grammatical errors and typos, and various (minor) inconsistencies in the graphs and reported data. The editing process definitely failed on this paper. That said, the idea of refining very general program semantics through cost/benefit directed interactions with the programmer is a compelling one. However, the results they provided all seemed to point toward a dire need for tighter specification of Java code. The programmer should not need to be bothered to tell the optimizer that a call to <code>List.size()</code> is not going to modify arbitrary mutable data in their program. Nor that it will not throw an exception. If all of this specification tightening were to be done across the board, I wonder whether significant optimization opportunities would remain and merit the programmer’s time.</p>
+<p>I also think that the approach seemed quiet heavy weight: in order to “smoke test” the assumptions provided by the programmer, the system automatically instrumented the code and ran its unit tests. If configuring and using this system is much more complex than configuring and using a profiler, it may not be worth the trouble. If a programmer is willing to spent time and attention on optimization, modern profilers are pretty good at directing them to where manual optimization will bear fruit. Indeed, manual optimization is also a clarification of intended semantics, in a way.</p>
+<p>Ray will be pleased to note that our adopted practice of writing code like:<br>
+<code><br>
+for (int ii = 0, ll = list.size(); ii &lt; ll; ii++) {<br>
+</code><br>
+subsumes one of the common performance improvements that IOpt enabled.</p>
+<p><b>Source</b>: <a href="http://portal.acm.org/citation.cfm?id=1640089.1640120">ACM</a></p>

@@ -1,0 +1,8 @@
+---
+layout: post
+title: "The Design of a Task Parallel Library – Leijen et al."
+category: papers
+---
+
+<p>Describes a library for .NET that introduces constructs for lightweight parallel programming, mainly <code>Parallel.For</code> and <code>Parallel.Aggregate</code>. These are parallel for-loops and fork/join (also popularly known as map/reduce). Unlike DPJ, these guys don’t provide a type system or any guarantees that you’re not shooting yourself in the foot. They claim those are “orthogonal concerns” which is a bit of a cop-out, but not totally. For parallel for-loop kind of stuff, you probably are doing something mostly safe. For fork/join and their more flexible basic futures, you’re free to use those in all sorts of naive ways and not realize that you have race conditions coming out of your proverbial orifices. In any case, they describe their implementation, which is cool.</p>
+<p><b>Source</b>: <a href="http://research.microsoft.com/pubs/77368/TheDesignOfATaskParallelLibrary(draft2008).pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1639949.1640106">ACM</a></p>

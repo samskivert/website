@@ -1,0 +1,13 @@
+---
+layout: post
+title: "DART: Directed Automated Random Testing – Godefroid, et al."
+category: papers
+---
+
+<p><b>Abstract</b><br>
+Presents a new tool, DART, for automatically testing software that combines three main techniques: (1) automated extraction of the interface of a program with its external environment using static source-code parsing; (2) automatic generation of a test driver for this interface that performs random testing to simulate the most general environment the program can operate in; and (3) dynamic analysis of how the program behaves under random testing and automatic generation of new test inputs to direct systematically the execution along alternative program paths.</p>
+<p><b>Comments</b><br>
+This paper introduced the idea of what is now called <a href="http://en.wikipedia.org/wiki/Concolic_testing">concolic testing</a>, which is a clever idea for increasing test coverage. However, like so much research in test generation, it seems to have failed to achieve much traction in industry. The idea as presented here is problematic: they just extract functions from your program and start calling them with random values. That’s definitely likely to cause things to break, but it may be hard to separate the useful errors (i.e. those that might occur in your program) from the myriad crashes induced by calling functions with arguments that are “known” never to occur.</p>
+<p>What would help this technique a great deal is a concise way to provide tighter constraints on function input values. There’s already a lot of work in that area on things like <a href="http://types.cs.washington.edu/checker-framework/#nullness-checker">nullability enforcing type systems</a> and <a href="http://en.wikipedia.org/wiki/Spec_Sharp">code contracts</a>. Given sane bounds on function inputs, it becomes a lot more interesting to throw random values at the function that are within specified bounds and perturb them to obtain maximal coverage of the code within the function. You still have no idea whether the output is “correct”, but if you have any assertions in the function or the code called by the function, you might tease out a violation of those.</p>
+<p>In the meanwhile, concolic testing could prove fruitful if combined with something like <a href="http://en.wikipedia.org/wiki/QuickCheck">Quick Check</a>.</p>
+<p><b>Source</b>: <a href="http://research.microsoft.com/en-us/um/people/pg/public_psfiles/pldi2005.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1064978.1065036">ACM</a></p>

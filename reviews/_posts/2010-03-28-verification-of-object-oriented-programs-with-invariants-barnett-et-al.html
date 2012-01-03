@@ -1,0 +1,8 @@
+---
+layout: post
+title: "Verification of object-oriented programs with invariants – Barnett, et al."
+category: papers
+---
+
+<p>This paper introduces the approach, now known as the <a href="http://www.springerlink.com/content/d5618027k6v50257/">Boogie method</a>, which form the basis of <a href="http://research.microsoft.com/en-us/projects/specsharp/">Spec#</a>. The basic idea is a modular approach to verifying object invariants (and pre- and post-conditions) by maintaining a notion of object validity and packing and unpacking that validity in the course of checking invariants. The main motivation was to tidy up problems with <a href="http://en.wikipedia.org/wiki/Design_by_contract">DbC</a> where objects could run into problems when calling their own public methods while their invariants didn’t hold. The modularity is a big win as well as the fact that a lot of useful things can be statically verified rather than deferring all checking until runtime (as is common in DbC). I can only hope that some of these ideas eventually see the light of day in a stack other than the one encumbered by the evil empire.</p>
+<p><b>Source</b>: <a href="http://www.jot.fm/issues/issue_2004_06/article2/article2.pdf">PDF</a> <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.10.4654">CiteSeerX</a></p>

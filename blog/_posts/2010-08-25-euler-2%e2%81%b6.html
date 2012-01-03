@@ -1,0 +1,25 @@
+---
+layout: post
+title: "Euler 2⁶"
+---
+
+<p><a href="http://projecteuler.net/index.php?section=problems&amp;id=64">Problem 064</a> (<a href="http://github.com/samskivert/euler-scala/raw/master/Euler064.scala">source</a>):</p>
+<pre>
+object Euler064 extends EulerApp {
+  case class Root (root :Int, add :Int, div :Int) {
+    def expand = {
+      val term = ((math.sqrt(root) + add)/div).toInt
+      val nadd = term*div - add
+      (term, Root(root, nadd, (root - nadd*nadd)/div))
+    }
+    override def toString = &quot;(√&quot; + root + &quot;+&quot; + add + &quot;)/&quot; + div
+  }
+  def expansion (terms :List[Int], roots :List[Root]) :List[Int] = {
+    val (term, root) = roots.head.expand
+    if (root.div == 0 || roots.contains(root)) term :: terms
+    else expansion(term :: terms, root :: roots)
+  }
+  def answer = 1 to 10000 map(n =&gt; expansion(Nil, Root(n, 0, 1)::Nil).length) count(_%2==0)
+}
+</pre>
+<p>Here we have a nice little case class to represent a single step in the infinite expansion. The process of generating the next expansion could be done purely with simple arithmetic, but I’m lazy, so I just use <code>math.sqrt</code> to obtain the non-fractional part. I don’t actually need to keep track of the terms to obtain the solution, but it was handy to have when I was validating the solution, so I kept it around. Same goes for <code>toString</code>. I just love that little root sign!</p>

@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Bytecodes meet Combinators: invokedynamic on the JVM – Rose"
+category: papers
+---
+
+<p><b>Summary</b><br>
+Details on existing invoke bytecodes. Details on potential method call needs of JVM languages, drawbacks of existing reification approach in 13 “pain points”. Introduction of invokedynamic: bootstrapping dynamic calls, invocation, type checking, changing call target, complete relinking. Details on method handles: direct, adapter (arg conversion, combinators), bound (currying, closures), Java method handles. Method handle security considerations (create-time access checking). Inline caches via invokedynamic. Pros and cons of bytecodes vs. ASTs.</p>
+<p><b>Comments</b><br>
+Concise yet detailed coverage of invokedynamic and what it brings to the JVM. Rose points out the much broader potential of invokedynamic and method handle graphs than simply accommodating the dynamic linking needs of non-Java languages. I find this pretty exciting. People have done some amazing stuff with bytecode rewriting, but the possibilities with method handles seem even greater (even in plain-old Java). Fancy metaprogramming becomes possible in a way that still allows the VM to achieve good optimization. He also mentioned a project to emulate invokedynamic on older JVMs (clearly with loss of performance, but not any worse than what dynamic languages on the JVM are doing today).  This is also great in that it may enable earlier adoption of the new bytecode on projects (like Scala) that are unlikely to abandon support for 1.5 and 1.6 JVMs any time soon.</p>
+<p><b>Source</b>: <a href="http://cr.openjdk.java.net/~jrose/pres/200910-VMIL.pdf">PDF</a></p>

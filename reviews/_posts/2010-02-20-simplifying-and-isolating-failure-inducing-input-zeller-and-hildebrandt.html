@@ -1,0 +1,13 @@
+---
+layout: post
+title: "Simplifying and Isolating Failure-Inducing Input – Zeller and Hildebrandt"
+category: papers
+---
+
+<p><b>Abstract</b><br>
+Given some test case, a program fails. Which circumstances of the test case are responsible for the particular failure? The Delta Debugging algorithm generalizes and simplifies some failing test case to a minimal test case that still produces the failure; it also isolates the difference between a passing and a failing test case.</p>
+<p><b>Comments</b><br>
+<a href="http://en.wikipedia.org/wiki/Delta_Debugging">Delta debugging</a> is an interesting idea, and reasonably broadly applicable. They even manage to apply it to a series of UI input actions by using a UI replay tool. However, setting up the machinery to get such a technique working is non-trivial and pretty program/system specific. If it’s going to be worth your while, you’d better have a lot of bug inducing inputs that need reducing, or some very hard to track down bugs. The authors point out that programmers have historically done this sort of thing manually, and that may be the approach that makes the most economic sense.</p>
+<p>They previously applied the technique to program versions, honing in on the program changes that caused a regression. This seems more useful to me, though even this is something that I’ve felt the need to do only a handful of times in the 15+ years that I’ve even had a version control system to do it with.</p>
+<p>If one could set up a totally automated bug triage system (and this is a colossally big if), I could see this technique fitting in to reduce whatever input or trace data came along with the bug report. However, getting machine readable data that can be used to reliably reproduce a bug is usually 90+% of the battle.</p>
+<p><b>Source</b>: <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.14.2803&amp;rep=rep1&amp;type=pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=506206">ACM</a></p>

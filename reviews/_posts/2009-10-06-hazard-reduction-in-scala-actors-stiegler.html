@@ -1,0 +1,61 @@
+---
+layout: post
+title: "Hazard Reduction in Scala Actors – Stiegler"
+category: papers
+---
+
+<p><b>Summary</b><br>
+Stiegler decries the existence of four hazards of using actors in Scala: global mutable state, the ability to pass a mutable object into an actor’s constructor, the ability to pass a mutable object as a message to an actor and the ability to capture mutable state when defining an actor as an anonymous closure. He then proposes a mechanism to mitigate these hazards which comes in the form of Actress, a wrapper around the Actor class, and Sendable, a root type that identifies legal (ostensibly immutable) arguments to be provided to the Actress constructor and which must be sent as messages. He also proposes that the protected Actress.make() method, which is used to define the body of the actual Actor wrapped by an Actress, encourages the programmer to avoid constructs that might capture mutable state.</p>
+<p><b>Comments</b><br>
+The fundamental problem that the proposal attempts to address is no doubt valid: Scala has mutable state, this introduces dangers when writing concurrent programs. Unfortunately, the proposed technique is neither elegant, nor an especial improvement on the current state of affairs.</p>
+<p>In a language which allows mutability we have two approaches when it comes to providing mechanisms for concurrent programming (I’m going to ignore the third approach of “do nothing to discourage the programmer from hurting themselves,” one that has proved all too popular in the past):</p>
+<p>1. Provide a type system that can represent propositions about mutability and immutability and design your concurrency mechanisms to make use of that type system to ensure that only immutable data is shared between threads. This is the difficult solution and incidentally one of my research interests. I conjecture, in fact, that immutability is a stronger requirement than is needed and a truly useful system will allow some mutability in provably safe circumstances.</p>
+<p>2. Design your concurrency mechanisms such that they provide a clear indication to writers and readers of code that <em>We Are Now Doing Concurrent Things: Be Careful!</em> One benefit of the actor model is that it does exactly that. When you are creating an actor you are reminded that you are in the dangerous realm of concurrent programming, and thus motivated to heed the lessons of the past and use mutable state carefully and sparingly. You know it is a bad idea to send mutable state between actors in a message, so you don’t.</p>
+<p>I believe that approach number one is worth pursuing, but it will have to provide a meaningful improvement over approach number two which, though only recently adopted over the “do nothing” approach, seems to be helping quite a bit.</p>
+<p>Stiegler’s proposal provides no such improvement. It is a thin veil of annoyance standing between the programmer and doing the wrong thing which is altogether too easy to rip through.</p>
+<ul>
+<li>
+<p>He claims that by requiring that Actress take a Sendable in its constructor, it encourages the programmer not to provide mutable state to the constructor of their derived Actresses. I disagree.</p>
+<p>The right way to pass three integers to your actor (please try not to shudder at the verbosity):</p>
+<pre>
+class MyActor (args: Sendable) extends Actress(args) {
+    protected def make () :Actor = actor {
+        val (one, two, three) = args match {
+            case ListS(IntS(aone) :: IntS(atwo) :: IntS(athree)) =&gt; (aone, atwo, athree)
+            case _ =&gt; throw new IllegalArgumentException
+        }
+        // ...
+    }
+}
+</pre>
+<p>The lazy (or clever programmer) will realize that the integers are immutable, so why go to all that trouble:</p>
+<pre>
+class MyActor (one: Int, two :Int, three :Int) extends Actress(StrS(&quot;ignored&quot;)) {
+    protected def make () :Actor = actor {
+        // ...
+    }
+}
+</pre>
+<p>Then some other programmer will come along and derail the whole effort and add some mutable parameter:</p>
+<pre>
+class MyActor (one: Int, two :Int, three :Int, four :Array[Int]) extends Actress(StrS(&quot;ignored&quot;)) {
+    protected def make () :Actor = actor {
+        // ...
+    }
+}
+</pre>
+<p>and we’re right back where we started.</p>
+<p>Further, if you wish to provide no arguments to your Actress constructor, you have to needlessly pass some placeholder Sendable to Actress’s constructor to satisfy its demand for an argument.</p>
+<pre>
+class MyActor extends Actress(StrS(&quot;ignored&quot;)) {
+    protected def make () :Actor = // ...
+}
+</pre>
+<p>As you can also see above, your constructor arguments then need to be extracted from this single compound argument before you can use them. Boilerplate++.</p>
+</li>
+<li>
+<p>He claims that allowing only Sendable derivations as arguments to the ! method encourages the programmer not to send mutable state as an argument, but them immediately goes on to point out that it is trivially easy to create something like IntArrayS(data :Arrray[Int]) which allows mutable data to be used as an argument. When you are forced to package every single message argument in these niggling wrapper classes, it would be hardly surprising for a naive programmer to simply wrap up their mutable state and send it along, thinking this was just “how things worked.”</p>
+</li>
+</ul>
+<p>I’ll stop ranting now. Clearly a solution that achieves an increase in safety through a reduction in elegance and convenience rubs me the wrong way. On the plus side, I can thank the author for redoubling my interest in working on a proper solution to this problem.</p>
+<p><b>Source:</b> <a href="http://www.hpl.hp.com/techreports/2009/HPL-2009-148.pdf">PDF</a></p>

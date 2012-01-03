@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Concurrency Control and Recovery – Franklin"
+category: papers
+---
+
+<p><b>Summary</b><br>
+Concurrency, recovery, transactions and ACID introduced. Serializability section: conflict and view serializability, transaction schedules and precedence graph. Recovery section: types of failure (transaction, system, media), undo and redo, steal/no-steal and force/no-force, logging, checkpointing, write-ahead logging. Best practices in concurrency control: two-phase locking, deadlock detection, isolation levels (read uncommitted, read committed, repeatable read, serializable), hierarchical locking, optimistic and multiversion concurrency control. Best practices in recovery: phsiological logging, ARIES protocol (analysis, redo and undo). Extensions and limitations: two-phase commit (distributed dbs), systems not suited to ACID, lack of app knowledge exploitation.</p>
+<p><b>Comments</b><br>
+This is a great overview of the basic ideas that underlie transaction support in RDBMSs. Understanding what exactly has to take place to implement correct transaction semantics in the face of arbitrary failure gives a pretty helpful perspective on when and why a database is going to write to disk. The ARIES protocol is a fine piece of work. The notion of repeatability is another interesting challenge. Say you do a query and then do the same query again later in that same transaction. If repeatability is desired, one must not see new rows inserted by any other transaction. Accomplishing this without write-locking the entire table requires complex coordination. Fortunately, I believe most databases don’t provide that isolation level as the default. It’s way less expensive to just not worry about it.</p>
+<p><b>Source:</b> <a href="http://www.sai.msu.su/~megera/postgres/gist/papers/concurrency/franklin97concurrency.pdf">PDF</a> <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.38.1437">CiteSeerX</a></p>

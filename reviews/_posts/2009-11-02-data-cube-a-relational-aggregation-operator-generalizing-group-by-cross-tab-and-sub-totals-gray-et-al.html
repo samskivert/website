@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Data Cube: A Relational Aggregation Operator Generalizing Group-By, Cross-Tab, and Sub-Totals: Gray, et. al."
+category: papers
+---
+
+<p><b>Summary</b><br>
+Introduction of common statistical analysis pattern: formulate, extract, visualize, analyze. Explanation of need to reduce dimensions by summarizing along certain dimensions. Sample analysis problem, limitations of analysis via existing SQL constructs (mainly GROUP BY). GROUP BY extensions provided in some databases to overcome these limitations in certain cases. CUBE and ROLLUP operators introduced along with ALL value. Algebraic combinations of CUBE, ROLLUP and GROUP. Syntax proposed for new operators. Implications of addition of ALL value. Alternative to use of ALL value. <em>Decoration</em> columns, their utility in GROUP BY queries and their interaction with ALL. Star and snowflake schema/queries and use in capturing hierarchical attribute dimensions. Proposal for extracting values from a CUBE result. An approach to computing CUBE. Aggregate functions classified as distributed, algebraic or holistic; each type’s computability via proposed approach discussed. <em>Maintaining</em> CUBE and ROLLUP results as data changes inspired by SQL Server customer behavior.</p>
+<p><b>Comments</b><br>
+The CUBE operator seems very handy for certain data analysis tasks, but would also seem to be on the fuzzy edge of what is broadly useful and obviously belongs in a relational database and what should probably be left to special purpose data analysis tools. Not surprisingly, it only seems to be implemented in commercial databases where they ran out of ways to differentiate themselves and had to start tackling specialized markets. These days one would probably start with Hadoop and Sawzall rather than an RDBMS. With this sort of data processing, the strengths of an RDBMS — transactions, indexes, sophisticated query optimizers — either don’t help at all or just get in the way.</p>
+<p><b>Source</b>: <a href="http://paul.rutgers.edu/~aminabdu/cs541/cube_op.pdf">PDF</a> <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.38.6658">CiteSeerX</a></p>

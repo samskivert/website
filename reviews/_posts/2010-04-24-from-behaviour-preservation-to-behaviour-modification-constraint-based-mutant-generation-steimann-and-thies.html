@@ -1,0 +1,8 @@
+---
+layout: post
+title: "From Behaviour Preservation to Behaviour Modification: Constraint-Based Mutant Generation – Steimann and Thies"
+category: papers
+---
+
+<p>They describe an approach for generating mutants (which is a technique for testing how good your test suite is) by mutating the visibility qualifiers on methods and then pruning out all the invalid and behaviorally equivalent mutants using a constraint solver. This seems like a crazy thing to do. By that I don’t mean crazy like a fox, I mean crazy like giving a fish a bicycle (or vice versa). I will grant them that their constraint-based technique may be able to rule out mutants more efficiently than the compiler, but only for a small class of mutations (particularly mutations for which it is easy to prove equivalent behavior). On top of that, that small class’s intersection with the class of interesting mutations is yet smaller still.</p>
+<p><strong>Source:</strong> <a href="http://www.fernuni-hagen.de/ps/pubs/ICSE2010.pdf">PDF</a></p>

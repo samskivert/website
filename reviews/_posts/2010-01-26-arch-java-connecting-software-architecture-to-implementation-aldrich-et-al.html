@@ -1,0 +1,12 @@
+---
+layout: post
+title: "Arch Java: Connecting Software Architecture to Implementation – Aldrich, et al."
+category: papers
+---
+
+<p><b>Summary</b><br>
+Describes the <em>ArchJava</em> language, an extension of Java to support explicit architectural constructs. Architectural <em>components</em> define <em>ports</em> to which inter-component communication is restricted (other than communication from a parent component to a sub-component). Mechanisms are provided for dynamic component connection. Overview of proof of communication integrity provided. Case study described wherein 12kloc system was converted into ArchJava given a target architecture provided by the original developer.</p>
+<p><b>Comments</b><br>
+This appeals to me greatly. The conceptual extensions to Java are pretty minimal and yet capture a substantial portion of what one wants to express in a program architecture. The mechanisms by which architectural communication are expressed are very similar to the mechanisms you’d already use: interfaces between implementations with hidden details. Inter-component communication must take place through explicitly declared channels, but that’s a good thing. Effort expended to refactor a program to make these communications explicit bears the fruit of looser coupling and a more understandable system structure. In many ways this was doing in 2002 what Guice does today. And ArchJava gives the added benefit of explicit distinction between architecture and implementation, along with communication enforcement between components. And it makes pretty architecture graphs! What more could you want? With the very large caveat that I have not actually tried using it, I don’t see why it didn’t become way more popular.</p>
+<p>Given that history has played out such that it has, I wonder if one couldn’t reimagine ArchJava as an annotation based system that worked with something like Guice to wire up components at run time as well as enforce communication channels between them, and generate useful architectural diagrams directly from the code. That might have the necessary buzzword compliance to actually gain some traction.</p>
+<p><b>Source:</b> <a href="http://archjava.fluid.cs.cmu.edu/papers/icse02.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=581365">ACM</a></p>

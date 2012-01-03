@@ -1,0 +1,12 @@
+---
+layout: post
+title: "Thorn—Robust, Concurrent, Extensible Scripting on the JVM – Vitek, et al."
+category: papers
+---
+
+<p><b>Summary</b><br>
+Describes design and implementation of a new JVM-based language: Thorn. Features include: static and dynamic typing, aggregate data types (lists, records, tables), OOP (constrained multiple inheritance), first-class functions, pattern-matching, immutable data types, CSP-style concurrency support, module system, annotations, extensible compiler.</p>
+<p><b>Comments</b><br>
+Thorn seems to be a language guided by practicality rather than some particular linguistic ideal. Many of the choices seem motivated by a “batteries included” philosophy like built-in support for lists, records and tables (a hybrid between a map and a full-fledged object). In this case, batteries for concurrency are also included in the form of isolated <em>components</em> that communicate by message passing. The enforcement of isolation by the language sounds great, though one of the examples in the paper seems to pass mutable data from one component to another, so either I’m misreading something or the isolation is not so strong as I thought.</p>
+<p>It’s hard to tell where such a language might find a niche in the vast and sprawling landscape. Java interoperability is pretty limited owing to the design of the language (good for them for making bold language choices). However, without smooth interoperability and lacking some flag around which a hard-core group of language enthusiasts can rally, it may never progress beyond an interesting experiment. Maybe they’ll implement a translator to JavaScript and relaunch it as a web client language.</p>
+<p><b>Source</b>: <a href="http://www.cs.purdue.edu/homes/jv/pubs/oopsla09.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1640089.1640098">ACM</a></p>

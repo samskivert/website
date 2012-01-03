@@ -1,0 +1,12 @@
+---
+layout: post
+title: "Static Extraction of Sound Hierarchical Runtime Object Graphs – Abi-Antoun and Aldrich"
+category: papers
+---
+
+<p><b>Summary</b><br>
+Presents an approach for constructing a runtime object graph (ROG) from an ownership domain type annotated source program. Shows the soundness of the extraction process in that it reflects all possible runtime object relations. Extraction process: source → abstract graph → runtime graph → ownership object graph. Formalizes extraction process as a rewrite rule system. Provides details of abstraction by types (performed in addition to abstraction by ownership annotations), limitations and heuristics to improve architectural relevance of extraction.</p>
+<p><b>Comments</b><br>
+This paper provides some details on the extraction process used in the larger work I summarized <a href="http://samskivert.com/2009/11/static-extraction-and-conformance-analysis-of-hierarchical-runtime-architectural-structure-using-annotations-abi-antoun-et-al/">a while back</a>. I have since dug into some of the authors’ <a href="http://samskivert.com/2010/01/arch-java-connecting-software-architecture-to-implementation-aldrich-et-al/">earlier work</a>, which I actually find more compelling.</p>
+<p>I have a growing feeling that full ownership annotations are too heavy weight to provide utility outside special circumstances where one wants to strongly verify properties of their code. The ArchJava work tries to represent architectural constraints more directly through components, ports and connections, rather than trying to piggy back on manually specified ownership annotation. Inference of ownership information is also not a way out, because there are many possible ownership structures and without guidance from the programmer it is impossible to tell which one they intended. I think one needs to look elsewhere for implicit architectural information and have some ideas in that regard. Hopefully when I dig myself out from under my current project, I’ll have some time to explore them.</p>
+<p><b>Source</b>: <a href="http://www.cs.cmu.edu/~mabianto/papers/09-tldi-revised.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1481861.1481869">ACM</a></p>

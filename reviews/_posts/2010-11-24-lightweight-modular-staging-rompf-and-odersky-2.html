@@ -1,0 +1,9 @@
+---
+layout: post
+title: "Lightweight Modular Staging – Rompf and Odersky"
+category: papers
+---
+
+<p>They describe a type-driven technique for <em>staging</em> computations, which seems to mean generating optimized, low-level code based on higher-level code, written directly in a host language. You might be thinking that writing code in a high-level language and generating optimized, low-level code sounds a lot like compiling. I would have to agree. The value here would seem to be that you reuse much of the machinery of the host language (in this case Scala) and that you can generate differing kinds of output: OpenCL which is compiled and sent to a GPU, more Scala code which is compiled and loaded back into the VM, GraphViz graphs to visualize your code.</p>
+<p>I appreciate the light-weight-ness of this approach, and it’s yet another clever application of Scala’s type system and implicits. However, I don’t do much that is so performance critical that I spend time dreaming about ways to generate highly optimized machine code from high-level descriptions of algorithms.</p>
+<p><a href="http://infoscience.epfl.ch/record/150347/files/gpce63-rompf.pdf">PDF</a></p>

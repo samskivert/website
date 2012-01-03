@@ -1,0 +1,10 @@
+---
+layout: post
+title: "Applicative Programming with Effects – McBride and Paterson"
+category: papers
+---
+
+<p>Introduces <em>applicative functors</em> (in Haskellese, and assuming familiarity with functors and monads), a mechanism for threading a computation through an environment—crucially, without allowing the results of one computation to influence the choice of subsequent computations (otherwise you’d have a monad). The insight for applicative functors seems to have come from observing a repeated desire to thread computations through <em>traversable</em> data structures.</p>
+<p>Having a reasonably firm handle on monads, applicative functors seemed like the next bit of functional programming jargon to get my head around. I found the paper to be mostly easy going (though I found myself stumped when trying the exercise hinted at in “For example, the functor (→) <em>env</em> cannot in general be Traversable. To see why, take <em>env</em> = Integer and try to distribute the Maybe functor!”). They give a nice example of the crux of the difference between applicative functors and monads, however the comparison between arrows and applicative functors is a bit more opaque. Arrows are probably up next in the functional programming pantheon, so perhaps enlightenment is just around the corner.</p>
+<p>I even mostly grokked their closing discussion on the category theoretical manifestation of applicative functors as <em>strong lax monoidal functors</em>. (How is that not an oxymoron?) I owe this understanding mostly to the foundation I acquired through Gilbert’s numerous patient explanations of abstract algebraic concepts.</p>
+<p><a href="http://www.soi.city.ac.uk/~ross/papers/Applicative.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1348940.1348941">ACM</a></p>

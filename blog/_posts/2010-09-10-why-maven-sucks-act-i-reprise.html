@@ -1,0 +1,30 @@
+---
+layout: post
+title: "Why Maven Sucks: Act I, Reprise"
+---
+
+<p>The XML insanity of passing compiler arguments to Maven like so:</p>
+<pre>
+&lt;compilerArguments&gt;
+  &lt;Xlint/&gt;
+  &lt;Xlint:-serial/&gt;
+  &lt;Xlint:-path/&gt;
+&lt;/compilerArguments&gt;
+</pre>
+<p>has not surprisingly, come back to bite me in the ass. Most normal Maven actions seem to have no problem with it, but when I try to actually publish my project (via <code>mvn release:prepare</code>), I get the error I expected to see all along:</p>
+<pre>
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD ERROR
+[INFO] ------------------------------------------------------------------------
+[INFO] Error reading POM: Error on line 104: The prefix &quot;Xlint&quot; for element &quot;Xlint:-serial&quot; is not bound.
+</pre>
+<p>This inspired further investigation into this problem. <em>Surely</em> among the thousands of projects built with Maven, someone else is trying to pass one of javac’s myriad options that include a colon (e.g. <code>-proc:only</code>, <code>-Xlint:-foo</code>, <code>-g:lines</code>, <code>-Xprefer:source</code>, <code>-Xbootclasspath/p:...</code>, etc.).</p>
+<p>I eventually found this <a href="http://jira.codehaus.org/browse/MCOMPILER-62">improvement request</a>, which has remained unresolved for three years! Is passing arguments to the compiler not one of the most fundamental things a build system has to do? Even make gets that right.</p>
+<p>Someone even submitted a patch in November ’09 to make &lt;compilerArgument&gt; work as advertised. It has not been applied. The issue has not been assigned to anyone. As far as I can tell the Maven developers are not even aware that this is a problem. I’m not even sure these “Maven developers” actually exist. More likely, Skynet sent Maven down to slowly sap the will of the programmers that created it, ensuring that they never render it obsolete by releasing a newer version.</p>
+<p><b>Update:</b><br>
+I’ve since discovered that this seems to be the practiced workaround:</p>
+<pre>
+&lt;fork&gt;true&lt;/fork&gt;
+&lt;compilerArgument&gt;-Xlint&quot; &quot;-Xlint:-serial&quot; &quot;-Xlint:-path&lt;/compilerArgument&gt;
+</pre>
+<p>Yes. Really.</p>

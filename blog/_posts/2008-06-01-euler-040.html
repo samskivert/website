@@ -1,0 +1,19 @@
+---
+layout: post
+title: "Euler 040"
+---
+
+<p><a href="http://projecteuler.net/index.php?section=problems&amp;id=40">Problem 040</a>:</p>
+<pre>
+object Euler40 extends Application {
+  val digits = List.range(1, 200000).flatMap(n =&gt; n.toString.toList).map(_-&#39;0&#39;);
+  println(List(0, 9, 99, 999, 9999, 99999, 999999).foldRight(1)((idx, b) =&gt; b * digits(idx)));
+}
+</pre>
+<p>Another straightforward solution that’s nicely accommodated by our basic tools. Generate a list of the first 200,000 integers, split those into lists of each individual integer’s digits and flatmap them into one contiguous list. Then extract the digits at our desired indices and multiply them. It would have been more efficient to only do the character to integer conversion for the values we are multiplying, but then things didn’t fit so nicely onto two lines.</p>
+<p>Had I had more indices to extract, I might have written:</p>
+<pre>
+  println(List.range(0, 6).foldRight(1)((idx, b) =&gt; b * digits(Math.pow(10, idx).intValue-1)));
+</pre>
+<p>but the whole Math.pow and intValue business felt like too much ugly Java intrusion.
+</p>

@@ -1,0 +1,10 @@
+---
+layout: post
+title: "Using Information Fragments to Answer the Questions Developers Ask – Fritz and Murphy"
+category: papers
+---
+
+<p>They created an interface for combining data from four sources: team members, change sets, source code, and bugs/issues. They built on top of <a href="http://jazz.net/">Jazz</a>, which makes these things available in a structured form with consistent keys. Their UI puts together some natural joins on the data and then visualizes it in a hierarchy that corresponds to the order of the items chosen by the developer. So you can see changes by source file, or changes by person, or source files modified by person, etc.</p>
+<p>The tool definitely seems useful, but unless you’re using Jazz, this data is scattered around in a bunch of unrelated sources. The problem that I see with a tool like this is that the effort required to get this data into a format that a tool could consume outweighs the perceived benefit to be had from the tool. A more interesting project, IMO, would be a tool that could be pointed at arbitrary bug tracking databases and version control histories and tried to automagically extract and correlate structured data. Then one could pretty easily build this visualizer and any number of other interesting tools on top of it, and many more development teams could actually use it.</p>
+<p>Update: <a href="http://www.cs.washington.edu/homes/rtholmes/">Reid</a> points out that said automagic extractor has <a href="http://portal.acm.org/citation.cfm?id=776866">already been investigated</a>. If I get a chance to give it a whirl, I’ll report on my findings.</p>
+<p><b>Source:</b> <a href="http://www.cs.ubc.ca/~fritz/papers/icse10_infofrag_web.pdf">PDF</a></p>

@@ -1,0 +1,8 @@
+---
+layout: post
+title: "Prefab: Implementing Advanced Behaviors Using Pixel-Based Reverse Engineering of Interface Structure – Dixon and Fogarty"
+category: papers
+---
+
+<p>They describe a clever approach to reverse engineering the bounding boxes of UI controls using only the rendered pixel data. User interface toolkits tend to render controls very consistently and they take advantage of that to find all the controls on a window sufficiently cheaply that it can be done in real-time. They combine that with a “hide the original window and render a new window in its place with the original pixels plus some post-processing” technique to modify arbitrary user interfaces without actually making any changes to the program. This allows them to try out experimental UI techniques on applications like Photoshop, which would otherwise be rather challenging. If I was doing UI research, I’d probably get some mileage out of this.</p>
+<p><b>Source</b>: <a href="http://www.cs.washington.edu/homes/jfogarty/publications/chi2010-prefab.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1753326.1753554">ACM</a></p>

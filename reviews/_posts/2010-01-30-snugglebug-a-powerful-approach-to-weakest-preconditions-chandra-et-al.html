@@ -1,0 +1,12 @@
+---
+layout: post
+title: "Snugglebug: A Powerful Approach to Weakest Preconditions – Chandra, et al."
+category: papers
+---
+
+<p><b>Summary</b><br>
+Presents an approach on interprocedural backwards propagation of weakest preconditions, specifically various techniques for improving the efficiency of such an analysis. Three main components: <em>directed call graph construction</em>, <em>generalization</em> of procedure summaries, and an ad-hoc logic simplifier. Detailed discussion of algorithm and the contributed techniques. Evaluation performed on five subject programs: ant, antlr, batik, tomcat and eclipse.ui. Individual contribution of each technique evaluated.</p>
+<p><b>Comments</b><br>
+This is a pretty nuts and bolts paper about efficiently computing <a href="http://en.wikipedia.org/wiki/Predicate_transformer_semantics">weakest preconditions</a> (WP), which tell you the range of possible program states that will lead you to a particular target statement. They evaluate their tool by taking bug reports for existing Java programs and determining whether they can compute conditions that will trigger them. This isn’t a super compelling motivation in my opinion, but there are lots of other reasons why WP are useful, so I’m not going to complain about that.</p>
+<p>The tricky thing about computing WP in an OO language like Java is that any time you see a method call on an interface or non-final class, you have to consider all possible implementations of that method. This blows up pretty fast and makes doing analysis on large programs infeasible. The clever idea introduced here is to delay that analysis and keep propagating backwards, looking for constraints on the actual class that will be used for that method call. If you can find such a constraint (like you see the variable being assigned to ArrayList) then you know exactly which method you need to analyze and you can save a ton of work. In their evaluation, they ended up looking at at most 93 call graphs whereas more traditional “consider everything” techniques would have had to look at upwards of 100,000 call graphs. If you happen to find yourself needing WP for Java, you’ll definitely want to try their tool.</p>
+<p><b>Source:</b> <a href="http://domino.watson.ibm.com/comm/research_people.nsf/pages/msridhar.index.html/$FILE/pldi09-snugglebug.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1543135.1542517">ACM</a></p>

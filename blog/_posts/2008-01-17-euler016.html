@@ -1,0 +1,13 @@
+---
+layout: post
+title: "Euler016"
+---
+
+<p><a href="http://projecteuler.net/index.php?section=problems&amp;id=16">Problem 016</a>:</p>
+<pre>
+object Euler16 extends Application {
+  println(BigInt(2).pow(1000).toString().foldRight(0) {(a, b) =&gt; (b + (a - &#39;0&#39;))});
+}
+</pre>
+<p>This one almost seemed like cheating, since BigInt takes care of all the hard work for me.
+</p>

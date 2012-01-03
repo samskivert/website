@@ -1,0 +1,11 @@
+---
+layout: post
+title: "MapReduce: Simplified Data Processing on Large Clusters – Dean &amp; Ghemawat"
+category: papers
+---
+
+<p><b>Summary</b><br>
+Overview of map/reduce algorithm. Examples: dgrep, url count, reverse web-link graph, term-vector per host, inverted index, dsort. Overview of implementation in Google data center environment. Execution overview, fault tolerance approach, importance of locality, impact of task granularity, cost/benefit of backup task technique. Algorithm refinements: manual data partitioning, ordering guarantees, post-map combiner, I/O types, side-effects support, bad-record skipping, debuggable local execution, status reporting, counter support.  Performance summary for grep and sort on terabyte input data set, effects of backup tasks and machine failures. Stats on adoption inside Google.</p>
+<p><b>Comments</b><br>
+I have nothing to say about map/reduce that hasn’t surely already been said before. I will say that this paper does a great job of going “by the book”. They introduce their technique, give a number of concrete examples of its use, explain its implementation, cover some extensions, show its adoption by real engineers, give lots of hard data on how it performs, provide related work and a rousing conclusion. About the only thing they left out was a section on future work. We’ll assume that since they are Google engineers, the implied future work is “use map/reduce to take over the world.”</p>
+<p><b>Source</b>: <a href="http://labs.google.com/papers/mapreduce-osdi04.pdf">PDF</a> <a href="http://portal.acm.org/citation.cfm?id=1327452.1327492">ACM</a></p>

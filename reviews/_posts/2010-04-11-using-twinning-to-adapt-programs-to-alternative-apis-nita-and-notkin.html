@@ -1,0 +1,8 @@
+---
+layout: post
+title: "Using Twinning to Adapt Programs to Alternative APIs – Nita and Notkin"
+category: papers
+---
+
+<p>Describes an interesting technique for creating and applying mappings from one API to another (or between versions of a single API). It’s a simple idea (basically sed for ASTs), but has some nice applications. Suppose everyone was using some janky Facebook library and you got fed up with the status quo and wrote one that didn’t suck. Assuming your conceptual model was not wildly different, you could provide a mapping file from the old Facebook library to your new one which users could use to entirely or almost entirely automatically convert their code from the old library to yours. Library authors could ship mapping files with major library updates that handled converting code written with the old library to the new. Some civic-minded soul could write a mapping from Commons Collections to Google Collections and do the world a great big favor.</p>
+<p><b>Source:</b> <a href="http://www.cs.washington.edu/homes/marius/papers/twinning/twinning-icse10.pdf">PDF</a></p>

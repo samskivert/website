@@ -1,0 +1,20 @@
+---
+layout: post
+title: "Euler 022"
+---
+
+<p><a href="http://projecteuler.net/index.php?section=problems&amp;id=22">Problem 022</a>:</p>
+<pre>
+import scala.io.Source;
+object Euler22 extends Application {
+  def trim (name :String) = name.slice(1, name.length-1);
+  val names = Source.fromFile(&quot;names.txt&quot;).getLine(0).split(&#39;,&#39;).map(trim).toList.sort(_&lt;_);
+  def score (name :String) = name.foldLeft(0)((s, l) =&gt; (s + (l - &#39;A&#39; + 1)))
+  println(List.range(0, names.length).map(i =&gt; ((i+1) * score(names(i)))).foldLeft(0)(_+_));
+}
+</pre>
+<p>Another reasonably legible solution. I resisted the urge to do it all in a single expression.</p>
+<p>I can see how language designers might succumb to the urge to expose a loop counter in their iteration functions because it would be nice to do:</p>
+<pre>
+  println(names.map(name =&gt; ((_INDEX_+1) * score(name))).foldLeft(0)(_+_));
+</pre>

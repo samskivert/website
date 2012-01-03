@@ -1,0 +1,12 @@
+---
+layout: post
+title: "A Case Study in Architectural Analysis: The Evolution of the Modern Web Browser – Grosskurth and Godfrey"
+category: papers
+---
+
+<p><b>Summary</b><br>
+Postulates benefit from reference architecture for web browser. Briefly summarizes history of web and browsers. Presents methodology for architecture extraction (via QLDX toolkit plus iterative process). Presents reference architecture (extracted from Mozilla and Konqueror source): UI, Browser Engine, Rendering Engine, Networking, JS Interpreter, XML Parser, Display Backend, Data Persistence. Compares conceptual architecture of various browsers to reference: Mozilla, Konqueror, Epiphany, Safari, Lynx, Mosaic, Firefox. Salient technical details noted for each.</p>
+<p><b>Comments</b><br>
+I would have liked to have seen a more detailed architecture, at least for the rendering engine, where most of the complexity lies in a modern browser. There’s no indication of where plugins fit into the architecture, though one can assume mostly in the rendering engine with some interaction with the browser engine, networking, JavaScript interpreter and data persistence. The paper also predates Chrome which would have perhaps motivated more focus on plugins, though I imagine the rest of Chrome fits pretty well within their reference architecture (especially since it’s based on WebKit). They also omit a dependency from KHTMLPart to KHTML in the Konqueror architecture, which I assume is an error, but maybe KHTMLPart somehow avoids talking to KHTML via QT magic.</p>
+<p>I would also have been interested in more investigation and discussion of the implications of the modern practice of long-lived complex applications being delivered as web pages. This architecture hasn’t changed radically since the web was just a bunch of simple HTML pages with the occasional &lt;img&gt; tag. The fact that Firefox routinely consumes 60-75% of all the RAM on my fairly well-endowed workstation hints that the architecture may be showing its age. Again Chrome is exploring new avenues here.</p>
+<p><b>Source:</b> <a href="http://plg2.math.uwaterloo.ca/~migod/papers/2007/emse-browserRefArch.pdf">PDF</a> <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.68.52">CiteSeerX</a></p>

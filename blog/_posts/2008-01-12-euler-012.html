@@ -1,0 +1,21 @@
+---
+layout: post
+title: "Euler 012"
+---
+
+<p><a href="http://projecteuler.net/index.php?section=problems&amp;id=12">Problem 012</a>:</p>
+<pre>
+object Euler12 extends Application {
+  def findnum (i :Int, x :Int) :Int = {
+    var divs = List.flatten(for {
+      div &lt;- List.range(1, Math.sqrt(x)+1)
+      if x % div == 0
+    } yield List(div, x / div).removeDuplicates);
+    if (divs.length &gt; 500) return x;
+    else return findnum(i+1, x+i);
+  }
+  println(findnum(1, 0));
+}
+</pre>
+<p>Pretty straightforward, just compute the triangle numbers incrementally and stop when we find one with over 500 divisors.
+</p>

@@ -1,0 +1,8 @@
+---
+layout: post
+title: "Pacer: Proportional Detection of Data Races – Bond, et al."
+category: papers
+---
+
+<p>Describes a technique for data race detection where the probability of detecting a race is proportional to the sampling frequency. The tricky bit is that races involve more than one access to a memory location, so if you decide you’re going to try to detect a race involving a particular write, you may have to keep sampling that location beyond your current sampling period to ensure that you catch any racing read. Arguably their technique should only work if races are evenly distributed and we have no particular reason to believe they are, but they turned out to be thusly distributed in their tests (on fairly reasonable real programs). They also build on the <a href="http://jikesrvm.org/">Jikes RVM</a> which is a pretty interesting project.</p>
+<p><b>Source</b>: <a href="http://userweb.cs.utexas.edu/~mikebond/pacer-pldi-2010.pdf">PDF</a> <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.155.1958">CiteSeerX</a></p>

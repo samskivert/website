@@ -1,0 +1,8 @@
+---
+layout: post
+title: "A Degree-of-Knowledge Model to Capture Source Code Familiarity – Fritz, et al."
+category: papers
+---
+
+<p>Describes an approach where interaction information (i.e. Eclipse event logs) is used to augment the traditional degree-of-authorship approach to determining which developer is most familiar with a particular piece of code. It’s nice that they’re trying to capture the idea that a developer’s degree of knowledge may decay over time. Even if you were the last committer to a library, if that was five years ago and other developers are still using that library regularly, you may not be the best person to ask about it. However, capturing interaction information is rife with practical problems: not everyone uses Eclipse, what if they look at documentation in a web browser rather than at the source code, what if they don’t like having their mouse events snooped? I’d be more interested in a model that incorporated data on who wrote code that <em>used</em> the APIs rather than who looked at them in their editor.</p>
+<p><b>Source</b>: <a href="http://www.cs.ubc.ca/~fritz/papers/icse10_dok_web.pdf">PDF</a></p>

@@ -1,0 +1,10 @@
+---
+layout: post
+title: "Deprecating the Observer Pattern – Maier, et al."
+category: papers
+---
+
+<p>This paper builds on the Scala <a href="http://samskivert.com/2010/10/implementing-first-class-polymorphic-delimited-continuations-by-a-type-directed-selective-cps-transform-rompf-et-al/">delimited continuations</a> mechanism and describes a set of reactive programming libraries. They describe some basic <a href="http://en.wikipedia.org/wiki/Functional_reactive_programming">FRP</a> primitives (for which they have helpfully selected new names, much like everyone else who treads this path): event sources and signals, along with a variety of useful combinators (e.g. merge, next, delay, etc.).</p>
+<p>Per usual, everything is fitted nicely together through a combination of operator-like methods, implicit conversions and clever construction of the type hierarchy. In this case, the additional special sauce of delimited continuations is needed to allow data flow operations to capture and postpone the remainder of their computation when appropriate. Fortunately, this is almost entirely hidden from the user. An example of where it pokes its head up is in the inability to use an <code>if</code> statement without a corresponding <code>else</code> in CPS-transformed code, but what good functional programmer would do such a thing?</p>
+<p>This is all packaged up into a framework called Scala.React which has remained tantalizingly unavailable to people not named Ingo Maier. I’m fairly convinced that this is the road forward for civilized UI programming, and likely for a variety of other domains. Thus, I look forward to getting my hands on the code and discovering that the glorious future is not as bright and shiny as it seemed in the brochure.</p>
+<p><a href="http://lamp.epfl.ch/~imaier/pub/DeprecatingObserversTR2010.pdf">PDF</a></p>

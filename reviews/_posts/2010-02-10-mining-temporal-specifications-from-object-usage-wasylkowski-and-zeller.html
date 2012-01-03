@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Mining Temporal Specifications from Object Usage – Wasylkowski and Zeller"
+category: papers
+---
+
+<p><b>Summary</b><br>
+Describes technique (and tool, <a href="http://www.st.cs.uni-saarland.de/models/tikanga/index.php3">Tikanga</a>) for computing <em>operational preconditions</em>: a description of how to satisfy a function’s preconditions (e.g. call <code>createX</code> to obtain an X, then you can pass that to <code>consumeX</code>). Process: create object usage models for identifiable objects; convert to prefix models that focus on call events; transform prefix models into <a href="http://en.wikipedia.org/wiki/Kripke_structure">Kripke structures</a>; generate a set of <a href="http://en.wikipedia.org/wiki/Computation_tree_logic">CTL</a> formulas using the Kripke structures; model check those and filter out any that do not hold; for each formal parameter of a method, look for sets of CTL formulas that are common to many objects passed to that method, these form an operational precondition. Violations of operational preconditions are then located, ranked and reported to the user as potential bugs. Evaluation provided on six extant Java projects.</p>
+<p><b>Comments</b><br>
+This is definitely an interesting idea. In theory, you can figure out how the arguments to methods are generally “prepared” before a method is called. Since this includes the receiver, this encompasses something of the idea of type states as well. Then you can either use this information to provide usage examples or look for potentially bogus usage which might indicate bugs. However, its application to that latter task turned up an awful lot of false positives (spoken as a programmer, rather than a researcher; apparently 56% false positives is good compared to other research techniques). They didn’t characterize the types of bugs it found, and I’d be interested in seeing that. Are they subtle? Are they the sorts that are already found by <a href="http://findbugs.sourceforge.net/">already widely deployed techniques</a>? I’m also curious about how difficult it is to wade through the false positives. Does one have to pore over a lot of source to tell whether the tool is pointing out something meaningful?</p>
+<p><b>Source</b>: <a href="http://www.st.cs.uni-saarland.de/publications/details/wasylkowski-ase-2009/">SU</a></p>
