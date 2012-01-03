@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # redirect old blog permalinks to new ones
+  RewriteCond %{DOCUMENT_ROOT}/blog/20$1/$2 -d
+  RewriteRule ^20(..)/(.*)/ /blog/20$1/$2 [R]
+  RewriteCond %{DOCUMENT_ROOT}/reviews/books/20$1/$2 -d
+  RewriteRule ^20(..)/(.*)/ /reviews/books/20$1/$2 [R]
+  RewriteCond %{DOCUMENT_ROOT}/reviews/papers/20$1/$2 -d
+  RewriteRule ^20(..)/(.*)/ /reviews/papers/20$1/$2 [R]
+  RewriteCond %{DOCUMENT_ROOT}/reviews/films/20$1/$2 -d
+  RewriteRule ^20(..)/(.*)/ /reviews/films/20$1/$2 [R]
+  RewriteCond %{DOCUMENT_ROOT}/reviews/games/20$1/$2 -d
+  RewriteRule ^20(..)/(.*)/ /reviews/games/20$1/$2 [R]
+</IfModule>
