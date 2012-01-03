@@ -5,9 +5,17 @@ title: blog archive
 
 <div id="home">
   <p> Herein lie the dusty blog archives: </p>
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="/blog{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
+
+{% for post in site.posts %}
+  {% unless post.next %}
+    <h2>{{ post.date | date: '%Y' }}</h2>
+  {% else %}
+    {% capture year %}{{ post.date | date: '%Y' }}{% endcapture %}
+    {% capture nyear %}{{ post.next.date | date: '%Y' }}{% endcapture %}
+    {% if year != nyear %}
+      <h2>{{ post.date | date: '%Y' }}</h2>
+    {% endif %}
+  {% endunless %}
+  <li><a href="/blog{{ post.url }}">{{ post.title }}</a> - <span class="meta">{{ post.date | date_to_string }}</span></li>
+{% endfor %}
 </div>
