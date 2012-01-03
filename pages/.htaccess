@@ -13,4 +13,8 @@
   RewriteRule ^20(..)/(.*)/ /reviews/films/20$1/$2 [R]
   RewriteCond %{DOCUMENT_ROOT}/reviews/games/20$1/$2 -d
   RewriteRule ^20(..)/(.*)/ /reviews/games/20$1/$2 [R]
+
+  # redirect some old RSS urls
+  RewriteRule ^blog/wp-rss2.php /blog/index.xml [R]
+  RewriteRule ^feed /blog/index.xml [R]
 </IfModule>
