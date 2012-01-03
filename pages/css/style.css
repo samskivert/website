@@ -72,11 +72,6 @@ body {
     max-width:146px;
 }
 
-.posttitle {
-  border-bottom: 1px solid #CCCCCC;
-  padding-bottom: 3px;
-}
-
 h2 {
     font: 95% Arial, Helvetica, sans-serif;
     letter-spacing: 0.2em;
