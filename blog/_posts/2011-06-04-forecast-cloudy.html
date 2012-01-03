@@ -4,8 +4,8 @@ title: "Forecast: cloudy"
 ---
 
 <p>Far too often, Google App Engine reports that everything is smooth sailing:</p>
-<p><img src="http://samskivert.com/uploads/2011/06/alls-well-gae.png" height="669" alt="" title="Full speed ahead Cap&#39;n!"></p>
+<p><img src="/images/2011/06/alls-well-gae.png" height="669" alt="" title="Full speed ahead Cap&#39;n!"></p>
 <p>when the view from my app looks substantially less rosy:</p>
-<p><img src="http://samskivert.com/uploads/2011/06/or-not-gae.png" alt="" title="Oh, what&#39;s that iceberg?" width="776" height="auto"></p>
+<p><img src="/images/2011/06/or-not-gae.png" alt="" title="Oh, what&#39;s that iceberg?" width="776" height="auto"></p>
 <p>My app is not complex. It stuffs data into the app engine data store and pulls it back out again. The total size of all my entities is <a href="http://www.youtube.com/watch?v=-DJtHL3NV1o">one meeeellion bytes</a>. The code is not massive; it’s seven jar files, the largest of which is the app engine API. It has less than five regular users. Aside from the fact that GAE’s design necessitates that about 80% of the requests involve starting up a JVM and initializing the whole webapp, it really ought not to be taxing their gigascale infrastructure.</p>
 <p>After being unable to use it for 48 hours — again — this broke-back camel is going to limp off and rewrite the backend in SQL and move the damned thing to my Slicehost server. Hopefully GAE will be working again soon so that I can download my data.</p>
