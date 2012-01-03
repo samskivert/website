@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Points-to Analysis by Type Inference of Programs with Structures and Unions – Steensgaard"
+category: papers
 ---
 
 <p>Extends the work described in <cite>Points-to Analysis in Almost Linear Time</cite>, which didn’t handle structs or unions (all this is for C). Unfortunately, C’s “type system” makes this work very messy because they need to account for all the nasty things you can do with structs (like overwrite two adjacent <code>int</code> fields by assigning through a <code>long</code> pointer). Sausage making indeed.</p>
