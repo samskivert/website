@@ -1,0 +1,15 @@
+---
+layout: category
+title: book reviews
+category: books
+---
+
+<div id="home">
+  <p>
+    Herein lies a collection of dubious opinions on books:
+  </p>
+
+{% for post in site.categories.books %}
+  <li><a href="/reviews{{ post.url }}">{{ post.title }}</a> - <span class="meta">{{ post.date | date_to_string }}</span></li>
+{% endfor %}
+</div>
