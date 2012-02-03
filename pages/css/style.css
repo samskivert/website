@@ -5,69 +5,69 @@ A:active    { color: #999999;  }
 A:hover     { color: #999999; text-decoration: underline; }
 
 a img {
-    border: none;
+  border: none;
 }
 
 blockquote {
-    border-left: 5px solid #ccc;
-    margin-left: 1.5em;
-    padding-left: 5px;
+  border-left: 5px solid #ccc;
+  margin-left: 1.5em;
+  padding-left: 5px;
 }
 
 body {
-    background: #fff;
-    color: #000;
-    font-family: "Palatino", "Times New Roman", Times, serif;
+  background: #fff;
+  color: #000;
+  font-family: "Palatino", "Times New Roman", Times, serif;
 }
 
 .big {
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
-    font-size: x-large;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-size: x-large;
 }
 
 .small {
-    font-size: small;
+  font-size: small;
 }
 
 .sidetitle {
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
-    color:#666666;
-    font-size: small;
-    font-weight:normal;
-    padding:2px;
-    letter-spacing: .3em;
-    background:#FFFFFF;
-    text-transform:uppercase;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  color:#666666;
+  font-size: small;
+  font-weight:normal;
+  padding:2px;
+  letter-spacing: .3em;
+  background:#FFFFFF;
+  text-transform:uppercase;
 }
 
 .side {
-    color:#333;
-    font-size: small;
-    font-weight:normal;
-    background:#FFFFFF;
-    padding:2px;
-    max-width:146px;
+  color:#333;
+  font-size: small;
+  font-weight:normal;
+  background:#FFFFFF;
+  padding:2px;
+  max-width:146px;
 }
 
 h2 {
-    font: 95% Arial, Helvetica, sans-serif;
-    letter-spacing: 0.2em;
-    margin: 15px 0 2px 0;
-    padding-bottom: 2px;
-    border-bottom: 1px dotted #aaa;
+  font: 95% Arial, Helvetica, sans-serif;
+  letter-spacing: 0.2em;
+  margin: 15px 0 2px 0;
+  padding-bottom: 2px;
+  border-bottom: 1px dotted #aaa;
 }
 
 h3 {
-    border-bottom: dotted 1px #ccc;
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
-    margin-top: 0;
+  border-bottom: dotted 1px #ccc;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  margin-top: 0;
 }
 
 .meta {
-    font-size: .75em;
-    color: #808080;
-    font-weight: normal;
-    letter-spacing: 0;
+  font-size: .75em;
+  color: #808080;
+  font-weight: normal;
+  letter-spacing: 0;
 }
 
 #banner {
@@ -102,8 +102,8 @@ h3 {
 }
 
 .header a {
-    color: #000;
-    text-decoration: none;
+  color: #000;
+  text-decoration: none;
 }
 
 #page-navigation .left {
