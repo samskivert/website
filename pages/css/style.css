@@ -49,6 +49,10 @@ body {
   max-width:146px;
 }
 
+.post pre {
+  overflow-x: auto;
+}
+
 h2 {
   font: 95% Arial, Helvetica, sans-serif;
   letter-spacing: 0.2em;
