@@ -20,6 +20,10 @@ body {
   font-family: "Palatino", "Times New Roman", Times, serif;
 }
 
+body p {
+  line-height: 125%;
+}
+
 .big {
   font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-size: x-large;
