@@ -20,7 +20,7 @@ body {
   font-family: "Palatino", "Times New Roman", Times, serif;
 }
 
-body p {
+body p, body li {
   line-height: 125%;
 }
 
