@@ -3,17 +3,16 @@ layout: post
 title: Thinking out loud about RSP
 ---
 
-Like everyone else exposed to [Bret Victor]'s excellent presentations, I have been thinking about
-how programming might be substantially improved by throwing out as many of our assumptions as
-possible and rebuilding our tools in light of new requirements introduced by a few decades of
-hindsight (and made possible by a few decades of exponential growth in CPU speed).
+For a combination of reasons, I've finally gone completely mad and decided to try my hand at the
+Quixotic task of developing a new programming model. Naturally it will solve all of our problems
+and make delicious toast.
 
-I've been thinking about how to improve life for programmers for quite a while, going so far as to
-spend a year in the PhD program with the [PLSE group] at UW before realizing that my preferred
-approach to tackling these problems didn't fit well with that of CS academia. A combination of
-circumstances have motivated me to dive into the deep end of the pool and try my hand at the
-Quixotic task of developing a new programming model that solves all of our problems and makes
-toast.
+This is somewhat inspired by [Bret Victor]'s excellent presentations, but is also something that
+has been gnawing at the back of my mind for some time. I even went so far as to spend a year in the
+PhD program with the [PLSE group] at UW before realizing that my preferred approach to tackling
+these problems doesn't fit well with that of CS academia. I've also once again allowed myself to be
+subjected to the nefarious influences of [Paul Phillips](https://github.com/paulp), so he's partly
+to blame.
 
 My ideas are still in their infancy, but they're concrete enough to put into words. I think the act
 of explanation will help me to expand and refine them without succumbing to my natural tendency to
@@ -37,10 +36,10 @@ Recently, I came into contact with [Reactive Demand Programming] which has the l
 presentation of any programming model I've encountered, but seems full of excellent ideas, so I've
 been wading through David Barbour's posts with my Haskell glasses on.
 
-All of the ideas and insights in the programming model I've constructed so far originate in these
-influences. I'm just trying to package them up in a manner that is somewhat coherent and not
-completely objectionable to a working programmer. Maybe I'll have an original idea or two along the
-way, but if that turns out to be unnecessary, all the better.
+As far as I can tell, all of the ideas and insights in the programming model I've constructed so
+far originate in these influences. I'm just trying to package them up in a manner that is somewhat
+coherent and not completely objectionable to a working programmer. Maybe I'll have an original idea
+or two along the way, but if that turns out to be unnecessary, all the better.
 
 ## State and change
 
@@ -53,11 +52,18 @@ limits to definitively decry that as bad, it sure seems like a bad idea. Now you
 state, but it's hiding inside something that looks declarative.
 
 In addition to clearly identifying your state and keeping it out in the open, we also need to be
-careful about how we change that state. Jonathan Edwards has said "We suggest that to rationalize
-the insanity of programs that can read and write globally at any time that languages should impose
-automatic *time* management," but I contend that what we need to manage is change, not time. If
-one's state is clearly identified and changes to that state are tightly controlled, it opens the
-doors to substantial benefits (which I'll describe below).
+careful about how we change that state. Jonathan Edwards has said that "to rationalize the insanity
+of programs that can read and write globally at any time, languages should impose automatic *time*
+management," but I contend that what we need to manage is change, not time. If one's state is
+clearly identified and changes to that state are tightly controlled, it opens the doors to
+substantial benefits.
+
+I'd explain those benefits now, but they don't make much sense unless you first know about the
+programming model, so you can either wade through the rest of this and get to the benefits in due
+time, or you can skip to the end and read them now and decide whether they sound interesting enough
+to read the rest of the article. I'm not trying to convince anyone here, as I said, I'm just
+thinking out loud. I don't expect anyone to read this (except my Mom, hi Mom!). Once things are
+further along, I'll have super awesome demos that will do all the convincing for me.
 
 ## Reactive State Programming
 
@@ -78,33 +84,33 @@ guarantee that RSP's invariants are not violated accidentally or intentionally b
 programmers.
 
 There are a lot of things to unpack from the bullet points above, so I'll start with details on
-each of the components and then come back to how it all fits together, and the benefits conferred
-by this particular subset of the Turing tar pit.
+each of the components and then come back to how it all fits together, then finally outline some of
+the benefits conferred by this particular subset of the Turing tar pit.
 
 ### Hierarchical reactive state
 
 When I say reactive state, I mean state for which all changes may be observed and reacted to. The
-simplest form of reactive state would be a single value (of any "atomic" type, but we'll use an
-integer). The value can be updated, and when the value is updated that can trigger other
-computations, which result in updating other values. Think spreadsheet, but don't think it too hard
-because it's not a perfect analogy.
+simplest form of reactive state would be a single value (of any immutable type). The value can be
+updated, and when the value is updated that can trigger other computations, which result in
+updating other values. Think spreadsheet, but don't think it too hard because it's not a perfect
+analogy.
 
 All changes to a piece of reactive state are encapsulated. So you can't just say "Hey, jam this
 value into this memory location". An update of a reactive value is encapsulated into a change which
 is managed by the RSP-runtime. This enables reporting and visualization of all changes to mutable
 state in your entire program. If you ever wondered how Victor-style "magic windows" into the inner
 workings of your program are going to work in a "real" programming language, I think it's something
-like this. If you're thinking "Oh god, the (lack of) performance" then bear with me a moment.
+like this. If you're thinking "Oh god, the (lack of) performance" then bear with me until the next
+section.
 
-In addition to simple values, a variety of reactive "collections" are provided like lists, sets and
+In addition to simple values, a variety of reactive collections are provided like lists, sets and
 maps. This ensures that the programmer is working at a sane level of abstraction (expressing things
 like "append this value to this list") while leaving the actual process of changing mutable state
-to the RSP-runtime, which can enforce its invariants and make the change information available to
-debugging and visualization tools.
+to the RSP-runtime, which can enforce its invariants and make semantically rich change information
+available to debugging and visualization tools.
 
-Also, external resources (like `stdin` and `stdout`, the file system, the network, etc.) are also
-modeled as reactive state. I'll describe how all of these usual suspects are modeled in a later
-blog post.
+External resources (like `stdin` and `stdout`, the file system, the network, etc.) are also modeled
+as reactive state. I'll describe how all of these usual suspects are modeled in a later blog post.
 
 I'll defer explaining the *hierarchical* aspect of the state until we describe *systems* below.
 
@@ -115,19 +121,24 @@ when a piece of state changes, that new state value is routed (usually) through 
 functions and the result is used to update some other piece of state. Pure functions can of course
 call other pure functions in the course of their computation.
 
-Pure functions place the most significant requirement on the "host" language: that it have no
-global mutable state (or that the programmer be disciplined enough not to use it). Within a pure
-function, mutable state is perfectly acceptable. One could program in RSP-style in C, and within a
-function mutate stack variables to one's heart's content. Because there is no global state, and one
-cannot access the reactive state except by being passed an immutable snapshot of its current value
-as an argument to the function, there is no risk of accidentally introducing side effects. In a
-garbage collected host language, it is even safe to heap allocate data and make use of it during
-your pure computation, as it will either be garbage collected when the computation is complete, or
-become part of the function's (immutable) return value.
+Pure functions place the most significant restriction on the host language: that it have no global
+mutable state (or the most significant demand on programmer discipline: don't use global mutable
+state). Note however, that inside a pure function, mutable state is perfectly acceptable. As long
+as there are no observable side effects, you can use whatever approach you like in your pure
+functions. Write 'em in assembly if you like.
 
-I'll discuss in a later blog post how I think that this "pure computations on snapshots of mutable
-state" approach in combination with *systems* will enable an actor-like concurrent programming
-model that is easy to reason about and requires nearly no effort from the programmer.
+You don't have to worry about concurrency when writing your pure functions; that happens at a
+higher level. In a garbage collected host language, it is even reasonable to heap allocate data and
+make use of it during your pure computation, as it will either be garbage collected when the
+computation is complete, or become part of the function's (immutable) return value.
+
+Because you can program "close to the metal" inside your pure functions, I suspect that RSP will be
+acceptably performant overall. One can choose the manner in which a program's state is modeled such
+that transformations to that state happen at sufficiently coarse granularity that most of the work
+is going on in pure function calls, and you're not reactively updating individual elements of a ten
+million element array. That of course places some burden on the programmer to structure their state
+appropriately, but every programming style comes with modeling burdens. Time will tell if RSP's are
+too onerous, but I'm not too worried.
 
 ### Behaviors and fittings
 
@@ -151,7 +162,7 @@ n >> fib >> fibn
 
 This program reacts to changes in `n` by computing the `nth` Fibonnaci number and storing it in
 `fibn`. With more detail: when `n` changes, its current (immutable) value is passed to the function
-`fib` which performs a side-effect free computation and returns an (immutable) value. That value is
+`fib` which performs a side-effect free computation and returns an (immutable) value; that value is
 stored into `fibn`, another piece of reactive state.
 
 #### Fittings
@@ -163,8 +174,9 @@ a function, from a function to another function, or from a function back to reac
 There are a wide variety of fittings in addition to `>>`. They are used to combine data into tuples
 for delivery to multi-argument functions, to split apart function results and route the parts into
 different bits of mutable state, to effect container-specific changes like append to list, add
-to/remove from set, etc. I'll describe some of the more interesting types of reactive state (lists,
-maps, sets, etc.) along with their fittings in a future post.
+to/remove from set, etc. These form a simple DSL for dataflow programming. I'll provide details on
+the common types of reactive state (lists, maps, sets, etc.) along with their fittings in a future
+post.
 
 #### Cycles
 
@@ -200,8 +212,8 @@ state. This is called a *view*. For example:
 struct Pos { x :Int, y :Int }
 state mousePos :Pos = ... // external source
 
-const TILE_WIDTH  :Int = 64
-const TILE_HEIGHT :Int = 64
+val TILE_WIDTH  :Int = 64
+val TILE_HEIGHT :Int = 64
 def posToTile (pos :Pos) :Pos = Pos(pos.x / TILE_WIDTH, pos.y / TILE_HEIGHT)
 
 view tilePos :Pos = mousePos >> posToTile
@@ -239,13 +251,11 @@ Here's an example of a system that shows all of these elements (along with a bun
 unexplained stuff, TODO: find a better non-contrived introductory example):
 
 {% highlight scala %}
-struct ClickE { pos :Pos }
-
 system MouseClickDetector (
-  view mousePos :Pos, view button1 :Boolean, const bounds :Rect
+  view mousePos :Pos, view button1 :Boolean, val bounds :Rect
 ) {
   state armed :Boolean = false
-  event clicked :ClickE
+  event clicked :Pos
 
 private:
   // track whether the mouse is inside our bounds
@@ -258,22 +268,149 @@ private:
 
   // track when the mouse is pressed down inside our bounds
   state downInside :Boolean = false
-  (button1.change, inside)
+  // the (a,b) fitting combines two pieces of state into a two-tuple
+  (button1.change, inside) // see text below re: button1.change
+    // anonymous functions can be declared inline; >> can route a two-tuple to a two-arg fn
     >> (bc :Change[Boolean], inside :Boolean) => { !bc.prev && bc.cur && inside }
     >> downInside
 
-  // if we started a click inside our bounds, and we're currently inside our bounds, we're armed
-  (downInside, inside) >> (_ && _) >> armed
+  // if click started inside our bounds, and we're currently inside our bounds, we're armed
+  (downInside, inside)
+    // this is just Scala shorthand for (a, b) => { a && b }
+    >> (_ && _)
+    >> armed
 
   // if we're armed and button1 changes from down to up, emit a clicked event
   (button1.change, armed, mousePos)
     >> (bc :Change[Boolean], armed :Boolean, mpos :Pos) => {
-      if (!bc.prev && bc.cur && armed) Some(ClickE(mpos)
+      if (!bc.prev && bc.cur && armed) Some(mpos)
       else None
     }
+    // the >>? fitting routes Some(x) to its destination and ignores None
     >>? clicked
 }
 {% endhighlight %}
+
+The `MouseClickDetector` system depends on two pieces of external state: `mousePos` and `button1`.
+It expresses that it need only react to that state by declaring them to be `view` rather than
+`state` dependencies. It also depends on some constant configuration information, the `bounds` in
+which to detect clicks. Note that `bounds` would more likely be a `view` dependency in a real user
+interface, as the bounds of the element for which we're detecting clicks could change. In this case
+I've made it `val` just to illustrate that such dependencies are possible.
+
+`MouseClickDetector` exposes two pieces of state to its enclosing system: `armed` and `clicked`.
+`armed` might be used by an enclosing user interface element to update its visualization as the
+user interacts with it. `clicked` is declared to be an `event`, which is like `state` except that
+it has no current value and thus will not trigger computation when behaviors that depend on it are
+initially created, only when it "fires". Barbour's RDP chooses to dispense with the notion of
+events entirely, but I'm (currently) of the opinion that they're sufficiently fundamental to a
+programmer's conception of a dynamic system that they should exist as fundamental entities rather
+than require being encoded as a change in state.
+
+That said, reacting to change in state is such a common action, we provide sugar for obtaining a
+state's previous and current value when the state is changed. This can be seen above in
+`button1.change` which yields a `Change[Boolean]` (because `button1` has type `Boolean`). A
+`Change` record contains the previous (`prev`) and current (`cur`) values for the state. This could
+be obtained manually by routing `button1` into a length two rolling buffer and then reacting to
+updates on the buffer. Indeed that's how one would obtain a longer history than current and
+previous. But reacting to the current and previous value is sufficiently common that building it in
+enables pleasant syntax and an efficient implementation.
+
+#### Nested systems
+
+Systems also give us an explanation for the *hierarchical* nature of the reactive state. A system
+encloses other systems, which themselves may enclose systems, in one big tree. Because systems host
+reactive state, the totality of a program's state is also structured as a tree.
+
+It is possible for a containing system to access the public state of its child systems and it can
+provide its own state (or state on which it depends) to its child systems:
+
+{% highlight scala %}
+system MouseClickDetector (
+  view mousePos :Pos, view button1 :Boolean, view bounds :Rect
+) { ... }
+
+system Button (view mousePos :Pos, view button1 :Boolean) {
+  state bounds = Rect(0, 0, 0, 0)
+  // we pass down our depends (mousePos, button1) and our state (bounds)
+  val clickDetect = MouseClickDetector(mousePos, button1, bounds)
+  // we pull up armed and react to its changes (note: highly inefficient example)
+  clickDetect.armed >> renderButton >> image
+  // ... there would be a lot more to a real button ...
+}
+{% endhighlight %}
+
+However, a system cannot pass state from one child to another:
+
+{% highlight scala %}
+system Foo {
+  val bar = Bar()
+  val baz = Baz(bar.enabled) // illegal!
+}
+{% endhighlight %}
+
+If a system needs to pass data between subsystems, it must route it through state that it controls:
+
+{% highlight scala %}
+system Foo {
+  val bar = Bar()
+  val baz = Baz(barEnabled)
+  state barEnabled = false
+  bar.enabled >> barEnabled
+}
+{% endhighlight %}
+
+This ensures that computations take place in the proper execution context when concurrency is taken
+into account (see *Concurrency* below).
+
+The above examples have shown a system *statically* enclosing another system. When the outer system
+is instantiated, the inner system is automatically instantiated, binding their lifecycle together.
+It is also possible for a system to *dynamically* enclose other systems, which is essential to most
+interactive programs.
+
+One might want a single dynamic enclosed system:
+
+{% highlight scala %}
+system AI (...) { ... }
+
+system Game (...) {
+  state turnHolder :Int = 0
+  state opp :Opt[AI] = None
+
+  // when turn holder becomes non-zero, an AI system is instantiated, 
+  // when it becomes zero, the AI system is destroyed
+  turnHolder >> (thIdx) => { if (thIdx == 0) None else Some(AI(...)) } >> opp
+}
+{% endhighlight %}
+
+One could also have a list of enclosed systems:
+
+{% highlight scala %}
+interface Screen { ... }
+
+system App {
+  state stack :Seq[Screen] = Seq()
+  // onInit is an event emitted when a system is initialized
+  onInit >> () => MainMenuScreen(stack) >>+ stack
+}
+
+system MainMenuScreen (state stack :Seq[Screen]) : Screen {
+  // when something emits this event, we'll remove ourselves from the screen stack
+  event closeSelf :Unit
+  closeSelf >> () => self >>- stack
+
+  // we also have a button that adds a new screen to the stack
+  val prefs = Button(...)
+  prefs.clicked >> () => PrefsScreen(stack) >>+ stack
+}
+
+system PrefsScreen (state stack :Seq[Screen]) : Screen { ... }
+{% endhighlight %}
+
+This latter example hints at some additional abstraction and code reuse mechanisms that will be
+possible with systems. *Abstraction* below provides more details.
+
+#### System lifecycle
 
 When a system is instantiated, its behaviors are "wired up" and executed based on the current
 values of external and internal state. When a system is destroyed, its behaviors are all
@@ -281,8 +418,146 @@ decommissioned and any dependencies on external state are cleaned up. In this wa
 destruction of systems serves as both a way to introduce dynamism into an otherwise static behavior
 graph, and as a way to automatically manage resources.
 
-For example, we can expose the file system as reactive state and relieve 
+When a dynamic system is no longer contained by any state (detected by reference counting or
+garbage collection, not yet sure which will be best), it is destroyed.
 
+#### Concurrency
+
+Systems provide a nice place to introduce a mechanism for concurrency. A system can serve as the
+root of an *execution context* which is a small island of single threadedness in an otherwise vast
+sea of concurrent processes. I'll call such a system a *process*. This is similar to the
+[actor model] except that message passing is implicit in the propagation of a state change from one
+process (actor) to another.
+
+By default, all statically and dynamically enclosed systems exist in the same process as their
+owning system. Changes to the owning system's state as well as the contained system's state are all
+processed immediately in the same (apparently single threaded) execution context.
+
+If a system contains a subsystem (statically or dynamically) that is marked as a process, any
+changes to that subsystem's state will be posted to that subsystem's execution context for
+evaluation instead of being evaluated directly by the initiating process. Similarly, any changes to
+state passed from the parent system into the subsystem will be posted to the parent's execution
+context for evaluation rather than being evaluated directly by the subsystem.
+
+I believe that it will be possible to automatically identify these process-boundary crossings and
+handle communication between concurrent processes without any additional information. The developer
+will simply declare a `process` instead of a `system` and the runtime will take care of everything
+else. I have not thought this concurrency stuff through nor implemented it, so this may turn out to
+be pie in the sky.
+
+#### Abstraction
+
+Systems also provide a nice place to introduce a mechanism for abstraction. It would be possible to
+adopt an object-orientation directly and allow systems to inherit from other systems, inheriting
+their state and behaviors in the process. I suspect this is a bad idea, not least because
+inheritance of behavior and state is such a source of pain in the OO world.
+
+Instead, I'm leaning toward a combination of interfaces and delegation. My thoughts here are very
+rough, but something along these lines are likely to be where I'll start:
+
+{% highlight scala %}
+interface Screen {
+  state added   :Boolean
+  state showing :Boolean
+}
+
+system ScreenImpl : Screen {
+  state added   :Boolean = false
+  state showing :Boolean = false
+}
+
+system ScreenStack {
+  state screens :Seq[Screen] = Seq()
+
+private:
+  state cycles :Seq[Lifecycle] = Seq()
+  system Lifecycle (val screen :Screen) {
+    screens >> _ contains screen >> screen.added
+    screens >> _.tail == screen >> screen.showing
+  }
+
+  screens +>> Lifecycle >>+ cycles
+  screens >>- (idx, _) => idx ->> cycles
+}
+
+system MainMenuScreen (val stack :ScreenStack)
+  : Screen via ScreenImpl(stack)
+{
+  // can access 'added' and 'showing' here
+}
+{% endhighlight %}
+
+I'm already dissatisfied with this mechanism after writing this one simple example, so more thought
+is here needed.
+
+## Why bother?
+
+In the beginning, I stated that if we can clearly identify our mutable state and carefully manage
+changes to it, we will reap substantial benefits. Here I'll describe the benefits I think are
+likely to fall out of this programming model. I suspect other benefits might turn up along the way,
+but that could just be my optimism talking.
+
+### Show the state
+
+By using explicitly managed abstractions for our mutable state which automatically track all
+changes to said state, we can very easily visualize that state and changes thereto in external
+tools. A given piece of state could be graphed "over time", or compared to another piece of state,
+or simply logged to a console. All of this can be done in realtime as the program is executing, and
+a programmer can interact with their program and see the changes that result.
+
+### Tweak the state
+
+Changes can be introduced externally just as easily as they can be introduced by the program. A
+developer can make changes to pieces of state through a debugging tool and observe the effect that
+has as the change flows through the computation graph. This allows them to develop a better
+understanding of the code as well as to manually mock up state changes during the process of
+development.
+
+### Preserve the state
+
+A development version of the runtime can store the state graph separately from the data structures
+that are used by the program runtime, allowing the code for the application to be unloaded and
+reloaded without abandoning its current state. This can work in conjunction with existing
+on-the-fly code reloading mechanisms (like JRebel, but eliminating many of its limitations). Or one
+could use a bigger hammer and simply unload and reload everything except the reactive state, when
+requested by the developer. Either mechanism eliminates the tedious and time consuming process of
+returning to a particular application state to test newly introduced code changes.
+
+It should even be possible to take advantage of this separation of state and behavior on platforms
+with "unsophisticated" runtimes, like when targeting and testing on a mobile device. The app can
+save the state to permanent storage and reload it prior to restarting. While not as fast as simply
+keeping it in memory, it will still be substantially faster than restarting the app in its default
+state and manually interacting with it to recreate the state necessary to resume testing.
+
+### Purity of essence
+
+By forcing much of a program's computation to be pure functions, you tap into their well known
+benefits. They're easier to develop and test, because you can directly see all of their inputs and
+more easily develop a mental model of their relation to their outputs. They're also easier for
+other developers to understand when reading the program for the same reasons; there's no hidden
+state.
+
+We can also leverage the "show the data" visualization tools to visualize their behavior. The
+development environment can readily show the output of a function on randomly generated or
+canonical inputs, or on a set of test inputs provided by the developer. The developer can also
+easily play around with functions in a REPL.
+
+## Enough already
+
+There are a lot of holes in the rough sketch I've provided above, which I'll endeavor to fill in in
+future blog posts. I'm in the process of "converting" patterns that I find recurring in my own
+programs into RSP style, identifying the painful parts and thinking about whether those can be
+smoothed over with improvements to RSP, or whether the pain indicates that I'm doin' it wrong.
+
+I also doubt I'll be able to hold off on starting an implementation for much longer. My plan is to
+initially implement RSP in Scala, which is sufficiently flexible that I think I can attain most of
+my "ideal" syntax and runtime structure. Once that's roughly working, I'll start on visualization
+and interactive debugging tools, as those will determine whether the extra difficulty of writing in
+RSP-style is actually worth it. I'll also learn a lot about how hard it's going to be to
+efficiently implement RSP, even in a bespoke language and runtime, and whether or not my ideas
+about concurrency (and extending that to distributed systems) are half-baked.
+
+Onward into the abyss.
 
 [Bret Victor]: http://worrydream.com/
 [PLSE group]: http://www.cs.washington.edu/research/plse/
@@ -297,3 +572,4 @@ For example, we can expose the file system as reactive state and relieve
 [Glitch]: http://research.microsoft.com/apps/pubs/default.aspx?id=201333
 [DRY]: http://en.wikipedia.org/wiki/Don't_repeat_yourself
 [sufficiently smart compiler]: http://c2.com/cgi/wiki?SufficientlySmartCompiler
+[actor model]: http://en.wikipedia.org/wiki/Actor_model
