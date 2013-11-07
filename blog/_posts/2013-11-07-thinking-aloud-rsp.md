@@ -182,22 +182,23 @@ post.
 
 Cycles in behavior are not allowed. When a piece of state changes, the full consequences of that
 change are computed and propagated immediately, along with any follow-on consequences due to state
-changes that result from the previous changes.
+changes that result from the previous changes. Most likely this will take place in a breadth-first,
+glitch-free fashion.
 
-This restriction is lifted when concurrency is introduced; when a change propagates from one
+The cycle restriction is lifted when concurrency is introduced; when a change propagates from one
 concurrency domain to another, the computation "stops" in the sending domain and is added to a
 queue in the receiving domain to be processed once it has completed any currently executing and
-already pending computations. This means that it would be possible to ping-pong a computation back
-and forth between two (or more) concurrency domains. Whether or not this turns out to be a big
-danger remains to be seen.
+already pending computations. This means that it would be possible (though not necessarily a good
+idea) to ping-pong a computation back and forth between two (or more) concurrency domains. Whether
+or not this turns out to be a big danger remains to be seen.
 
-If one is modeling a simulation or animation that proceeds along a timeline, one must declare a
-special *clock* state which ticks in real-time per the programmer's requirements. This clock state
-can be specially managed by the development environment to allow the programmer to "control time"
-while developing and debugging. Based on my current formulation, I don't think the ability to
-"scrub" time back and forth will magically fall out of the RSP model, but if I'm able to
-incorporate "undoing" changes (ala Sean McDirmid's [Glitch] programming model) this may turn out to
-be possible.
+If one is modeling a simulation or animation that proceeds along a timeline, one must make use of a
+special *clock* state which ticks in real-time per the program's requirements. This clock state can
+be specially managed by the development environment to allow the programmer to "control time" while
+developing and debugging. Based on my current formulation, I don't think the ability to "scrub"
+time back and forth will magically fall out of the RSP model, but if I'm able to incorporate
+"undoing" changes (ala Sean McDirmid's [Glitch] programming model) this may turn out to be
+possible.
 
 For common interactive applications, computation is driven by external inputs: mouse, keyboard and
 touch. In something like a video game, one would use both a clock and external user driven input
@@ -238,17 +239,18 @@ OOP-language, a system will almost certainly be represented by an object.
 Systems may also serve as a static organizational mechanism (i.e. namespaces for pure functions),
 but I suspect that a separate module mechanism will be needed to enable one to provide a library of
 nothing but pure functions and/or a combination of largely system-agnostic functions along with a
-collection of reusable systems. I'd rather not use a degenerate system for that purpose in the name
-of conceptual simplicity.
+collection of reusable systems. I'd rather not use a degenerate system for that purpose in pursuit
+of the false idol of minimalism.
 
 A system is a set of external state dependencies, external value dependencies, internal state
-declared and owned by the system, and behaviors. It also provides a lexical scope for private pure
-functions, for convenience. It is dynamically instantiated by a behavior in some other system, and
-the top-level of a program is defined as a system. A system may subsequently be destroyed by its
-enclosing system or itself.
+(declared and owned by the system), and behaviors. It also provides a lexical scope for private
+pure functions, for convenience. The top-level of a program is a system, and that system may
+statically nest other systems within it. A system may also dynamically instantiate other systems
+(which can contain static and dynamic nested systems themselves). It's systems all the way down.
 
-Here's an example of a system that shows all of these elements (along with a bunch of other as yet
-unexplained stuff, TODO: find a better non-contrived introductory example):
+Here's an example of a system which has external state and value dependencies, internal public and
+private state, and behaviors to connect it all together (TODO: find a simpler introductory
+example):
 
 {% highlight scala %}
 system MouseClickDetector (
@@ -270,24 +272,19 @@ private:
   state downInside :Boolean = false
   // the (a,b) fitting combines two pieces of state into a two-tuple
   (button1.change, inside) // see text below re: button1.change
-    // anonymous functions can be declared inline; >> can route a two-tuple to a two-arg fn
-    >> (bc :Change[Boolean], inside :Boolean) => { !bc.prev && bc.cur && inside }
+    // functions can be declared inline; >> routes a two-tuple to a two-arg fn
+    >> (b1 :Change[Boolean], inside :Boolean) => { !b1.previous && b1.current && inside }
     >> downInside
 
   // if click started inside our bounds, and we're currently inside our bounds, we're armed
   (downInside, inside)
-    // this is just Scala shorthand for (a, b) => { a && b }
-    >> (_ && _)
+    >> (_ && _) // this is shorthand for (a, b) => { a && b }
     >> armed
 
   // if we're armed and button1 changes from down to up, emit a clicked event
   (button1.change, armed, mousePos)
-    >> (bc :Change[Boolean], armed :Boolean, mpos :Pos) => {
-      if (!bc.prev && bc.cur && armed) Some(mpos)
-      else None
-    }
-    // the >>? fitting routes Some(x) to its destination and ignores None
-    >>? clicked
+    >> (b1, armed, mpos) => if (!b1.previous && b1.current && armed) Some(mpos) else None
+    >>? clicked // the >>? fitting routes Some(x) to its destination and ignores None
 }
 {% endhighlight %}
 
@@ -302,28 +299,31 @@ I've made it `val` just to illustrate that such dependencies are possible.
 `armed` might be used by an enclosing user interface element to update its visualization as the
 user interacts with it. `clicked` is declared to be an `event`, which is like `state` except that
 it has no current value and thus will not trigger computation when behaviors that depend on it are
-initially created, only when it "fires". Barbour's RDP chooses to dispense with the notion of
-events entirely, but I'm (currently) of the opinion that they're sufficiently fundamental to a
-programmer's conception of a dynamic system that they should exist as fundamental entities rather
-than require being encoded as a change in state.
+initially created, only when it "fires".
 
-That said, reacting to change in state is such a common action, we provide sugar for obtaining a
-state's previous and current value when the state is changed. This can be seen above in
-`button1.change` which yields a `Change[Boolean]` (because `button1` has type `Boolean`). A
-`Change` record contains the previous (`prev`) and current (`cur`) values for the state. This could
-be obtained manually by routing `button1` into a length two rolling buffer and then reacting to
-updates on the buffer. Indeed that's how one would obtain a longer history than current and
-previous. But reacting to the current and previous value is sufficiently common that building it in
-enables pleasant syntax and an efficient implementation.
+Barbour's RDP chooses to dispense with the notion of events entirely, but I'm (currently) of the
+opinion that they're sufficiently fundamental to a programmer's conception of a dynamic system that
+they should exist in the model rather than be modeled as a change in state. The action of clicking
+a button models a user's intent. Their intent was not to depress the button and release it, that is
+a means to an end. I think it introduces needless complexity to require this action to be modeled
+as a change in an "is clicked" value.
+
+Because reacting to change in state is so common, we provide sugar for obtaining a state's previous
+and current value when the state is changed. This can be seen above in `button1.change` which
+yields a `Change[Boolean]`. A `Change` record contains the `previous` and `current` values for the
+state. This could also be obtained manually by routing `button1` into a length two rolling buffer
+and reacting to updates to the buffer. That's how one obtains a history of length greater than two.
 
 #### Nested systems
 
 Systems also give us an explanation for the *hierarchical* nature of the reactive state. A system
-encloses other systems, which themselves may enclose systems, in one big tree. Because systems host
-reactive state, the totality of a program's state is also structured as a tree.
+encloses other systems, which themselves may enclose systems, in a tree structure. Because all
+reactive state is owned by a system, the totality of a program's state is also structured as a
+tree. Note that though state and systems can be supplied as dependencies to other systems, making a
+DAG rather than a tree, the *ownership* of the state and systems is still tree-structured.
 
 It is possible for a containing system to access the public state of its child systems and it can
-provide its own state (or state on which it depends) to its child systems:
+pass its own state (or state on which it depends) to its child systems:
 
 {% highlight scala %}
 system MouseClickDetector (
@@ -349,7 +349,7 @@ system Foo {
 }
 {% endhighlight %}
 
-If a system needs to pass data between subsystems, it must route it through state that it controls:
+If a system needs to pass data between subsystems, it must route it through state that it owns:
 
 {% highlight scala %}
 system Foo {
@@ -368,7 +368,7 @@ is instantiated, the inner system is automatically instantiated, binding their l
 It is also possible for a system to *dynamically* enclose other systems, which is essential to most
 interactive programs.
 
-One might want a single dynamic enclosed system:
+A single dynamic enclosed system:
 
 {% highlight scala %}
 system AI (...) { ... }
@@ -383,28 +383,30 @@ system Game (...) {
 }
 {% endhighlight %}
 
-One could also have a list of enclosed systems:
+A list of enclosed systems:
 
 {% highlight scala %}
 interface Screen { ... }
 
 system App {
   state stack :Seq[Screen] = Seq()
-  // onInit is an event emitted when a system is initialized
-  onInit >> () => MainMenuScreen(stack) >>+ stack
+  onInit // onInit is an event emitted when a system is initialized
+    >> () => MainMenuScreen(stack)
+    >>+ stack // >>+ appends a value to a Seq
 }
 
 system MainMenuScreen (state stack :Seq[Screen]) : Screen {
-  // when something emits this event, we'll remove ourselves from the screen stack
-  event closeSelf :Unit
-  closeSelf >> () => self >>- stack
-
-  // we also have a button that adds a new screen to the stack
   val prefs = Button(...)
   prefs.clicked >> () => PrefsScreen(stack) >>+ stack
 }
 
-system PrefsScreen (state stack :Seq[Screen]) : Screen { ... }
+system PrefsScreen (state stack :Seq[Screen]) : Screen {
+  // when something emits this event, we'll remove ourselves from the screen stack
+  event closeSelf :Unit
+  closeSelf
+    >> () => self // self refers to the current system
+    >>- stack     // >>- removes a value from a Seq
+}
 {% endhighlight %}
 
 This latter example hints at some additional abstraction and code reuse mechanisms that will be
@@ -412,48 +414,55 @@ possible with systems. *Abstraction* below provides more details.
 
 #### System lifecycle
 
-When a system is instantiated, its behaviors are "wired up" and executed based on the current
-values of external and internal state. When a system is destroyed, its behaviors are all
-decommissioned and any dependencies on external state are cleaned up. In this way, the creation and
+When a system is instantiated, its behaviors are "wired up" and evaluated based on the current
+values of external and internal state. All statically nested systems are also instantiated at that
+time. When a system is destroyed, its behaviors are all decommissioned and any dependencies on
+external state are cleaned up (ditto for statically nested systems). In this way, the creation and
 destruction of systems serves as both a way to introduce dynamism into an otherwise static behavior
 graph, and as a way to automatically manage resources.
 
 When a dynamic system is no longer contained by any state (detected by reference counting or
-garbage collection, not yet sure which will be best), it is destroyed.
+garbage collection, not yet sure which will be best), it is destroyed. If a system is destroyed
+which contains dynamically nested systems, they may or may not be destroyed depending on whether
+those systems are referenced elsewhere. This makes me a little nervous, so I'll be investigating
+whether it's not too limiting to disallow references to systems escaping "up the tree" to parents
+of the system that created them. If that's disallowed, then every dynamic system can be destroyed
+when its creator is destroyed, which would be nicely simple.
 
 #### Concurrency
 
-Systems provide a nice place to introduce a mechanism for concurrency. A system can serve as the
-root of an *execution context* which is a small island of single threadedness in an otherwise vast
-sea of concurrent processes. I'll call such a system a *process*. This is similar to the
-[actor model] except that message passing is implicit in the propagation of a state change from one
-process (actor) to another.
+Systems provide a mechanism for concurrency. A system can serve as the root of an *execution
+context*: an island of single threadedness in a sea of concurrent processes. I'll call such a
+system a *process*. This is similar to the [actor model] except that message passing is implicit in
+the propagation of a state change from one process (actor) to another.
 
 By default, all statically and dynamically enclosed systems exist in the same process as their
 owning system. Changes to the owning system's state as well as the contained system's state are all
-processed immediately in the same (apparently single threaded) execution context.
+processed immediately in the same (single threaded) execution context.
 
 If a system contains a subsystem (statically or dynamically) that is marked as a process, any
 changes to that subsystem's state will be posted to that subsystem's execution context for
 evaluation instead of being evaluated directly by the initiating process. Similarly, any changes to
-state passed from the parent system into the subsystem will be posted to the parent's execution
-context for evaluation rather than being evaluated directly by the subsystem.
+parent supplied state by the subsystem will be posted to the parent's execution context for
+evaluation rather than being evaluated directly by the subsystem.
 
 I believe that it will be possible to automatically identify these process-boundary crossings and
 handle communication between concurrent processes without any additional information. The developer
 will simply declare a `process` instead of a `system` and the runtime will take care of everything
-else. I have not thought this concurrency stuff through nor implemented it, so this may turn out to
-be pie in the sky.
+else. I have not thought this concurrency stuff through in detail nor implemented it, so this may
+turn out to be pie in the sky.
 
 #### Abstraction
 
-Systems also provide a nice place to introduce a mechanism for abstraction. It would be possible to
-adopt an object-orientation directly and allow systems to inherit from other systems, inheriting
-their state and behaviors in the process. I suspect this is a bad idea, not least because
-inheritance of behavior and state is such a source of pain in the OO world.
+Systems provide a mechanism for abstraction. It would be possible to adopt an object-orientation
+directly and allow systems to inherit from other systems, inheriting their state and behaviors in
+the process. I suspect this is a bad idea, not least because inheritance of behavior and state is
+such a source of pain in the OO world.
 
-Instead, I'm leaning toward a combination of interfaces and delegation. My thoughts here are very
-rough, but something along these lines are likely to be where I'll start:
+Naturally, this will be dictated by the host language. If a system is modeled as a class, then it's
+going to inherit (pardon the pun) the capabilities of a class in that language. But in a language
+designed specifically for RSP, I would lean toward a combination of interfaces and delegation. My
+thoughts here are very rough, but something along these lines are likely to be where I'll start:
 
 {% highlight scala %}
 interface Screen {
@@ -476,14 +485,17 @@ private:
     screens >> _.tail == screen >> screen.showing
   }
 
+  // when a screen is appended to screens, append a Lifecycle to cycles
   screens +>> Lifecycle >>+ cycles
+  // when a screen is removed from screens, remove the associated Lifecycle
   screens >>- (idx, _) => idx ->> cycles
+  // this is such a common pattern that I'll almost certainly provide an
+  // assoc list that associates a system with each element of a list
 }
 
-system MainMenuScreen (val stack :ScreenStack)
-  : Screen via ScreenImpl(stack)
-{
-  // can access 'added' and 'showing' here
+system MainMenuScreen : Screen {
+  val screen = ScreenImpl() provides Screen
+  // can create behaviors that use added and removed
 }
 {% endhighlight %}
 
@@ -499,7 +511,7 @@ but that could just be my optimism talking.
 
 ### Show the state
 
-By using explicitly managed abstractions for our mutable state which automatically track all
+By using explicitly managed abstractions for our mutable state, which automatically track all
 changes to said state, we can very easily visualize that state and changes thereto in external
 tools. A given piece of state could be graphed "over time", or compared to another piece of state,
 or simply logged to a console. All of this can be done in realtime as the program is executing, and
@@ -519,7 +531,7 @@ A development version of the runtime can store the state graph separately from t
 that are used by the program runtime, allowing the code for the application to be unloaded and
 reloaded without abandoning its current state. This can work in conjunction with existing
 on-the-fly code reloading mechanisms (like JRebel, but eliminating many of its limitations). Or one
-could use a bigger hammer and simply unload and reload everything except the reactive state, when
+can use a bigger hammer and simply unload and reload everything except the reactive state, when
 requested by the developer. Either mechanism eliminates the tedious and time consuming process of
 returning to a particular application state to test newly introduced code changes.
 
@@ -531,31 +543,28 @@ state and manually interacting with it to recreate the state necessary to resume
 
 ### Purity of essence
 
-By forcing much of a program's computation to be pure functions, you tap into their well known
-benefits. They're easier to develop and test, because you can directly see all of their inputs and
-more easily develop a mental model of their relation to their outputs. They're also easier for
-other developers to understand when reading the program for the same reasons; there's no hidden
-state.
+By expressing much of a program's computation in pure functions, you tap into their well known
+benefits. They're easier to develop and test: supply the inputs, check the outputs. They're also
+easier for readers of the program to understand: there are no hidden dependencies or state.
 
 We can also leverage the "show the data" visualization tools to visualize their behavior. The
-development environment can readily show the output of a function on randomly generated or
-canonical inputs, or on a set of test inputs provided by the developer. The developer can also
-easily play around with functions in a REPL.
+development environment can show the output of a function on randomly generated inputs, or on a set
+of test inputs provided by the developer. The developer can easily play around with functions in a
+REPL.
 
 ## Enough already
 
 There are a lot of holes in the rough sketch I've provided above, which I'll endeavor to fill in in
-future blog posts. I'm in the process of "converting" patterns that I find recurring in my own
+future blog posts. I'm in the process of translating patterns that I find recurring in my own
 programs into RSP style, identifying the painful parts and thinking about whether those can be
 smoothed over with improvements to RSP, or whether the pain indicates that I'm doin' it wrong.
 
-I also doubt I'll be able to hold off on starting an implementation for much longer. My plan is to
-initially implement RSP in Scala, which is sufficiently flexible that I think I can attain most of
-my "ideal" syntax and runtime structure. Once that's roughly working, I'll start on visualization
-and interactive debugging tools, as those will determine whether the extra difficulty of writing in
-RSP-style is actually worth it. I'll also learn a lot about how hard it's going to be to
-efficiently implement RSP, even in a bespoke language and runtime, and whether or not my ideas
-about concurrency (and extending that to distributed systems) are half-baked.
+I doubt I'll be able to hold off on an implementation for much longer. My plan is to implement RSP
+in Scala, which is sufficiently flexible that I think I can attain most of my "ideal" syntax and
+runtime structure. Once that's roughly working, I'll start on visualization and interactive
+debugging tools, as those will determine whether the extra difficulty of writing in RSP-style is
+actually worth it. I'll also learn a lot along the way which will influence the design and
+development of an eventual bespoke language and runtime.
 
 Onward into the abyss.
 
