@@ -138,7 +138,7 @@ that transformations to that state happen at sufficiently coarse granularity tha
 is going on in pure function calls, and you're not reactively updating individual elements of a ten
 million element array. That of course places some burden on the programmer to structure their state
 appropriately, but every programming style comes with modeling burdens. Time will tell if RSP's are
-too onerous, but I'm not too worried.
+too onerous.
 
 ### Behaviors and fittings
 
@@ -161,7 +161,7 @@ n >> fib >> fibn
 {% endhighlight %}
 
 This program reacts to changes in `n` by computing the `nth` Fibonnaci number and storing it in
-`fibn`. With more detail: when `n` changes, its current (immutable) value is passed to the function
+`fibn`. Specifically: when `n` changes, its current (immutable) value is passed to the function
 `fib` which performs a side-effect free computation and returns an (immutable) value; that value is
 stored into `fibn`, another piece of reactive state.
 
