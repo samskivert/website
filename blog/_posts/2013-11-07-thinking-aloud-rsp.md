@@ -43,20 +43,20 @@ or two along the way, but if that turns out to be unnecessary, all the better.
 
 ## State and change
 
-A key philosophy of the programming model I'm developing is strong separation of state and
-behavior. (When I say state, I mean mutable state.) As it's not possible to eliminate state (we're
-usually creating stateful systems), the best one can hope for is to keep state on a short leash.
-The various attempts to apply FRP to real problems that I've encountered have always resulted in
-the hiding of state in the dataflow graph. While I don't have enough experience pushing FRP to its
-limits to definitively decry that as bad, it sure seems like a bad idea. Now you not only have
-state, but it's hiding inside something that looks declarative.
+A key philosophy of the programming model is strong separation of state and behavior. (When I say
+state, I mean mutable state.) As it's not possible to eliminate state (we're usually creating
+stateful systems), the best one can hope for is to keep state on a short leash. The various
+attempts I've seen that apply FRP to real problems have always resulted in the hiding of state in
+the dataflow graph. While I don't have enough experience pushing FRP to its limits to definitively
+decry that as bad, it sure seems like a bad idea. Now you not only have state, but it's hiding
+inside something that looks declarative.
 
 In addition to clearly identifying your state and keeping it out in the open, we also need to be
-careful about how we change that state. Jonathan Edwards has said that "to rationalize the insanity
-of programs that can read and write globally at any time, languages should impose automatic *time*
-management," but I contend that what we need to manage is change, not time. If one's state is
-clearly identified and changes to that state are tightly controlled, it opens the doors to
-substantial benefits.
+careful about how we change that state. Jonathan Edwards said that "to rationalize the insanity of
+programs that can read and write globally at any time, languages should impose automatic *time*
+management." I contend that what we need to manage is change, not time. If one's state is clearly
+identified and changes to that state are tightly controlled, it opens the doors to substantial
+benefits.
 
 I'd explain those benefits now, but they don't make much sense unless you first know about the
 programming model, so you can either wade through the rest of this and get to the benefits in due
@@ -71,7 +71,7 @@ The three main components of the programming model are:
 
   * hierarchical reactive state
   * pure functions
-  * FRP-style behaviors wired up with *fittings* and encapsulated into *systems*
+  * *systems* of *behaviors* wired up with *fittings*
 
 The working name I have for the model is "reactive state programming". This puts the focus on the
 reactive state, which is the thing that differentiates it most from plain FRP.
@@ -84,22 +84,22 @@ guarantee that RSP's invariants are not violated accidentally or intentionally b
 programmers.
 
 There are a lot of things to unpack from the bullet points above, so I'll start with details on
-each of the components and then come back to how it all fits together, then finally outline some of
+each of the components and then come back to how it all fits together. Finally I'll outline some of
 the benefits conferred by this particular subset of the Turing tar pit.
 
 ### Hierarchical reactive state
 
 When I say reactive state, I mean state for which all changes may be observed and reacted to. The
 simplest form of reactive state would be a single value (of any immutable type). The value can be
-updated, and when the value is updated that can trigger other computations, which result in
-updating other values. Think spreadsheet, but don't think it too hard because it's not a perfect
-analogy.
+updated, and that can trigger other computations which result in updating other values, until the
+system again achieves stability. Think spreadsheet, but don't think it too hard because it's not a
+perfect analogy.
 
-All changes to a piece of reactive state are encapsulated. So you can't just say "Hey, jam this
-value into this memory location". An update of a reactive value is encapsulated into a change which
-is managed by the RSP-runtime. This enables reporting and visualization of all changes to mutable
+All changes to a piece of reactive state are encapsulated. You can't just say "Hey, jam this value
+into this memory location". An update of a reactive value is encapsulated into a change which is
+managed by the RSP-runtime. This enables reporting and visualization of all changes to mutable
 state in your entire program. If you ever wondered how Victor-style "magic windows" into the inner
-workings of your program are going to work in a "real" programming language, I think it's something
+workings of your program are going to work in a real programming language, I think it's something
 like this. If you're thinking "Oh god, the (lack of) performance" then bear with me until the next
 section.
 
@@ -112,20 +112,20 @@ available to debugging and visualization tools.
 External resources (like `stdin` and `stdout`, the file system, the network, etc.) are also modeled
 as reactive state. I'll describe how all of these usual suspects are modeled in a later blog post.
 
-I'll defer explaining the *hierarchical* aspect of the state until we describe *systems* below.
+The *hierarchical* aspect of the state will be described in *Systems* below.
 
 ### Pure functions
 
 Pure functions are how most computation is accomplished in RSP. As I'll show below in *Behaviors*,
 when a piece of state changes, that new state value is routed (usually) through one or more pure
-functions and the result is used to update some other piece of state. Pure functions can of course
+functions and the result is used to update some other piece of state. Pure functions can naturally
 call other pure functions in the course of their computation.
 
-Pure functions place the most significant restriction on the host language: that it have no global
-mutable state (or the most significant demand on programmer discipline: don't use global mutable
-state). Note however, that inside a pure function, mutable state is perfectly acceptable. As long
-as there are no observable side effects, you can use whatever approach you like in your pure
-functions. Write 'em in assembly if you like.
+Purity of function places the most significant restriction on the host language: that it have no
+global mutable state (or the most significant demand on programmer discipline: don't use global
+mutable state). Note however, that inside a pure function, mutable state is perfectly acceptable.
+As long as there are no observable side effects, you can use whatever approach you like in your
+pure functions. Write 'em in assembly if you like.
 
 You don't have to worry about concurrency when writing your pure functions; that happens at a
 higher level. In a garbage collected host language, it is even reasonable to heap allocate data and
