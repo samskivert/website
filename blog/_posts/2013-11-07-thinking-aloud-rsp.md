@@ -232,15 +232,15 @@ are less so. Plus DRY.
 ### Systems
 
 Systems are the final piece of the RSP puzzle. They enable the dynamic assembly of otherwise
-statically declared behaviors. A system is the main dynamic organizational mechanism in an RSP
-program and you can think of it like an object in an OOP program. Indeed, when embedding RSP in an
+statically declared behaviors. A system is the main organizational mechanism in an RSP program and
+you can think of it like an object in an OOP program. Indeed, when embedding RSP in an
 OOP-language, a system will almost certainly be represented by an object.
 
-Systems may also serve as a static organizational mechanism (i.e. namespaces for pure functions),
-but I suspect that a separate module mechanism will be needed to enable one to provide a library of
-nothing but pure functions and/or a combination of largely system-agnostic functions along with a
-collection of reusable systems. I'd rather not use a degenerate system for that purpose in pursuit
-of the false idol of minimalism.
+Systems could also serve as namespaces for pure functions and nested systems, but I suspect that a
+separate module mechanism will be better. One will want to provide a library of nothing but pure
+functions and/or a combination of largely system-agnostic functions along with a collection of
+reusable systems. I'd rather not use a degenerate system for that purpose in pursuit of the false
+idol of minimalism.
 
 A system is a set of external state dependencies, external value dependencies, internal state
 (declared and owned by the system), and behaviors. It also provides a lexical scope for private
