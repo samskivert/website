@@ -15,6 +15,7 @@ Vital stats are as follows:
   * Make: Volkswagen
   * Model: Eurovan MV
   * Year: 2000
+  * Engine: 2.8L V6
   * Mileage: 46,300
 
 That mileage is not in error. I don't drive much, so Anne is as spry and young as a car half her
