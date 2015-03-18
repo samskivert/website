@@ -527,7 +527,7 @@ boilerplate extravaganza that is `maven-antrun-plugin`.
 Overall, Gradle feels like Ant without the horrible XML syntax, plus a few useful parts of Maven
 (particularly dependency management and sensible defaults for Java projects). I have philosophical
 qualms with a build tool that is based on a Turing complete language from the ground up, regardless
-of how declarative things *look* (c.f. the lack of error message when I had more than one
+of how declarative things *look* (e.g. the lack of error message when I had more than one
 `resources` section).
 
 However, Gradle also provides an apparently civilized API for obtaining project metadata in things
