@@ -538,4 +538,4 @@ let's go shopping.
 
 Gradle and I have only just got to know each other, but I'm tentatively optimistic about our
 relationship. I'm not totally done converting the build. I may be back in a couple of days with
-more complains, or perhaps more praise. Who knows?
+more complaints, or perhaps more praise. Who knows?
