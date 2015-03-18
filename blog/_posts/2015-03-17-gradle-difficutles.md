@@ -508,4 +508,5 @@ fine, as long as you have programmatic access to the metadata via the same code 
 build tool.
 
 Gradle and I have only just got to know each other, but I'm tentatively optimistic about our
-relationship.
+relationship. I'm not totally done converting the build; I may be back in a couple of days with
+more complains, or perhaps more praise. Who knows?
