@@ -528,11 +528,13 @@ Overall, Gradle feels like Ant without the horrible XML syntax, plus a few usefu
 (particularly dependency management and sensible defaults for Java projects). I have philosophical
 qualms with a build tool that is based on a Turing complete language from the ground up, regardless
 of how declarative things *look* (c.f. the lack of error message when I had more than one
-`resources` section). However, Gradle also provides an apparently civilized API for obtaining
-project metadata in things like IDEs, so when I get around to adding Gradle support for Scaled, I
-might be won over to the idea that builds with no *actual* declarative components are fine, as long
-as you have programmatic access to the metadata via the same code used by the actual build tool.
+`resources` section).
+
+However, Gradle also provides an apparently civilized API for obtaining project metadata in things
+like IDEs. So when I get around to adding Gradle support to Scaled, I might be won over to the idea
+that builds with no *actual* declarative components are fine, as long as you have programmatic
+access to the metadata via the same code used by the actual build tool.
 
 Gradle and I have only just got to know each other, but I'm tentatively optimistic about our
-relationship. I'm not totally done converting the build; I may be back in a couple of days with
+relationship. I'm not totally done converting the build. I may be back in a couple of days with
 more complains, or perhaps more praise. Who knows?
