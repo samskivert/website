@@ -36,16 +36,16 @@ results from Gradle's forums, with a crappy UI and all the problems with finding
 any) among the uselessly linear series of responses. Or I get a link to the official Gradle
 documentation, which is uselessly vague and never talks about the details I want.
 
-Build system questions are about as close to the perfect body of knowledge for Stack Overflow, so
-somewhere along the line a major failure has happened.
+Build system recipes and edge cases are about as close to the perfect body of knowledge for Stack
+Overflow, so somewhere along the line a major failure has happened.
 
 ## Multi-project builds
 
 The documentation for multi-project builds (multi-module projects in Maven-speak) is annoyingly
-discursive. It starts out with a fucking example about water and whales and krill. I'm not a
-fucking marine biologist, I'm a Java programmer trying to build a Java project. Yes, I understand
-that your all-singing all-dancing build system is so general that it can handle projects related to
-our planet's vast ocean resources, in addition to my Java project, but I just need to know how to
+discursive. It starts out with an example about water and whales and krill. I'm not a fucking
+marine biologist, I'm a Java programmer trying to build a Java project. Yes, I understand that your
+all-singing all-dancing build system is so general that it can handle projects related to our
+planet's vast ocean resources, in addition to my Java project, but I just need to know how to
 properly specify a dependency between modules.
 
 Where do I find that, you might wonder? 4,000 words in. After sections and subsections on
@@ -92,11 +92,12 @@ genius who never uses tab completion, that's who! I'm surrounded by barbarians.
 ## SourceDirectorySet and resource copying
 
 One of the most common things to do in a Java build system (and likely any build system that's not
-used by barbarians like C++ programmers) is to express a set of rules that enumerate a set of files
-in some directory tree. For example `src/**/*.java`. This should be a fundamental building block in
-a build system, and it should be well documented, because people are going to do crazy thing with
-it. I want all the files in directory A, except files in these subdirectories, except these
-particular files in those subdirectories, which I do want. On Wednesdays.
+designed for use by clinically insane people, like C++ programmers) is to express rules that
+enumerate a set of files in some directory tree. For example `src/**/*.java`. This should be a
+fundamental building block in a build system, and it should be well documented, because people are
+going to do crazy thing with it. I want all the files in directory A, except files in these
+subdirectories, except these particular files in those subdirectories, which I do want. On
+Wednesdays.
 
 Ant, for all its legacy of horror, has such a building block and [decent
 documentation](https://ant.apache.org/manual/Types/fileset.html) for it. Maven half-asses this (as
@@ -366,10 +367,12 @@ A problem occurred evaluating project ':assets'.
 
 This obviously means that I used `fileSet` when I should have used `fileTree`, and I naturally
 immediately deduced that from the informative error message. Once that trivial little issue was out
-of the way, I ran my build to discover that no `ogg` files were copied. Looking at the Groovydoc
-more closely, I realized that the `plus` method returns a new file collection, which is going to
-get thrown away because `resources` presumably creates the One True `resources` file set. No
-problem, there's an `add` method that adds to the current file collection. Let's use that:
+of the way, I ran my build to discover that... no `ogg` files were copied.
+
+Looking at the Groovydoc more closely, I realized that the `plus` method returns a new file
+collection, which is going to get thrown away because `resources` presumably creates the One True
+`resources` file set. No problem, there's an `add` method that adds to the current file collection.
+Let's use that:
 
 ```
 * What went wrong:
@@ -381,7 +384,8 @@ This inspires further Groovydoc digging, where I see at the top of the `SourceDi
 documentation:
 
 ```
-TODO - configure includes/excludes for individual source dirs, and sync up with CopySpec TODO - allow add FileTree
+TODO - configure includes/excludes for individual source dirs, and sync up with CopySpec
+TODO - allow add FileTree
 ```
 
 Awesome. That comment might as well read: "TODO: any of the things that would allow MDB to make his
@@ -389,42 +393,63 @@ fucking build work."
 
 OK, looks like we're adding some nice imperative `processResources` directives. I found an example
 from some random mailing list which used `sourceSets.main.classesDir` which no longer exists. I
-eventually determined that `sourceSets.main.output.resourcesDir` is what I want. Et voila:
+eventually determined that `sourceSets.main.output.resourcesDir` is what I want.
+
+The final machinations turned out to be:
 
 ```groovy
 sourceSets {
   main {
     resources {
-      srcDir 'rsrc'
-      exclude 'avatars/**'
-      exclude 'boards/**'
-      exclude 'bonuses/**'
-      exclude 'bounties/**'
-      exclude 'cards/**'
-      exclude 'config/**/*.xml'
-      exclude 'effects/**'
-      exclude 'extras/**'
-      exclude 'props/**'
-      exclude 'sounds/**'
-      exclude 'tutorials/**/*.xml'
-      exclude 'units/**'
-      exclude '**/*.wav'
+      srcDir "."
+      include "rsrc/**"
+      exclude "rsrc/avatars/**"
+      exclude "rsrc/boards/**"
+      exclude "rsrc/bonuses/**"
+      exclude "rsrc/cards/**"
+      exclude "rsrc/config/**/*.xml"
+      exclude "rsrc/effects/**"
+      exclude "rsrc/extras/**"
+      exclude "rsrc/props/**"
+      exclude "rsrc/sounds/**"
+      exclude "rsrc/tutorials/**/*.xml"
+      exclude "rsrc/units/**"
+      exclude "rsrc/**/*.wav"
     }
   }
 }
 
 task copyOggs (type: Copy) {
-  from "rsrc"
+  from "."
   into sourceSets.main.output.resourcesDir
-  include '**/*.ogg'
+  include "rsrc/**/*.ogg"
 }
-
 processResources.dependsOn "copyOggs"
+
+task copyTownBits (type: Copy) {
+  from "."
+  into sourceSets.main.output.resourcesDir
+  include "rsrc/bonuses/**/*.png"
+  include "rsrc/bonuses/**/bonus.properties"
+  include "rsrc/cards/**/*.png"
+  include "rsrc/effects/**/*.png"
+  include "rsrc/effects/**/icon.properties"
+  include "rsrc/effects/**/icons.txt"
+  include "rsrc/effects/**/particles.jme"
+  include "rsrc/effects/**/particles.properties"
+  include "rsrc/effects/**/particles.txt"
+  include "rsrc/extras/**/*.png"
+  include "rsrc/props/**/*.png"
+  include "rsrc/props/**/prop.properties"
+  include "rsrc/units/**/*.png"
+  include "rsrc/units/**/unit.properties"
+}
+processResources.dependsOn "copyTownBits"
 ```
 
-That was something trivial in Maven and nothing like the complexity that eventually motivated me to
-try Gradle. I eagerly anticipate getting to that "hard" stuff, assuming I don't have to spend four
-hours on the next trivial requirement.
+That was something fairly trivial in Maven and nowhere naer as complex as the stuff that motivated
+me to abandon Maven for Gradle. I eagerly anticipate getting to that stuff, assuming I don't have
+to spend four hours on the next trivial requirement.
 
 ## Crappy parser
 
@@ -447,7 +472,8 @@ Could not compile build file '.../bang/client/shared/build.gradle'.
   1 error
 ```
 
-The actual error is the fact that a comma is missing after `dir` in the `fileset` clause:
+The actual error is the fact that a comma is missing after the `dir` argument in the `fileset`
+call:
 
 ```groovy
 task genService << {
@@ -501,11 +527,11 @@ boilerplate extravaganza that is `maven-antrun-plugin`.
 Overall, Gradle feels like Ant without the horrible XML syntax, plus a few useful parts of Maven
 (particularly dependency management and sensible defaults for Java projects). I have philosophical
 qualms with a build tool that is based on a Turing complete language from the ground up, regardless
-of how declarative things *look*. However, Gradle also provides an apparently civilized API for
-obtaining project metadata in things like IDEs, so when I get around to adding Gradle support for
-Scaled, I might be won over to the idea that builds with no *actual* declarative components are
-fine, as long as you have programmatic access to the metadata via the same code used by the actual
-build tool.
+of how declarative things *look* (c.f. the lack of error message when I had more than one
+`resources` section). However, Gradle also provides an apparently civilized API for obtaining
+project metadata in things like IDEs, so when I get around to adding Gradle support for Scaled, I
+might be won over to the idea that builds with no *actual* declarative components are fine, as long
+as you have programmatic access to the metadata via the same code used by the actual build tool.
 
 Gradle and I have only just got to know each other, but I'm tentatively optimistic about our
 relationship. I'm not totally done converting the build; I may be back in a couple of days with
