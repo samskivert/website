@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
   <title>samskivert: <!--#echo var="title" --></title>
-  <!--#if expr="$descrip" -->
+  <!--#if expr="\"$descrip\" != \"\"" -->
   <meta name="description" content="<!--#echo var="descrip" -->"/>
   <!--#endif -->
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -23,7 +23,7 @@
 <!--<div style="position: absolute; top: 8px; left: 487px"><a href="/">
 <img src="/images/bubble.png" alt="My work is the finger work." border="0"/></a></div>-->
 <div class="title"><h1><!--#echo var="title" --></h1>
-<!--#if expr="$subtitle" -->
+<!--#if expr="\"$subtitle\" != \"\"" -->
 <span class="small"><!--#echo var="subtitle" --></span><br/>
 <!--#endif -->
 </div>
