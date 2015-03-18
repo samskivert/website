@@ -533,7 +533,8 @@ of how declarative things *look* (e.g. the lack of error message when I had more
 However, Gradle also provides an apparently civilized API for obtaining project metadata in things
 like IDEs. So when I get around to adding Gradle support to Scaled, I might be won over to the idea
 that builds with no *actual* declarative components are fine, as long as you have programmatic
-access to the metadata via the same code used by the actual build tool.
+access to the metadata via the same code used by the actual build tool. Specifications are hard;
+let's go shopping.
 
 Gradle and I have only just got to know each other, but I'm tentatively optimistic about our
 relationship. I'm not totally done converting the build. I may be back in a couple of days with
