@@ -114,6 +114,10 @@ h3 {
   text-decoration: none;
 }
 
+#page-navigation {
+  margin-top: 15px;
+}
+
 #page-navigation .left {
   float: left;
 }
