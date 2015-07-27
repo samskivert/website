@@ -130,7 +130,7 @@ The `XY` interface makes it easy to express that you don't care whether your x,y
 `Point` or a `Vector` (or any other damned thing that has an x and y), which is very useful. But
 how do I know that it's OK to destructure an `XY`?
 
-Probably some kind of annotaton like `@Value` which, when placed on a class or interface means that
+Probably some kind of annotation like `@Value` which, when placed on a class or interface means that
 all public methods represent destructurable values:
 
 ```java

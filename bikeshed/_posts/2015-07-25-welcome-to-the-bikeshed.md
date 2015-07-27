@@ -22,7 +22,7 @@ sometimes syntactic, sometimes semantic, which I hope will be met with thoughtfu
 discussion and debate. If the occasional religious war breaks out, I can only hope the casualties
 are minimal.
 
-I also feel obliged to state my own predjudices up front. If you find them particularly offensive,
+I also feel obliged to state my own prejudices up front. If you find them particularly offensive,
 it may not be worth your time to try to convince me to radically shift my world view. But if you
 have the stamina or the perverse desire, I welcome all well reasoned dissidence. Now then, the
 list:
@@ -33,8 +33,8 @@ abstraction needs to be zero-cost, but it does mean that non-zero-cost abstracti
 easily estimable cost and should not wildly deviate from programmers' expectations.
 
 * A language should be as simple as possible but no simpler. Simplicity is good, but is trumped by
-practicality. If the only syntactically convient way to iterate over a collection is by creating a
-closure, you have failed this test.
+practicality. If the only syntactically convenient way to iterate over a collection is by creating
+a closure, you have failed this test.
 
 * The programmer is smart and the compiler is (relatively) dumb. It's better to give the programmer
 the tools to write code that the compiler can easily translate into efficient manipulation of the
@@ -46,13 +46,13 @@ heuristics that may swing one way or another (with substantial performance impli
 seemingly unrelated changes.
 
 * The benefits of garbage collection outweigh its cost. This is to some degree a corollary of the
-performance predjudice, as most objections to GC have to do with its unpredictable effects on
+performance prejudice, as most objections to GC have to do with its unpredictable effects on
 performance. That said, I greatly desire a way to allow the use of stack allocation (or its moral
-equivalent) when so desired. Per the smart programmer, dumb compiler predjudice, the programmer
+equivalent) when so desired. Per the smart programmer, dumb compiler prejudice, the programmer
 should be able to decide between the simplicity of garbage collection (I usually want this), or the
 performance of stack allocation (I sometimes want this).
 
-In addition to these general predjudices, I will also admit to being a big fan of Scala. I feel
+In addition to these general prejudices, I will also admit to being a big fan of Scala. I feel
 that Martin Odersky has exercised a great deal of good taste in shaping it over the years. He has
 also been (understandably) very experimental, and has grown the language into a shambling mess, but
 there are a lot of diamonds in that rough. Thus you'll find that I tend to operate from a baseline
