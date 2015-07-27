@@ -96,7 +96,7 @@ trait Region {
 ```
 
 For a variety of reasons, I didn't want it to be a case class, but I sure wish I didn't have to
-dozens of overloaded methods to manually destructure a `Region`.
+create dozens of overloaded methods to manually destructure a `Region`.
 
 I use another pattern in my [Java geometry library] which would fail in these circumstances as
 well:
