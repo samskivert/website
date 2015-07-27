@@ -60,7 +60,7 @@ Some from a game I'm working on:
 You get the idea.
 
 If we have ADTs (Scala calls them `case` classes), or value classes/structs, it seems perfectly
-reasonable to automatically destructure an one passed to a function which takes arguments of the
+reasonable to automatically destructure one passed to a function which takes arguments of the
 same type and in the same order.
 
 ```scala
