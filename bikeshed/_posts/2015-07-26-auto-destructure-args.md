@@ -238,7 +238,7 @@ passing a `Point` to a method which takes two floats might incidentally create t
 heap and throw them away. Stick that into an inner loop that's doing math calculations and you've
 just "abstracted away" 50% of your performance.
 
-So the abstraction is good, the implementation is bad. I would definitely want to use the same
+So the abstraction is good, the implementation is bad. I would definitely want to use one
 abstraction for pattern matching, destructuring assignment and this auto-destructuring of
 arguments, but I would do it in such a way that it was closer to zero cost. Scala already cheats
 and automatically optimizes this abstraction for its own ADT types (case classes) to dramatically
