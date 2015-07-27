@@ -1,0 +1,27 @@
+---
+layout: index
+title: half-baked thoughts on programming languages
+---
+
+<div id="home">
+  <p>
+    The bike shed is where I post ideas about programming languages, mostly a particular
+    hypothetical programming language that I hope never to create. For background, see the
+    <a href="2015/07/welcome-to-the-bikeshed/">inaugural post</a>.
+  </p>
+
+{% for post in site.posts %}
+  {% capture year %}{{ post.date | date: '%Y' }}{% endcapture %}
+  {% capture nyear %}{{ post.next.date | date: '%Y' }}{% endcapture %}
+  {% capture pyear %}{{ post.previous.date | date: '%Y' }}{% endcapture %}
+  {% if year != nyear %}
+    <h2>{{ post.date | date: '%Y' }}</h2>
+    <ul>
+  {% endif %}
+    <li><a href="/bikeshed{{ post.url }}">{{ post.title }}</a> - 
+        <span class="meta">{{ post.date | date_to_string }}</span></li>
+  {% if year != pyear %}
+    </ul>
+  {% endif %}
+{% endfor %}
+</div>
