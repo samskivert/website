@@ -238,12 +238,12 @@ passing a `Point` to a method which takes two floats might incidentally create t
 heap and throw them away. Stick that into an inner loop that's doing math calculations and you've
 just "abstracted away" 50% of your performance.
 
-So the abstraction is good, the implementation is bad. I would definitely want to use one
-abstraction for pattern matching, destructuring assignment and this auto-destructuring of
-arguments, but I would do it in such a way that it was closer to zero cost. Scala already cheats
-and automatically optimizes this abstraction for its own ADT types (case classes) to dramatically
-reduce the cost, but I'd prefer to design the mechanism to be cheap for everyone rather than make
-user code a performance second class citizen.
+So the abstraction is good, the implementation is bad. I would definitely use one abstraction for
+pattern matching, destructuring assignment and this auto-destructuring of arguments, but I would do
+it in such a way that it was closer to zero cost. Scala already cheats and automatically optimizes
+this abstraction for its own ADT types (case classes) to dramatically reduce the cost, but I'd
+prefer to design the mechanism to be cheap for everyone rather than make user code a performance
+second class citizen.
 
 The `@Value` annotation described above is one ham-fisted way of accomplishing that. One could
 also imagine a metaprogramming facility where you provide the moral equivalent of an `unapply`
