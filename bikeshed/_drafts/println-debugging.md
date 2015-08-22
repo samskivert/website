@@ -41,7 +41,35 @@ The string would be prepended to the trace in some useful way:
 1st: foo(24, Thing(quux, 42))
 2nd: foo(12, Thing(bippy, 1))
 3rd: foo(99, Thing(pork, -2))
-``
+```
 
 This could easily be done with a javac plugin today and indeed hypothetical language would use an
 extensible annotation system to accomplish this, but it would still come "in the box".
+
+And for expressions too:
+
+```scala
+  def computeDamage (apower :Int, apoints :Int, dpower :Int) =
+    @trace("damage=") Math.round(apower * apoints / 100f * @trace("pratio=")(apower/dpower))
+```
+
+yields:
+
+```
+pratio=F
+damage=N
+```
+
+Maybe trace return value as well for functions that generate a result:
+
+```scala
+  @trace def computeDamage (apower :Int, apoints :Int, dpower :Int) =
+    Math.round(apower * apoints / 100f * apower/dpower)
+```
+
+yields:
+
+```
+computeDamage(55, 50, 55)) // emitted on method entry
+ = 28                      // emitted on method exit
+```
