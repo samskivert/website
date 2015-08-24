@@ -1,0 +1,75 @@
+<!--#set var="title" value="That's Enormous"-->
+<!--#set var="subtitle" value="Coming to America"-->
+<!--#set var="descrip" value="A game show for fans of very large things."-->
+<!--#include virtual="/header.html"-->
+
+<p>
+  That's Enormous is packaged as a <a href="enormous.zip">Mac OS app</a>,
+  or you can run it via Java Web Start via <a href="enormous.jnlp">this link</a>
+  but Java security restrictions default to not allowing self-signed apps any more
+  so that may not work. Worst case, download <a href="enormous.jar">enormous.jar</a>
+  and run it from the command line via: <code>java -jar enormous.jar</code>.
+</p>
+
+<p><b>Instructions</b><br>
+
+The moderator can click on any of the questions to activate that question.
+
+<p> While a question is activated, pressing 1, 2, or 3 will cause the
+associated player to "respond". For that real game show feel, you will
+want buzzer peripherals which can be plugged into the USB port and
+generate a key event when pressed.
+
+<p> That player would then respond to the question and the moderator would
+then select:
+
+<ul>
+<li> <b>y</b> to indicate that they got the question right which will
+score points for that player
+
+<li> <b>n</b> to indicate they got it wrong which will penalize that
+player's score and allow the question to be answered by the other players
+
+<li> <b>c</b> to "cancel" the selection (the "responder" scores no
+negative points and the question becomes once again answerable by any of
+the players)
+
+<li> or click the mouse on the question box to dismiss the question
+entirely (if no player responds within some desired time frame, for
+example).
+</ul>
+
+<p> Click on any of the team displays at the bottom of the screen to
+configure the active player for that team. Any previously active player
+will have their score reset, but any stars they earned will be remembered
+as long as that player is reinstated with the exact same name next time
+they are up to play.
+
+<p> Hold down the shift key and click on any of the team displays at the
+bottom of the screen to "cash in" points for that player and award them
+and their team stars. 6 points is worth one star, 9 points two, 12 three,
+and so on.
+
+<p> A player's personal stars are tracked as well. Click any of the
+category boxes at the top of the screen to display the current status of
+all players up to this point. Click that display to return to the current
+round.
+
+<p> Hold down the shift key and click the category boxes at the top of the
+screen to end the current round which will also display the per-player
+status up to this point. Then click that display to start the next round.
+
+<p><b>Configuration</b><br>
+
+Look at the sample configuration files for information on configuring a game:
+
+<ul>
+<li> <a href="enormous.properties">enormous.properties</a>
+<li> <a href="questions.properties">questions.properties</a>
+</ul>
+
+Create a directory on your desktop named "enormous" and place the
+configuration files and all associated media files in that directory
+and the game will locate it when started.
+
+<!--#include virtual="/footer.html"-->

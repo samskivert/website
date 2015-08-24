@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- JNLP File for That's Enormous -->
+
+<!-- If you're seeing this in your web browser, you probably need to
+     download and install the Sun JRE 1.4 and/or Java Web Start from
+     http://java.sun.com/j2se/ -->
+
+<jnlp spec="1.0+" codebase="http://www.samskivert.com/play/enormous/" href="enormous.jnlp">
+  <information>
+    <title>That's Enormous</title>
+    <vendor>Seuss and Asseusciates</vendor>
+    <homepage href="index.html"/>
+    <icon href="icon.png"/>
+    <description kind="short">
+      Enormous fun for the whole family!
+    </description>
+    <offline-allowed/>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="enormous-pro.jar"/>
+    <jar href="javalayer.jar"/>
+  </resources>
+  <application-desc main-class="com.samskivert.enormous.EnormousApp"/>
+</jnlp>
