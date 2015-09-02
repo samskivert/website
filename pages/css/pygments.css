@@ -8,7 +8,7 @@
 .highlight .o { color: #FFFFFF } /* Operator */
 .highlight .p { color: #FFFFFF } /* Paren */
 /* New? .highlight .c { color: #9933CC; font-style: italic } */ /* Comment */
-.highlight .cm { color: #772CB7; background: #070707; font-style: italic } /* Comment.Multiline */
+.highlight .cm { color: #994ED9; font-style: italic } /* Comment.Multiline */
 .highlight .cp { color: #9933CC } /* Comment.Preproc */
 .highlight .c1 { color: #9933CC; font-style: italic } /* Comment.Single */
 .highlight .cs { color: #9933CC; font-style: italic } /* Comment.Special */
