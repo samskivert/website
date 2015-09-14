@@ -1,0 +1,196 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; I; Linux 2.2.14 i686) [Netscape]">
+   <title>Why not XSL?</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#9E0061" alink="#FF0000">
+<b><font face="Arial,Helvetica"><font size=+1>Why not XSL?</font></font></b>
+<br><font face="Arial,Helvetica"><font size=-2><a href="mailto:mdb@go2net.com">Michael
+Bayne</a></font></font>
+<p>I have been preparing for the development of the next generation web
+development environment for Go2Net and have been investigating various
+standards and initiatives in the industry. A major component of the web
+development environment will be the system by which dynamic information
+is combined with static information and marked up with HTML. One of the
+technologies for performing that function that is receiving a lot of attention
+at present is the <a href="http://www.w3.org/TR/xsl/">eXtensible Stylesheet
+Language</a> or XSL. XSL covers a wide range of functionality and one part
+of it, the part that is presently most applicable to web developers, is
+<a href="http://www.w3.org/TR/xslt">XSL
+Transformations</a> or XSLT.
+<p>This document assumes a familiarity with XSL and XSLT and the means
+by which they would be applied to web application development. If you don't
+already have that familiarity, a good way to get it is to read the <a href="http://xml.apache.org/cocoon/guide.html">users
+guide</a> for Cocoon, which is an implementation of XSL/XSLT.
+<p>As the title suggests, I have come up with a variety of reasons why
+XSL/XSLT will not provide a good foundation for a web development environment.
+With some additional technologies, I believe XSL/XSLT might be able to
+be made to work, but the question remains whether or not XSL will turn
+out to be an improvement over existing strategies or the alternative combination
+of XML and CSS. Without further ado, I will describe some of my complaints.
+<h4>
+XSL syntax is less than comprehensible</h4>
+While the general purpose transformation capabilities provided by XSLT
+are powerful and allow for some really nifty stuff to be done, we don't
+really need 95% of that functionality and we pay a serious price in page
+understandability to get it. XSL is a declarative language and a cryptic
+looking one to boot. Procedural programming languages are in widespread
+use today, while declarative languages like Prolog languish in unpopularity.
+This isn't to say that declarative languages are bad or that they don't
+provide extraordinary expressive power. But they are also notoriously CPU-intensive,
+are easily misused and behave unexpectedly. XSL suffers from all of these
+problems.
+<p>My preference is for a template system that is simple and comprehensible.
+XSL is sufficiently incomprehensible that programmers <i>will</i> mess
+up when using it. Non-programmers will be completely at a loss to understand
+what is going on during the transformation process.
+<h4>
+Does not achieve complete separation of code and HTML</h4>
+Various systems use various approaches. None of them have proved to be
+satisfactory. The systems that I've seen built with XSL use the most unsatisfactory
+approach of them all, embedding code into the web page. Alternative approaches
+exist, but also have their problems:
+<p>JSP + Tag libraries
+<ul>
+<li>
+Requires lots of structured, extra coding to accomplish simple things.</li>
+</ul>
+JSP controller servlet and JSP view servlet
+<ul>
+<li>
+Prevents integration of formatting and retrieval. You must store information
+from, say, a database query into a temporary object for later formatting
+by the view servlet instead of formatting on the fly as you fetch each
+row from a result set.</li>
+</ul>
+WebMacro
+<ul>
+<li>
+Almost there but still requires looping constructs in the template files.</li>
+</ul>
+My preference is for a system similar to our current Pfile system with
+some extensions. A Pfile approach with blocks of template text that can
+be repeated is much cleaner in the HTML and allows for a complete absence
+of code. The servlet author can perform on-the-fly substitutions as the
+information becomes available in the normal flow of code. Though the substitutions
+remain in memory until the Pfile is flushed to the output stream, the servlet
+author does not have to create special classes or use inefficient general
+purpose classes to store the information until it is ready to be substituted
+into the template.
+<h4>
+Without client-side rendering, XSL is very expensive</h4>
+In the distant future, XSL will be used in a scenario like this:
+<p><img SRC="perfect_world.png" height=162 width=522>
+<p>But browsers that support XSL are not likely to be in widespread use
+for at least another year, more likely two. Even then, we are unlikely
+to want to forgo support for older browsers entirely which is what such
+a scenario would require.
+<p>In the meanwhile, people are architecting systems like so:
+<p><img SRC="current_world.png" height=162 width=543>
+<p>However, systems of this nature suffer from serious performance issues
+because the process of applying XSL templates to XML source data is an
+exceptionally expensive one. Since the XML generated by the servlet is
+dynamic, most caching cannot be performed because the information changes
+from request to request. In reality, neither the markup, nor the structure
+generally change from request to request, only the actual data (the information
+in between the tags of the source XML document), but this architecture
+is such that it cannot take advantage of that characteristic.
+<p>I came up with another possible architecture which takes advantage of
+the fact that the XML source information rarely changes in structure but
+only in content. No existing system (that I could find) uses a structure
+like this, but we could build one based on existing XSL batch processing
+tools. It looks like so:
+<p><img SRC="alternate_world.png" height=162 width=704>
+<p>Here we forgo the possibility of generating XML from the servlet in
+a way that one would expect, but instead we assume that the XML will end
+up looking something like so:
+<blockquote><tt>&lt;quote></tt>
+<br><tt>&lt;name>Qualcomm, Inc.&lt;/name></tt>
+<br><tt>&lt;price>124 3/4&lt;/price></tt>
+<br><tt>&lt;change>+3/4&lt;/change></tt>
+<br><tt>...</tt>
+<br><tt>&lt;/quote></tt></blockquote>
+which we can turn into a template like so:
+<blockquote><tt>&lt;quote></tt>
+<br><tt>&lt;name>&lt;#name#>&lt;/name></tt>
+<br><tt>&lt;price>&lt;#price#>&lt;/price></tt>
+<br><tt>&lt;change>&lt;#change#>&lt;/change></tt>
+<br><tt>...</tt>
+<br><tt>&lt;/quote></tt></blockquote>
+then mark up the XML template with XSL in a pre-processing phase to generate
+an HTML template which contains a formatted quote into which we then substitute
+at runtime the actual values for the dynamic tags.
+<p>This architecture can immediately be seen to have problems, however.
+For example, one thing XSL would be used to do would be to color the change
+value either red or green depending on whether or not the quote was an
+uptick or a downtick. We don't know this during the pre-processing phase
+and therefore can't use XSL to perform that part of the markup. This pushes
+the markup logic back into the servlet and in an unclean way that reduces
+encapsulation.
+<p>The upshot of all of this is that the intended deployment scenario for
+XSL is not yet feasible and we are forced to come up with some sort of
+interim solution. Using an interim solution based on XSL is definitely
+a possibility, but there are other failings of XSL that point to it possibly
+not even being a good standard to shoot for in the long term. I refer you
+to <a href="http://www.xml.com/pub/1999/05/xsl/xslconsidered_1.html">this
+article</a> detailing the failings of XSL to perform the service of client-side
+formatting of XML data.
+<h4>
+Summary and recommendations</h4>
+Most of my initial negative reactions to the solutions and examples I've
+seen using XSL stem from a lack of a good system for getting dynamic information
+into the system. The examples in this <a href="http://www.plenix.com/xsp/doc/xsp-primer.html">XSP
+Primer</a> demonstrate that lack. Example 3 shows code being embedded into
+the source XML file which clearly not viable. Example 4 accomplishes the
+same task with tag libraries, requiring a bunch of extra code written in
+the cryptic and cumbersome XSL syntax just to perform the simple task of
+inserting the current date into the page.
+<p>Instead, a system much like our existing Pfiles would much more cleanly
+accomplish the task at hand. A servlet would load up a template XML file,
+replace a &lt;#date#> tag in that XML file with the current date and pass
+the result on to the XSL processor for actual transformation into HTML.
+With a system like this, most of my issues with XSL are resolved. Logic
+related to fetching and organizing the information on a page can be simply
+and clearly expressed in a servlet that substitutes that information into
+an XML template file. Logic related to markup (like the decision of whether
+or not to color the change value green or red in the markup of a stock
+quote described above) can be encapsulated into tag libraries. The addition
+of navigation, header and footer markup can be done with the XSL processor
+in a reasonably straightforward manner.
+<p>The remaining problem is that performing the XSL transformations on
+the server may simply be too slow for a system with any meaningful amount
+of traffic. Tests should be performed and if the performance is completely
+abysmal (which I suspect it will be), we will have to consider other options.
+Fortunately, we have identified the major components of the XSL-based system
+and we can come up with efficient replacements that preserve the structure
+of the system so that when the day comes to transition to browser-based
+XSL rendering, we will be prepared. Those major components one last time
+for review are:
+<ul>
+<li>
+A template/substitution system to be used by servlets to generate the XML
+source data. In most cases the XML source data is really just well formed
+HTML with some additional tags where we are passing structured information
+like stock quotes on to the formatting engine for layout.</li>
+
+<li>
+A system for the definition of formatting components (in the XSL system
+this is provided by tag libraries) which encapsulate the formatting of
+a particular piece of information (like a stock quote, a mail message or
+the summary information for a backgammon game in progress).</li>
+
+<li>
+A system for the wrapping of a page's content (produced by formatting the
+XML source data) with a header, navigation and footer appropriate to a
+particular branded interface.</li>
+</ul>
+These components can definitely be implemented in a manner less general
+purpose than XSL but also far less resource intensive.
+<address>
+
+<hr WIDTH="100%">Questions and comments to <a href="mailto:mdb@go2net.com">mdb@go2net.com</a>.</address>
+
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.72 [en] (X11; I; Linux 2.2.14 i686) [Netscape]">
+   <meta name="Author" content="Michael Bayne">
+   <meta name="Description" content="Requirements definition for Tigerprawns, our next generation web application development environment.">
+   <title>Tigerprawns System Requirements</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink="#51188E" alink="#FF0000">
+<b><font face="Arial,Helvetica"><font size=+1>Tigerprawns
+System Requirements</font></font></b>
+<br><font face="Arial,Helvetica"><font size=-2><a href="mailto:mdb@go2net.com">Michael
+Bayne</a></font></font>
+<p><tt><font size=-1>[Items colored in <font color="#009900">green</font>
+have been recently added or updated.]</font></tt>
+<p>Our web application development environment has been slowly evolving
+over the course of a number of years. In this time, we have identified
+and added a number of very useful features, but the organic growth of the
+system is starting to catch up with us. This combined with some new large
+scale requirements (like co-branding and internationalization support)
+have provided the motivation to design a next generation system. The new
+system will build upon the good ideas we've had in the past and incorporate
+useful new functionality and do it all in a (hopefully) cleaner and more
+organized way.
+<p>With that in mind, I have undertaken to describe the requirements for
+this new system, both as a reference point for their discussion and refinement
+and as a starting point for the system design. I have code named this system
+Tigerprawns in homage to the <i>original</i> Go2Net site which lived in
+<tt>/export/docs/tigerprawns</tt>.
+<p>Without further ado, the requirements:
+<h3>
+Design requirements</h3>
+These are not features, per se, but guidelines to follow when designing
+and implementing the system.
+<h4>
+<font color="#009900">Low connectedness</font></h4>
+<font color="#009900">As much as possible, each of these components should
+not interdepend. Certain components will of necessity make use of other
+components, but this should be well thought out when it is done. Keeping
+the components as self-contained as possible will make them easier to understand
+and maintain and it will allow developers using the system to choose which
+components they wish to incorporate into their application. Certainly we
+hope they will choose to include them all, but we shouldn't require that
+by messy interconnectedness of the components.</font>
+<h4>
+<font color="#009900">Non-Go2Net specific</font></h4>
+<font color="#009900">Much Go2Net specific code has crept into our existing
+system because it is generally much quicker and easier to add a hack in
+a base class to accomplish some simple system specific thing than it is
+to design extensible, reusable support for doing what that hack needed
+to accomplish. There will be plenty of pressure to add such hacks once
+the system is deployed to all of our sites, so we should adamantly avoid
+such hacks in the design and initial implementation, instead creating frameworks
+to accomplish all of the hackery that we've indulged in up to this point.</font>
+<p><font color="#009900">We need to be conscious of the difference between
+Tigerprawns and applications developed using Tigerprawns and make sure
+they don't begin to overlap.</font>
+<h4>
+<font color="#009900">Standards based</font></h4>
+<font color="#009900">Where possible, the components should be based on
+standard technologies. In addition to this obvious requirement, we should
+also make sure that we don't over-standardize (here comes the pitch). There
+are emerging standards that may or may not satisfy our requirements and
+jumping on board a standard too soon can be just as problematic as not
+jumping on board at all. By adhering to the principle of modularity in
+the design and implementation of the system, we will leave ourselves the
+flexibility to change individual components over to standards based technologies
+when the standards have matured and are a clear benefit.</font>
+<h4>
+Java servlet based</h4>
+The system may or may not depend on Apache/JServ, preferably not. Preferably
+it will only depend on a compliant servlet implementation. We may want
+to make implicit assumptions like the availability of <tt>&lt;!--#include--></tt>
+post-processing.
+<h3>
+Feature requirements</h3>
+These requirements describe specific functionality and features that should
+be provided by the system.
+<h4>
+Automatic recompilation and reloading of servlets</h4>
+JSP provides this technology and may be the way to go. However, JSP also
+provides a whole host of wrong ways to do things in addition to providing
+automatic servlet compilation and reloading, so we may want to extract
+or wrap only that particular part of JSP.
+<h4>
+Co-brand support</h4>
+The system should be structured such that it is as easy as possible to
+support multiple interfaces to a particular set of functionality. We provide
+differently branded versions of our services both to other companies as
+well as between our own services.
+<h4>
+Internationalization support</h4>
+While we don't currently support foreign language versions of our software,
+it is high on everyone's list. The system should extend the support Java
+provides for internationalization to make it easy to localize the dynamic
+parts of our applications as well as provide a framework for managing translated
+versions of our static content.
+<h4>
+<font color="#009900">Support for multiple target devices</font></h4>
+<font color="#009900">Currently (for the most part) our users all access
+our content via a web browser running on a PC or something that approximates
+that set up. We will soon wish to provide support in some way or other
+to wireless devices as well as broadband/set-top box devices and potentially
+others. The system should facilitate as much as possible the deployment
+of our dynamic and static content in different forms, some of which may
+not be based on HTML.</font>
+<h4>
+Template language</h4>
+Dynamically retrieved information must be combined with static content
+and page layout information and served to the user. The system by which
+this is accomplished should have the following characteristics:
+<ul>
+<li>
+as complete a separation of HTML and code as possible</li>
+
+<li>
+a simple interface for simple tasks; simply placing the current time on
+a page should not require a tremendous amount of code</li>
+
+<li>
+a more robust interface for more sophisticated tasks; every time a stock
+quote is displayed, the code for formatting the change should not be repeated</li>
+
+<li>
+the system should work with non-HTML templates as well as HTML templates;
+we will want to reuse it for things like email generation</li>
+</ul>
+Presently, much thought is going into whether or not this template system
+should be based on XSL. I'll stay out of that discussion here and just
+try to identify the requirements without biasing them toward one implementation
+or another.
+<h4>
+Framework for authentication</h4>
+Many of our sites support registered users and differing levels of service.
+We need to provide an extensible authentication framework by which these
+needs can easily be met.
+<ul>
+<li>
+manage credentials in a cookie</li>
+
+<li>
+simple interface for a servlet to require a particular credential or set
+of credentials (and automatic handling of authentication or reporting on
+lack of authorization)</li>
+
+<li>
+specific credentials to be assigned on a per-user basis: token-based division
+of access, role-based grouping of tokens for easy classification of users</li>
+
+<li>
+pluggable back end for authentication (LDAP, Oracle database, etc.)</li>
+
+<li>
+management tools for customer support</li>
+
+<li>
+an interface into the billing system so that credentials can depend on
+payment; avoid tight integration with the billing system here and instead
+provide interfaces that can be implemented to use our billing system of
+choice</li>
+</ul>
+
+<h4>
+Form handling library</h4>
+Managing data entry in our applications in a consistent and sensible manner
+is critical. The number of sites on the web that display an error message
+and send you back to a blank form, requiring you to fill everything out
+again because you made some simple error is enough to turn the stomach.
+We want to do everything we can to simplify the process of information
+entry and validation both for the end user and the developer. Our form
+handling services should support:
+<ul>
+<li>
+required fields</li>
+
+<li>
+field validation</li>
+
+<li>
+a framework for the implementation of parsers for complicated data types</li>
+
+<li>
+field by field error reporting</li>
+</ul>
+
+<h4>
+Database repository management</h4>
+
+<ul>
+<li>
+unified interface to inhomogenous databases</li>
+
+<li>
+built on JDBC</li>
+
+<li>
+database connection pooling</li>
+
+<li>
+database error management and recovery</li>
+
+<li>
+provide support for things like SQL/J</li>
+</ul>
+
+<h4>
+Logging, error tracking framework</h4>
+A comprehensive logging framework allows for better debugging during development
+and once a product is deployed. The system should provide:
+<ul>
+<li>
+different log levels</li>
+
+<li>
+nightly filtering and mailing of log messages above a certain level</li>
+
+<li>
+servlet exception management: mail exceptions and failure notifications
+generated by a servlet to the servlet's author</li>
+</ul>
+
+<h4>
+Email generation</h4>
+Many of our services generate email either periodically or as a result
+of a user action (like registration). A developer should be able to easily
+substitute some information into a template file and send an email.&nbsp;
+This should be available from within a servlet and from a batch process.
+<ul>
+<li>
+mechanism for using the template system to generate email messages</li>
+
+<li>
+simple one-shot mail delivery (registration acknowledgment, password reminder,
+etc.)</li>
+</ul>
+
+<h4>
+Performance analysis</h4>
+We need at least simple servlet execution time analysis and a stress testing
+framework. More sophisticated performance monitoring would be a bonus.
+<h4>
+Customization/preferences management</h4>
+Many of our sites support customization or less buzz-wordily, allow the
+user to persistently change the way our web applications work. This customization
+support has so far been handled on a case-by-case basis. The system should
+provide a flexible service for the storage of customizations on a per-user,
+per-site and perhaps even per-feature basis. Requirements include:
+<ul>
+<li>
+per-user, per-site, per-feature customizations</li>
+
+<li>
+caching of commonly referenced customizations in a cookie to avoid constant
+database lookups</li>
+</ul>
+
+<h4>
+Utility stuff</h4>
+This stuff is part of the current system and should probably be incorporated
+into the new system in the form of utility classes.
+<ul>
+<li>
+generic cookie management routines</li>
+
+<li>
+general purpose data structure stuff like queues and sorting services</li>
+
+<li>
+synchronization management stuff like monitored threads, semaphores, etc.</li>
+
+<li>
+MD5 hashing routines</li>
+
+<li>
+regular expression services</li>
+</ul>
+
+<p><br>As the work on this project progresses, I will update this document
+with links to design documents for the various components.
+<p>
+<hr WIDTH="100%">Questions and comments to <a href="mailto:mdb@go2net.com">mdb@go2net.com</a>.
+<br>&nbsp;
+</body>
+</html>

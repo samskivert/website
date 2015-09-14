@@ -1,0 +1,190 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.72 [en] (X11; I; Linux 2.2.14 i686) [Netscape]">
+   <meta name="Author" content="Michael Bayne">
+   <meta name="Description" content="Design for the template component of the Tigerprawns web application system.">
+   <title>Template System Design</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink="#51188E" alink="#FF0000">
+<b><font face="Arial,Helvetica"><font size=+1>Template
+System Design</font></font></b>
+<br><font face="Arial,Helvetica"><font size=-2><a href="mailto:mdb@go2net.com">Michael
+Bayne</a></font></font>
+<p><tt><font size=-1>[Items colored in <font color="#009900">green</font>
+have been recently added or updated.]</font></tt>
+<p>The template system allows for dynamic information to be combined with
+static template information in a convenient and robust way. While commonly
+used to substitute information into HTML documents, the system can be used
+with any source language. The syntax is actually XML compliant (actually,
+I don't know this to be the case, but the only potentially non-compliant
+part of it is the use of # and ? in the names of tags), but is distinguishable
+from XML and HTML source by the fact that all tags start with '#'.
+<h3>
+Basic usage</h3>
+
+<h4>
+Simple replacement</h4>
+Let's start to describe the design of the system with an example template
+file:
+<blockquote><tt>&lt;head></tt>
+<br><tt>&lt;title>&lt;#title/>&lt;/title></tt>
+<br><tt>&lt;/head></tt>
+<br><tt>&lt;body></tt>
+<br><tt>&lt;h1>&lt;#title/>&lt;/h1></tt>
+<br><tt>&lt;p> Welcome to our site &lt;#name/>!</tt>
+<br><tt>&lt;/body></tt></blockquote>
+The code that uses the template might look like so:
+<blockquote><tt>Template tpl =</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; TemplateLoader.loadTemplate("/path/template_tmpl.html");</tt>
+<p><tt>// title is a String object</tt>
+<br><tt>tpl.replace("title", title);</tt>
+<p><tt>// user.name is a String data member of an object</tt>
+<br><tt>tpl.replace("name", user.name);</tt>
+<p><tt>tpl.write(out);</tt></blockquote>
+When that code is invoked, the output written to <tt>out</tt> (a <tt>PrintStream</tt>
+or <tt>PrintWriter</tt> object) will be the source text with the supplied
+strings substituted into the text where appropriate. It might look like:
+<blockquote><tt>&lt;head></tt>
+<br><tt>&lt;title>Our Happy Page&lt;/title></tt>
+<br><tt>&lt;/head></tt>
+<br><tt>&lt;body></tt>
+<br><tt>&lt;h1>Our Happy Page&lt;/h1></tt>
+<br><tt>&lt;p> Welcome to our site Beelzebub>!</tt>
+<br><tt>&lt;/body></tt></blockquote>
+
+<h4>
+Repeating blocks</h4>
+A fairly common application of a template system is to display a list of
+information in tabular format. For this purpose, we include the ability
+to have repeating blocks in the system. Again we explain by example:
+<blockquote><tt>&lt;head></tt>
+<br><tt>&lt;title>&lt;#title/>&lt;/title></tt>
+<br><tt>&lt;/head></tt>
+<br><tt>&lt;body></tt>
+<br><tt>&lt;h1>&lt;#title/>&lt;/h1></tt>
+<br><tt>&lt;p> Welcome to our site &lt;#name/>!</tt>
+<br><tt>&lt;p> Buy some of our fun stuff:</tt>
+<br><tt>&lt;table></tt>
+<br><tt>&lt;#item></tt>
+<br><tt>&lt;tr>&lt;td>&lt;#name/>&lt;/td>&lt;td>&lt;#price/>&lt;/td>&lt;/tr></tt>
+<br><tt>&lt;/#item></tt>
+<br><tt>&lt;/table></tt>
+<br><tt>&lt;/body></tt></blockquote>
+And the code looks like:
+<blockquote><tt>Template tpl =</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; TemplateLoader.loadTemplate("/path/template_tmpl.html");</tt>
+<p><tt>// do other interesting stuff</tt>
+<p><tt>Item[] items = // get the items somehow</tt>
+<br><tt>Template irp = tpl.getRepeater("item");</tt>
+<p><tt>for (int i = 0; i &lt; items.length; i++) {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; irp.replace("name", item.name);</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; irp.replace("price", item.price);</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; tpl.append("item", irp.write());</tt>
+<br><tt>}</tt>
+<p><tt>tpl.write(out);</tt></blockquote>
+And the output:
+<blockquote><tt>&lt;head></tt>
+<br><tt>&lt;title>Our Happy Page&lt;/title></tt>
+<br><tt>&lt;/head></tt>
+<br><tt>&lt;body></tt>
+<br><tt>&lt;h1>Our Happy Page&lt;/h1></tt>
+<br><tt>&lt;p> Welcome to our site Beelzebub!</tt>
+<br><tt>&lt;p> Buy some of our fun stuff:</tt>
+<br><tt>&lt;table></tt>
+<br><tt>&lt;tr>&lt;td>Bellybutton lint&lt;/td>&lt;td>$3.75&lt;/td>&lt;/tr></tt>
+<br><tt>&lt;tr>&lt;td>Toe jam&lt;/td>&lt;td>$1.25&lt;/td>&lt;/tr></tt>
+<br><tt>&lt;tr>&lt;td>Monkey butter&lt;/td>&lt;td>$5.50&lt;/td>&lt;/tr></tt>
+<br><tt>&lt;/table></tt>
+<br><tt>&lt;/body></tt></blockquote>
+
+<h4>
+Conditional inclusion</h4>
+Often, a block of text must be included only in particular cases, like
+when an error has occurred or the user provided invalid input. To make
+those situations easier to manage, the template system supports conditional
+blocks. Conditional blocks are denoted by inserting a question mark before
+the name of the tag that opens the block. Once again, an example:
+<blockquote><tt>...</tt>
+<br><tt>&lt;#?error></tt>
+<br><tt>&lt;table cellpadding=3></tt>
+<br><tt>&lt;tr>&lt;td bgcolor="#FF0000">Error: &lt;#message/>&lt;/td>&lt;/tr></tt>
+<br><tt>&lt;/table></tt>
+<br><tt>&lt;#error/></tt>
+<br><tt>...</tt></blockquote>
+The code using this construct might look like so:
+<blockquote><tt>Template tpl =</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; TemplateLoader.loadTemplate("/path/template_tmpl.html");</tt>
+<p><tt>try {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; // do regular processing</tt>
+<br><tt>} catch (SomeError e) {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; tpl.replace("error.message", e.getMessage());</tt>
+<br><tt>}</tt></blockquote>
+When executed, the error block will be ommitted entirely unless the <tt>error.message</tt>
+replacement is made when the error is caught. Multiple tags can be contained
+in a conditional block and the block will be ommitted unless at least one
+of those tags has been replaced with text.
+<p>As is shown in the example, the tags in the conditional block must be
+prefixed by the name of the conditional block and a period. In the present
+implementation, conditional blocks cannot be nested, but this could potentially
+be added if the feature merits the effort.
+<h3>
+Advanced usage</h3>
+
+<h4>
+Formatters</h4>
+Certain objects may be frequently formatted in the same way and substituted
+into template files. In situations like that, it can be beneficial to have
+the formatting code for the object happen <i>automagically</i>. The <tt>Formattter</tt>
+interface provides precisely this capability.
+<p>The formatter interface looks like so:
+<blockquote><tt>public interface Formatter</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; public String format (Object object);</tt>
+<br><tt>}</tt></blockquote>
+The interface itself is deceptively simple, but using it can be quite powerful.
+A formatter implementation is registered with the template system as handling
+a particular class of object using the <tt>registerFormatter</tt> static
+member function shown here:
+<blockquote><tt>public class Template</tt>
+<br><tt>{</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; // ...</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; public static void</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; registerFormatter (Class
+clazz, Formatter formatter);</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; // ...</tt>
+<br><tt>}</tt></blockquote>
+When an object is <tt>append()</tt>ed or <tt>replace()</tt>d into a template,
+the system looks to see if a formatter exists for that object (a trivial
+formatter is built in for <tt>String</tt> objects, I bet you can guess
+what the implementation looks like) and it uses it to format the object.
+If not, the object's <tt>toString()</tt> member function is called and
+that text is used instead.
+<p>Now, let's look at an example. Consider the <tt>IntradayStockRecord</tt>
+class. It contains...
+<p>Using Template objects inside the Formatter...
+<h4>
+Binding objects</h4>
+An object can be bound to a template such that all members of that object
+are available...
+<p>binding arrays...
+<p>more?
+<h4>
+Template loader</h4>
+Adding to the search path, etc.
+<h4>
+Other stuff</h4>
+Alternating blocks for things like table background colors:
+<blockquote><tt>&lt;table></tt>
+<br><tt>&lt;#row></tt>
+<br><tt>&lt;tr bgcolor="&lt;#{"#FFCC00", "#FFCC33"}/>">...&lt;/tr></tt>
+<br><tt>&lt;#row/></tt>
+<br><tt>&lt;/table></tt></blockquote>
+(not sure about the syntax)
+<p>Foo bar.
+<p>
+<hr WIDTH="100%"><font color="#000000">Questions and comments to <a href="mailto:mdb@go2net.com">mdb@go2net.com</a>.</font>
+<br>&nbsp;
+</body>
+</html>

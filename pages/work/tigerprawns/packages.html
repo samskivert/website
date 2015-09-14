@@ -1,0 +1,149 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.72 [en] (X11; I; Linux 2.2.14 i686) [Netscape]">
+   <meta name="Author" content="Michael Bayne">
+   <meta name="Description" content="Package structure for the Tigerprawns system.">
+   <title>Tigerprawns Package Design</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink="#51188E" alink="#FF0000">
+<b><font face="Arial,Helvetica"><font size=+1>Tigerprawns
+Package Design</font></font></b>
+<br><font face="Arial,Helvetica"><font size=-2><a href="mailto:mdb@go2net.com">Michael
+Bayne</a></font></font>
+<p><tt><font size=-1>[Items colored in <font color="#009900">green</font>
+have been recently added or updated.]</font></tt>
+<p>This is an initial cut at a package breakdown of the components of the
+Tigerprawns system. The package assignments imply (at least at a high level)
+aspects of the design of the components. These may change as the design
+of the underlying components is further defined.
+<p>In deference to the de facto standard of packaging things with a prefix
+that identifies the developing organization, all packages will be prefixed
+with <tt>com.go2net.tigerprawns</tt>.
+<p>This means that we'll have package names like <tt>com.go2net.tigerprawns.util</tt>,
+which is verbose but definitely unique. Additionally, package names aren't
+frequently typed, so the negative effects of this verbosity are lessened.
+<br>&nbsp;
+<table BORDER=0 CELLPADDING=4 BGCOLOR="#FFFFCC" NOSAVE >
+<tr BGCOLOR="#FFCC00" NOSAVE>
+<th NOSAVE><font color="#000000">Feature</font></th>
+
+<th NOSAVE><font color="#000000">Package</font></th>
+</tr>
+
+<tr>
+<td><font color="#000000">Automatic recompilation and reloading of servlets</font></td>
+
+<td><tt>com.go2net.tigerprawns.?</tt></td>
+</tr>
+
+<tr NOSAVE>
+<td NOSAVE><font color="#000000">Co-brand support</font></td>
+
+<td><tt><font color="#000000">com.go2net.tigerprawns.cobrand?</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Internationalization support</font></td>
+
+<td><tt><font color="#000000">com.go2net.tigerprawns.i18n</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Support for multiple target devices</font></td>
+
+<td><tt><font color="#000000">com.go2net.tigerprawns.?</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Template language</font></td>
+
+<td><tt><font color="#000000">com.go2net.tigerprawns.text</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Framework for authentication</font></td>
+
+<td><tt><font color="#000000">com.go2net.tigerprawns.auth?</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Form handling library</font></td>
+
+<td><tt><font color="#000000">com.go2net.tigerprawns.form</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Database repository management</font></td>
+
+<td><tt><font color="#000000">com.go2net.tigerprawns.db</font></tt>
+<br><tt><font color="#000000">(or com.go2net.db)</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Logging, error tracking framework (generic Go2Net
+logging services and Tigerprawns specific modules)</font></td>
+
+<td><tt><font color="#000000">com.go2net.log,</font></tt>
+<br><tt><font color="#000000">com.go2net.tigerprawns.log</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Email generation (depends on template language
+component)</font></td>
+
+<td><tt><font color="#000000">com.go2net.tigerprawns.mail,</font></tt>
+<br><tt><font color="#000000">com.go2net.tigerprawns.text</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Performance analysis</font></td>
+
+<td><tt><font color="#000000">com.go2net.tigerprawns.perf</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Customization/preferences management</font></td>
+
+<td><tt><font color="#000000">com.go2net.tigerprawns.prefs</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Generic cookie management routines</font></td>
+
+<td><font color="#000000"><tt>com.go2net.tigerprawns.uti</tt>l</font></td>
+</tr>
+
+<tr>
+<td><font color="#000000">General purpose data structure stuff (queues
+and sorting services)</font></td>
+
+<td><tt><font color="#000000">com.go2net.util</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Synchronization management stuff (monitored threads,
+semaphores, etc.)</font></td>
+
+<td><tt><font color="#000000">com.go2net.sync</font></tt></td>
+</tr>
+
+<tr>
+<td><font color="#000000">MD5 hashing routines</font></td>
+
+<td><tt><font color="#000000">com.go2net.tex</font></tt><font color="#000000">t</font></td>
+</tr>
+
+<tr>
+<td><font color="#000000">Regular expression services</font></td>
+
+<td><tt><font color="#000000">com.go2net.text</font></tt></td>
+</tr>
+</table>
+
+<p>
+<hr WIDTH="100%"><font color="#000000">Questions and comments to <a href="mailto:mdb@go2net.com">mdb@go2net.com</a>.</font>
+<br>&nbsp;
+</body>
+</html>
