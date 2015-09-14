@@ -3,7 +3,8 @@ layout: post
 title: More fun than a box of docs
 ---
 
-A short and belated post due to being distracted by [PAX] this week.
+A short and belated post due to being distracted by [PAX] this week. [Editor's note: so distracted
+that I didn't realize that I was actually early for my biweekly post, not late for my weekly post.]
 
 This time, I want to put forth some opinions on documentation, specifically inline documentation
 which is written directly in the code. This documentation is commonly extracted into a separate
