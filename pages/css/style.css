@@ -68,6 +68,7 @@ h2 {
 h3 {
   border-bottom: dotted 1px #ccc;
   font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-weight: normal;
   margin-top: 0;
 }
 
