@@ -9,7 +9,10 @@
   <link rel="alternate" href="/blog/index.xml" title="blog" type="application/atom+xml"/>
   <style type="text/css" media="screen">
     @import url( /css/style.css );
-    ul li a { font-family: sans-serif; letter-spacing: .07em; }
+    ul li a, .project {
+      font-family: sans-serif;
+      letter-spacing: .07em;
+    }
     .elsewhere {
       font-family: sans-serif;
       display: block;
@@ -30,27 +33,91 @@
 <h1 id="banner" class="big"><a href="http://samskivert.com">samskivert</a></h1>
 <p>Here lies the homepage of one Michael Bayne. The twisty maze of passages lead as follows:</p>
 
-<h2>Coding</h2>
-<p>I write software. Here are many of my projects, organized by inaugural year:</p>
+<h2>Playing</h2>
+<p>At the turn of the century, I co-founded
+a <a href="https://en.wikipedia.org/wiki/Three_Rings_Design">video game company</a> at which I made
+games. Some of them are even still alive and kicking:</p>
 <ul>
+  <li>
+    <a href="http://www.puzzlepirates.com/">Puzzle Pirates</a> (2001,
+    <a href="https://en.wikipedia.org/wiki/Puzzle_Pirates">wikipedia</a>)
+  </li>
+  <li>
+    <a href="https://web.archive.org/web/20150813160120/http://www.gamegardens.com">Game Gardens</a>
+    (2003, <a href="https://github.com/threerings/game-gardens">source</a>)
+  </li>
+  <li>
+    <a href="http://www.banghowdy.com/">Bang! Howdy</a> (2006,
+    <a href="https://en.wikipedia.org/wiki/Bang!_Howdy">wikipedia</a>,
+    <a href="https://github.com/greyhavens/bang-game">source</a>)
+  </li>
+  <li>
+    <span class="project">Whirled</span> (2007,
+    <a href="https://en.wikipedia.org/wiki/Whirled">wikipedia</a>,
+    <a href="https://github.com/greyhavens/msoy">source</a>)
+  </li>
+  <li>
+    <a href="http://www.whirled.com/#games-d_8">Dictionary Attack</a> (2007,
+    <a href="https://github.com/greyhavens/whirled-projects/tree/master/games/dictattack">source</a>)
+  </li>
+  <li>
+    <span class="project">The <a href="http://apps.facebook.com/everythinggame/">Everything</a>
+    Game</span> (2009,
+    <a href="https://github.com/greyhavens/everything">source</a>)
+  </li>
+  <li>
+    <span class="project">Spellwood</span> (2012,
+    <a href="http://www.metacritic.com/game/ios/spellwood---word-game-adventure">metacritic</a>)
+  </li>
+</ul>
+
+<h2>Coding</h2>
+<p>I also write a lot of the computer software. Here are some of my more
+ambitious/interesting/popular non-game projects:</p>
+
+<ul>
+<li><a href="https://github.com/samskivert/compose">Compose</a> - a programming langauge (2017)
+<li><a href="https://github.com/scaled/scaled">Scaled</a> - an extensible editor/IDE in the spirit of Emacs (2014)
+<li><a href="https://github.com/playn/playn">PlayN</a> - a framework for making 2D games which can run on JVM, Android, iOS, HTML5 (2011)
+<li><a href="https://github.com/samskivert/jmustache">JMustache</a> - a Java implementation of the Mustache templating language (2010)
+<li><a href="https://github.com/threerings/getdown">Getdown</a> - an installer/updater for Java applications (2004)
+</ul>
+
+<p>Here's a big list of most everything, organized by inaugural year:</p>
+<ul>
+  <!--
+  <li>2018:
+    <span class="project">Scaled modes:</span>
+    <a href="https://github.com/scaled/haskell-mode">haskell</a>
+  -->
+  <li>2017:
+    <a href="https://github.com/samskivert/compose">Compose</a> •
+    <a href="https://github.com/samskivert/adventofcode/tree/master/2017">adventofcode</a> •
+    <span class="project">Scaled modes:</span>
+    <a href="https://github.com/scaled/idris-mode">idris</a> •
+    <a href="https://github.com/scaled/ocaml-mode">ocaml</a> •
+    <a href="https://github.com/scaled/ocaml-mode">reason</a>
   <li>2016:
     <a href="https://github.com/samskivert/ReactSharp">ReactSharp</a> •
-    <a href="https://github.com/scaled/cplusplus-mode">cplusplus-mode</a> •
-    <a href="https://github.com/scaled/csharp-mode">csharp-mode</a> •
-    <a href="https://github.com/scaled/javascript-mode">javascript-mode</a> •
+    <span class="project">Scaled modes:</span>
+    <a href="https://github.com/scaled/cplusplus-mode">cplusplus</a> •
+    <a href="https://github.com/scaled/csharp-mode">csharp</a> •
+    <a href="https://github.com/scaled/javascript-mode">javascript</a> •
+    <a href="https://github.com/scaled/lisp-mode">lisp</a> •
+    <a href="https://github.com/scaled/thrift-mode">thrift</a> •
+    <a href="https://github.com/scaled/typescript-mode">typescript</a> •
+    <span class="project">extensions:</span>
     <a href="https://github.com/scaled/javascript-project">javascript-project</a> •
-    <a href="https://github.com/scaled/lisp-mode">lisp-mode</a> •
-    <a href="https://github.com/scaled/thrift-mode">thrift-mode</a> •
-    <a href="https://github.com/scaled/typescript-mode">typescript-mode</a> •
     <a href="https://github.com/scaled/gradle-project">gradle-project</a> •
-    <a href="https://github.com/scaled/swissarmy-project">swissarmy-project</a> •
     <a href="https://github.com/scaled/vcs-project">vcs-project</a>
   <li>2015:
     <a href="https://github.com/samskivert/ddb">ddb</a> •
-    <a href="https://github.com/scaled/groovy-mode">groovy-mode</a> •
-    <a href="https://github.com/scaled/kotlin-mode">kotlin-mode</a> •
-    <a href="https://github.com/scaled/kotlin-project">kotlin-project</a> •
-    <a href="https://github.com/scaled/sh-mode">sh-mode</a>
+    <span class="project">Scaled modes:</span>
+    <a href="https://github.com/scaled/groovy-mode">groovy</a> •
+    <a href="https://github.com/scaled/kotlin-mode">kotlin</a> •
+    <a href="https://github.com/scaled/sh-mode">sh</a> •
+    <span class="project">extensions:</span>
+    <a href="https://github.com/scaled/kotlin-project">kotlin-project</a>
   <li>2014:
     <a href="https://github.com/scaled/scaled">Scaled</a> •
     <a href="https://github.com/scaled/codex">Codex'</a> •
@@ -81,7 +148,7 @@
     <a href="https://github.com/samskivert/docserver">docserver</a> •
     <a href="https://github.com/samskivert/findclass">findclass</a> •
     <a href="https://github.com/threerings/nexus">Nexus</a> •
-    <a href="https://github.com/threerings/playn">PlayN</a> •
+    <a href="https://github.com/playn/playn">PlayN</a> •
     <a href="https://github.com/samskivert/pom-util">pom-util</a> •
     <a href="https://github.com/samskivert/pythagoras">pythagoras</a> •
     <a href="https://github.com/threerings/react">React</a> •
@@ -165,45 +232,12 @@ hypothetical programming language</a>:</p>
 
 <!--#include file="bikeshed/recent.html" -->
 
-<p>I also even less frequently write reviews of <a href="reviews/books">books</a>,
+<p>I also used to write reviews of <a href="reviews/books">books</a>,
   <a href="reviews/films">films</a>, <a href="reviews/games">games</a>
   and <a href="reviews/papers">Computer Science papers</a>. These are
-  the most recent posts:</p>
+  the last few posts from that era:</p>
 
 <!--#include file="reviews/recent.html" -->
-
-<h2>Playing</h2>
-<p>At the turn of the century, I co-founded
-a <a href="https://en.wikipedia.org/wiki/Three_Rings_Design">video game company</a> at which I made
-games. Some of them are even still alive and kicking:</p>
-<ul>
-  <li>
-    <a href="http://www.metacritic.com/game/ios/spellwood---word-game-adventure">Spellwood</a>
-  </li>
-  <li>
-    The <a href="http://apps.facebook.com/everythinggame/">Everything</a> Game
-    (<a href="https://github.com/greyhavens/everything">source</a>)
-  </li>
-  <li>
-    <a href="http://www.whirled.com/#games-d_8">Dictionary Attack</a>
-    (<a href="https://github.com/greyhavens/whirled-projects/tree/master/games/dictattack">source</a>)
-  </li>
-  <li>
-    <a href="http://www.whirled.com/">Whirled</a>
-    (<a href="https://github.com/greyhavens/msoy">source</a>)
-  </li>
-  <li>
-    <a href="http://www.banghowdy.com/">Bang! Howdy</a>
-    (<a href="https://github.com/greyhavens/bang-game">source</a>)
-  </li>
-  <li>
-    <a href="http://www.gamegardens.com/">Game Gardens</a>
-    (<a href="https://github.com/threerings/game-gardens">source</a>)
-  </li>
-  <li>
-    <a href="http://www.puzzlepirates.com/">Puzzle Pirates</a>
-  </li>
-</ul>
 
 <h2>Etc.</h2>
 <div class="elsewhere">
@@ -237,7 +271,7 @@ games. Some of them are even still alive and kicking:</p>
   </div>
 </div>
 
-<h1 id="footer">&copy;2001 - 2015 Michael Bayne
+<h1 id="footer">&copy;2001 - 2018 Michael Bayne
 <a href="mailto:mdb@samskivert.com">&lt;mdb@samskivert.com&gt;</a></h1>
 </div>
 </body>
