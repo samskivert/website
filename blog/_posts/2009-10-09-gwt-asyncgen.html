@@ -1,9 +1,0 @@
----
-layout: post
-title: "GWT AsyncGen"
----
-
-<p>The back-breaking straw landed on this camel earlier today when adding some methods to a GWT RemoteService interface and then remembering that, “Oh yeah, I have to go add those manually to the async mirror interface that goes with my service.”</p>
-<p>First I poked around on the web. I found some sort of Maven plugin that in theory automatically generates these extra services, but I don’t use Maven and I’m not about to start now. Plus it had some bugs filed against it that made me think it was written by a barrel full of monkeys. There was some sort of IDE plugin, but I’m definitely not going to start using some random IDE. I also found some crazy old command line tool that harkened back to the @gwt.typeArgs days. No good.</p>
-<p>So I did what I should have done a couple of years ago and wrote an ant task to DWIFN and to do it properly. So if you find yourself using GWT presently or in the future, run, don’t walk, to the following URL and spend the two minutes it will take to save yourself a bunch of annoying typing:</p>
-<p><a href="http://code.google.com/p/gwt-asyncgen/">http://code.google.com/p/gwt-asyncgen/</a></p>

@@ -1,0 +1,79 @@
+---
+layout: post
+title: "Life on the edge (case)"
+date: 2010-05-16
+---
+
+<p>My <a href="http://code.google.com/p/ductilej/">current research project</a> has given me myriad opportunities to break the Java compiler. Usually, this is because I’m tinkering with its internal data structures in a way that it neither anticipated nor feels especially good about. In such circumstances, I usually apologize profusely and look for a less intrusive way to accomplish my goals. Today however, I managed to cause javac to take umbrage without having first gone rummaging around in its underwear drawer.</p>
+<p>Consider the following (admittedly useless) code:</p>
+<pre>
+public class Test {
+    public class Inner {}
+    public static void main (String[] args) {
+        Test test = new Test();
+        test.new Inner() {
+        };
+    }
+}
+</pre>
+<p>It compiles and runs without incident. The following equally useless variation also compiles and runs without problem:</p>
+<pre>
+    public static void main (String[] args) {
+        Object test = new Test();
+        ((Test)test).new Inner() {
+        };
+    }
+</pre>
+<p>However, the following variation successfully compiles into bytecode which generates a verifier error:</p>
+<pre>
+    public static void main (String[] args) {
+        Object test = new Test();
+        Test.class.cast(test).new Inner() {
+        };
+    }
+</pre>
+<p>“<code>Exception in thread "main" java.lang.VerifyError: (class: Test, method: main signature: ([Ljava/lang/String;)V) Incompatible argument to function</code>" to be precise.</p>
+<p>Having perused the internals of javac, I know that there is some <strike>hackery</strike> magic that takes place in relation to some of java.lang.Class's methods. So to be sure, I tried doing the casting myself:</p>
+<pre>
+    public static void main (String[] args) {
+        Object test = new Test();
+        cast(Test.class, test).new Inner() {
+        };
+    }
+    public static  T cast (Class clazz, Object o) {
+        return (T)o;
+    }
+</pre>
+<p>Same verifier error. Interestingly, this variation works just fine:</p>
+<pre>
+    public static void main (String[] args) {
+        Object test = new Test();
+        Test.class.cast(test).new Inner();
+    }
+</pre>
+<p>So it's the combination of using a universally quantified method with an anonymous inner class that bakes javac's noodle. Looking at the decompiled bytecode we can see where it goes astray. The non-anonymous example immediately above generates the following bytecode:</p>
+<pre>
+   ...
+   12:  ldc_w   #2; //class Test
+   15:  aload_1
+   16:  invokevirtual   #5; //Method java/lang/Class.cast:(Ljava/lang/Object;)Ljava/lang/Object;
+   19:  checkcast       #2; //class Test
+   22:  dup
+   23:  invokevirtual   #6; //Method java/lang/Object.getClass:()Ljava/lang/Class;
+   26:  pop
+   27:  invokespecial   #7; //Method Test$Inner."":(LTest;)V
+   ...
+</pre>
+<p>And the equivalent example with the anonymous inner-class generates:</p>
+<pre>
+   ...
+   12:  ldc_w   #2; //class Test
+   15:  aload_1
+   16:  invokevirtual   #5; //Method java/lang/Class.cast:(Ljava/lang/Object;)Ljava/lang/Object;
+   19:  dup
+   20:  invokevirtual   #6; //Method java/lang/Object.getClass:()Ljava/lang/Class;
+   23:  pop
+   24:  invokespecial   #7; //Method Test$1."":(LTest;)V
+   ...
+</pre>
+<p>We have a case of a mysteriously disappearing <code>checkcast</code>. If I wasn't so deathly tired of mucking around with the internals of javac, I might try to figure out what the problem was and submit a patch along with the bug report. As it is, I'm just hoping that the highlight of my future Sunday evenings will be more exciting than finding bugs in javac.</p>

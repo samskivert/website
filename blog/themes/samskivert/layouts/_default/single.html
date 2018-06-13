@@ -1,0 +1,22 @@
+{{ partial "header.html" . }}
+
+<h2>{{ .Date.Format "02 January 2006" }}</h2>
+<div class="post">
+{{ .Content }}
+</div>
+
+<div id="page-navigation">
+  <div class="left">
+  {{ if .Next }}
+    <a href="{{.Next.Permalink}}" title="Previous Post: {{.Next.Title}}">&laquo; {{.Next.Title}}</a>
+  {{ end }}
+  </div>
+
+  <div class="right">
+  {{ if .Prev }}
+    <a href="{{.Prev.Permalink}}" title="Next Post: {{.Prev.Title}}">{{.Prev.Title}} &raquo; </a>
+  {{ end }}
+  </div>
+</div>
+
+{{ partial "footer.html" . }}

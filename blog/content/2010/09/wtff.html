@@ -1,0 +1,40 @@
+---
+layout: post
+title: "WTFF?"
+date: 2010-09-14
+---
+
+<p>I saw some weird background activity on my network interface and undertook an investigation. <code>netstat</code> readily revealed that Firefox had a metric ton of TCP connections open:</p>
+<pre>
+yonami.local:58809      cdce.sef004.interna:www ESTABLISHED 7215/firefox-bin
+yonami.local:58828      cdce.sef004.interna:www ESTABLISHED 7215/firefox-bin
+yonami.local:33425      pv-in-f106.1e100.ne:www ESTABLISHED 7215/firefox-bin
+yonami.local:58829      cdce.sef004.interna:www ESTABLISHED 7215/firefox-bin
+yonami.local:46025      208.50.77.78:www        ESTABLISHED 7215/firefox-bin
+yonami.local:46001      208.50.77.78:www        ESTABLISHED 7215/firefox-bin
+yonami.local:41860      208.50.77.95:www        ESTABLISHED 7215/firefox-bin
+yonami.local:45853      pv-in-f100.1e100.ne:www ESTABLISHED 7215/firefox-bin
+yonami.local:45339      px-in-f102.1e100.ne:www ESTABLISHED 7215/firefox-bin
+yonami.local:58807      cdce.sef004.interna:www ESTABLISHED 7215/firefox-bin
+yonami.local:58801      cdce.sef004.interna:www ESTABLISHED 7215/firefox-bin
+yonami.local:41861      208.50.77.95:www        ESTABLISHED 7215/firefox-bin
+yonami.local:41864      208.50.77.95:www        ESTABLISHED 7215/firefox-bin
+yonami.local:41862      208.50.77.95:www        ESTABLISHED 7215/firefox-bin
+yonami.local:41863      208.50.77.95:www        ESTABLISHED 7215/firefox-bin
+yonami.local:58808      cdce.sef004.interna:www ESTABLISHED 7215/firefox-bin
+yonami.local:56984      185-131.amazon.com:www  ESTABLISHED 7215/firefox-bin
+yonami.local:52057      208.50.77.72:www        ESTABLISHED 7215/firefox-bin
+yonami.local:41865      208.50.77.95:www        ESTABLISHED 7215/firefox-bin
+</pre>
+<p>This was especially peculiar, because the only Firefox window I had open was to some totally static webpage. No Comet or other JavaScript funny-business going on there. No other Firefox tabs or windows open. So what the hell are all these other connections?</p>
+<p>Googling reveals that 1e100.net are Google servers and that Firefox may have connections open to these to do Safebrowsing or other random bits. The others are mysterious: cdce.sef004.internap.net is probably some Internap CDN service, the 208.50.77.xx addresses all live behind verio-1.ar5.SEA1.gblx.net, and look like Akami servers. 185-131.amazon.com doesn’t even forward resolve (I didn’t save a copy of the <code>netstat -na</code> output).</p>
+<p>Nothing looks especially nefarious, but why would I have so many lingering established connections? Surely if I close a tab, Firefox closes all keep-alive connections originating from that tab. Of course, when I killed Firefox, the network activity stopped.</p>
+<p>Meanwhile, Chrome was running with tabs open to Gmail, another Gmail and Google Calendar. It’s open connections were explicable and substantially fewer:</p>
+<pre>
+yonami.local:45460      pv-in-f83.1e100.net:www ESTABLISHED 3002/google-chrome
+yonami.local:43754      pv-in-f139.1e100.:https ESTABLISHED 3002/google-chrome
+yonami.local:49226      pv-in-f83.1e100.n:https ESTABLISHED 3002/google-chrome
+yonami.local:35690      pv-in-f17.1e100.n:https ESTABLISHED 3002/google-chrome
+yonami.local:40323      pv-in-f83.1e100.net:www ESTABLISHED 3002/google-chrome
+</pre>
+<p>I won’t even start on Firefox’s memory utilization “patterns”. Either way, score another point for Chrome’s process-per-tab resource management model.</p>

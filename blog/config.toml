@@ -1,0 +1,12 @@
+baseURL = "http://samskivert.com/blog"
+languageCode = "en-us"
+title = "blog"
+theme = "samskivert"
+publishDir = "../pages/blog"
+
+pygmentsCodefences = true
+pygmentsStyle = "native"
+pygmentsUseClasses = true
+
+[blackfriday]
+  smartypants = false

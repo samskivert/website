@@ -1,0 +1,12 @@
+name = "samskivert"
+license = "MIT"
+licenselink = "https://github.com/samskivert/website/blob/master/blog/themes/samskivert/LICENSE.md"
+description = "Hugo theme for samskivert.com"
+homepage = "https://samskivert.com"
+tags = ["blog", "personal"]
+features = ["blog"]
+min_version = "0.18"
+
+[author]
+  name = "Michael Bayne"
+  homepage = "https://samskivert.com"

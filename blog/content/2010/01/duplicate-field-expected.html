@@ -1,0 +1,18 @@
+---
+layout: post
+title: "“Duplicate field expected”"
+date: 2010-01-24
+---
+
+<p>In my recent programming adventures, I separately encountered two perplexing error messages:</p>
+<ul>
+<li><code>RuntimeException: Variable is used without definition!</code></li>
+<li><code>IllegalArgumentException: Duplicate field expected</code></li>
+</ul>
+<p>Inspection of the underlying code brought clarity:</p>
+<ul>
+<li><code>throw new RuntimeException("Variable " + m + " used without definition!");</code></li>
+<li><code>throw new IllegalArgumentException("Duplicate field " + fieldName);</code></li>
+</ul>
+<p>The former was reporting a problem with a variable declared as <code>InputStream is</code>, the latter a problem with JUnit’s <code>@Test</code> annotation which defines a parameter <code> java.lang.Class&lt;? extends java.lang.Throwable&gt; 	expected</code>.</p>
+<p>Tip from the pros: always wrap identifiers in quotes when including them in error messages.</p>

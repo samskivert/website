@@ -1,0 +1,86 @@
+---
+layout: post
+title: "How I Learned to Stop Worrying and Love (Coding on) the Mac OS"
+date: 2011-05-24
+---
+
+<p>I’ve been using Linux and X Windows as my primary operating system for development for a long time. Owing to the spotty or non-existent support of consumer applications over the years, I have generally maintained an auxiliary machine (sometimes Windows, sometimes a Mac) on which to run things like iTunes or the Flash Authoring Tool (or even the Flash player when Linux support was crap).</p>
+<p>My primary machine has generally been a Mac, because I like the hardware, I just haven’t ever run Mac OS on it. Or rather, I would periodically attempt to switch to the Mac OS for development and then switch back to Linux after a week or so, annoyed at the hundred tiny ways in which my efficiency was reduced.</p>
+<p>A few months ago, I resolved to overcome the remaining obstacles by whatever means necessary (even if it meant writing Application Enhancer modules, though it didn’t come to that). I’ve now been happily coding away on Mac OS for multiple months, so I think it’s time to declare victory and record for posterity the various hacks and configuration tweaks that make my life tolerable.</p>
+<p><b>Virtual Desktops</b></p>
+<p>The Mac has long lacked civilized virtual desktop support. Frankly, it still sucks, but between some hackery and some finger retraining, I’ve managed to cobble together behavior that I can live with. In the Linux world, I had what I consider to be the ideal behavior:</p>
+<ul>
+<li>Instant switching between desktops. I don’t need to waste hundreds of milliseconds waiting for some animated transition to complete.</li>
+<li>Direct switching to a desktop via Alt-Fn. Don’t make me use arrow keys to navigate my desktops (or heaven forbid, the mouse). I know where I want to go, and I want to get there with a single key combination. I also don’t want that key combination to be Alt-n because certain web browsers (i.e. Firefox and Chrome) use those keys to instantly switch between tabs, which I also use heavily.</li>
+<li>When on a particular desktop, Alt-Tab switches between <em>only</em> the windows on that desktop. As far as I’m concerned, the other desktops don’t exist unless I switch to them. Each desktop is its own tiny universe.</li>
+<li>When switching to a desktop, the window that had focus when I left that desktop has focus when I return.</li>
+</ul>
+<p>I was not able to recreate this desktop utopia fully, but here’s what I did. First, disable desktop animation transitions thusly:</p>
+<pre>
+defaults write com.apple.dock workspaces-swoosh-animation-off -bool YES &amp;&amp; killall Dock
+</pre>
+<p>Next, install <a href="http://thecocoabots.com/hyperspaces/">Hyperspaces</a> which allows you to map arbitrary key shortcuts for switching between spaces. You may also need to disable the default Spaces key shortcuts. Note also: the use of Hyperspaces works around an <a href="https://discussions.apple.com/thread/2161076?threadID=2161076">infuriating Spaces bug</a>, which I repeatedly encountered when I was trying the “just give up on the utility of Alt-n in Firefox/Chrome” approach.</p>
+<p>I still have to live with the fact that Alt-Tab and Spaces interact in absurd ways, and that Alt-Tab in general switches between <em>applications</em>, not <em>windows</em>. I have to switch between Alt-Tab and Alt-` if I want to get to a particular Terminal window. Spaces also does suboptimal things with focus when returning to a Space. It attempts to preserve focus in the same application if it can. If I have Terminal focused on one Space and switch to another Space with a Terminal window on it, that Terminal window will get focus regardless of what window last had focus on that Space. Only if no window from the same application is open on the target Space will it give focus to the last window that had it. Useful!</p>
+<p><b>Ctrl-Meta-Cokebottle</b></p>
+<p>I’m an emacs user, and thus I have many neurons in my peripheral nervous system dedicated to the use of the Control and Meta keys. (Meta is called Alt on PC10x keyboards and Command on Mac keyboards.) The way my fingers wish to use these keys causes numerous problems on the Mac OS.</p>
+<p>I can’t use the sexy slim Mac keyboards, because I have to remap Caps-Lock to Ctrl (naturally), and the Caps-Lock key sucks. Five times out of ten, instead of registering ‘Ctrl-a’, the keyboard registers ‘a’ and happily inserts it into my buffer (same goes for ‘Ctrl-e’ and ‘e’, etc.). Since I use Ctrl-a/e about fifteen times a minute, this is somewhat problematic. Thus, in front of my sexy Apple Cinema display, above my sculpted aluminum Mac Pro, I have a very non-slim, boxy, black KeyTronic KT800U.</p>
+<p>In addition to remapping Caps-Lock to Ctrl, I have to swap Command (Alt) and Option (funny-Windows-symbol); for some reason Apple chose to wire those two keys backwards on their keyboards. This is easily accomplished in the Modifier Keys popup of the Keyboard preferences, but it does not solve the larger problem that the Mac uses the Command key for all of its application shortcuts. In certain applications where I expect my emacs key bindings to work, like Terminal, it gets pretty annoying that, for example, Command-d splits the Terminal window into two panes, rather than deleting to the next word boundary. It’s not 15 times a minute annoying, but it’s still pretty bad.</p>
+<p>This Terminal Command key issue had long been the primary insurmountable obstacle that sent me back to Linux. In Emacs.app, they thankfully make the Command key do the right thing, but I spend enough time in Terminal to eventually be driven crazy. Enter <a href="https://github.com/aim-stuff/cmd-key-happy">cmd-key-happy</a>, my savior. This handy utility allows one to reclaim the Command key in any application, while leaving any specific Command key shortcuts in place (like Command-x/c/v and Command-Tab). It’s very useful if you want to use emacs key bindings in Eclipse or XCode as well.</p>
+<p>I also went into the Keyboard → Keyboard Shortcuts preferences pane and disabled a bunch of global key shortcuts that caused my emacs-trained fingers to betray me in various circumstances. Specifically: Dashboard &amp; Dock → Turn Dock Hiding On/Off, Front Row → Hide and show Front Row, Service → Make New Sticky Note, Application Shortcuts → Show Help menu.</p>
+<p><b>I can has Terminal</b></p>
+<p>I used <a href="http://packages.debian.org/sid/keylaunch">keylaunch</a> on Linux to provide global key shortcuts for opening a new xterm and a few other incidentals. Most of that I have learned to live without, but opening a new Terminal window to do some quick shell noodling is something I do all the damned time. Through a combination of Automator.app and some AppleScript, I managed to recreate this functionality without having to install yet another piece-of-crap shareware utility.</p>
+<p>In Automator, I created a new Service automation, with the following Run AppleScript action:</p>
+<pre>
+on run {input, parameters}
+	tell application &quot;Terminal&quot;
+		do script &quot;&quot;
+		activate
+	end tell
+	return input
+end run
+</pre>
+<p><code>do script ""</code> instructs Terminal to execute the empty command, and it opens a new Terminal in the current Space in which to do so. <code>activate</code> tells it to give said window focus. Since AppleScript has approximately fuckall understanding of Spaces, the fact that this works at all was a lucky happenstance.</p>
+<p>This automation I then saved (cleverly named “New Terminal”). In the Keyboard → Keyboard Shortcuts preferences, under Application Shortcuts, I created a new shortcut (named “New Terminal”, which is how it knows which automation to use), and configured my desired key combination (Command-Esc). Said shortcut magically appears in the Services menu of every application, and the key combination usually even works when I press it (like many aspects of Mac OS, sometimes it mysteriously fails).</p>
+<p><b>An Emacs on Every Desktop</b></p>
+<p>Prior to setting up <a href="http://samskivert.com/2010/08/an-emacs-on-every-desktop/">scripts to run one emacs instance on each virtual desktop</a>, I coped with the default behavior, which was to open a new instance of emacs every time I ran <code>emacs somefile</code> from the command line. This wasn’t so bad, since I usually just open files from within my existing emacs instance, and it at least allowed me to have one (or sometimes more than one) emacs on each virtual desktop.</p>
+<p>However, the default behavior on the Mac is for there to be one instance of Emacs.app running ever, and for all new files to open in that instance. This interacts very poorly with my normal workflow of having different virtual desktops devoted to different programming projects. For a while, I tried opening multiple frames (via <code>M-x new-frame</code>), and having one frame on each Space. Emacs.app was usually smart enough to respond to <code>open -a Emacs.app somefile</code> by opening the file in the frame on the current Space. The major downside was that all my buffers across all projects were all mixed together in a single emacs instance, which sucked in various ways.</p>
+<p>After a great deal of digging, I discovered <a href="http://hints.macworld.com/article.php?story=20080227075244778">a terrible hack</a> for determining the number of the current Space via AppleScript. I put that into a script that I could use with my <a href="http://samskivert.com/2010/08/an-emacs-on-every-desktop/">previous setup</a> to achieve a separate emacs instance on each Space.</p>
+<pre>
+#!/usr/bin/osascript
+
+set xxVar to 0
+tell application &quot;System Events&quot;
+tell process &quot;SystemUIServer&quot;
+set xVar to value of attribute &quot;AXChildren&quot; of menu bar 1
+set cVar to count of xVar
+repeat with iVar from 1 to cVar
+    set zVar to value of attribute &quot;AXDescription&quot; of item iVar of xVar
+    try
+        if zVar = &quot;spaces menu extra&quot; then
+            set xxVar to iVar
+            exit repeat
+        end if
+    end try
+end repeat
+end tell
+end tell
+
+if xxVar = 0 then
+    display dialog &quot;Spaces Menu Extra not installed&quot;
+else
+    tell application &quot;System Events&quot;
+    tell process &quot;SystemUIServer&quot;
+    set theCurrentSpace to value of menu bar item xxVar of menu bar 1
+    end tell
+    end tell
+
+    -- Do what you want with &quot;theCurrentSpace&quot; variable starting here
+    get theCurrentSpace as number
+    -- Do what you want with &quot;theCurrentSpace&quot; variable ending here
+end if
+</pre>
+<p>This script requires that the Spaces menu be visible, which duplicates the Hyperspaces menu (which cannot be disabled). I also end up with three or four Emacs.app icons in the dock and in the Alt-Tab menu (with no way to tell which is on which space, since they are reordered based on when they were last used). However, these are small prices to pay for the joy of segregated buffers.</p>
+<p><b>Fine Beverages</b></p>
+<p>Naturally, there are a few dozen Unix utilities that I needed in order to pursue my nefarious goals. In the past, I had used <a href="http://www.finkproject.org/">Fink</a> or <a href="http://www.macports.org/">MacPorts</a>, but now I’m a fan of <a href="https://github.com/mxcl/homebrew">Homebrew</a>. I like not installing packages as root, and having them each installed into their own little directory tree and symlinked into the giant mishmash of /usr/local.</p>
+<p><b>Your Suggestions Here</b></p>
+<p>That’s the extent of the wrangling I’ve done to make the Mac OS a moderately pleasant place to develop. Well, that and to install an SSD because the filesystem or caching subsystem or something was causing builds to take 20-30% longer. If you, dear reader, have further suggestions for a reformed Linux user, please post them in the comments.</p>

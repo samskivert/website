@@ -1,0 +1,40 @@
+---
+layout: post
+title: "Too much Maven Kool-aid"
+date: 2011-06-02
+---
+
+<p>A <a href="http://www.sonatype.com/people/2008/05/adding-additional-source-folders-to-your-maven-build/">post on the Sonatype blog</a> cheerfully reports:</p>
+<blockquote><p>
+Adding an additional source folder is as simple as:</p>
+<pre>
+&lt;project&gt;
+  ...
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+        &lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;1.1&lt;/version&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;add-source&lt;/id&gt;
+            &lt;phase&gt;generate-sources&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;add-source&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;sources&gt;
+                &lt;source&gt;some directory&lt;/source&gt;
+                ...
+              &lt;/sources&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;
+</pre>
+</blockquote>
+<p>If that’s simple, I don’t want to see complicated.</p>
