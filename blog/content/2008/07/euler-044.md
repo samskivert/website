@@ -6,7 +6,7 @@ date: 2008-07-20
 
 [Problem 044]\:
 
-{% highlight scala %}
+```scala
 object Euler44 extends Application {
   def pent (n :Int) = n*(3*n-1)/2
   val pents = Set() ++ List.range(1, 3000).map(pent)
@@ -21,7 +21,7 @@ object Euler44 extends Application {
   }
   println(find(1, 2))
 }
-{% endhighlight %}
+```
 This one's not especially elegant or clever (but it is fast). We just scanning increasing pairs of integers for a pair that meets our criteria and stop when we find it. We optimize by generating a “sufficiently large" list of pentagonal numbers and putting them in a set so that we can quickly test a sum or difference for pentagonality.
 
 

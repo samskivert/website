@@ -6,7 +6,7 @@ date: 2008-01-09
 
 [Problem 002]\:
 
-{% highlight scala %}
+```scala
 object Euler2 extends Application {
   def fibby (a :Int, b :Int) :Int = {
     val next = a + b;
@@ -14,6 +14,6 @@ object Euler2 extends Application {
   }
   println(fibby(1, 2));
 }
-{% endhighlight %}
+```
 
 [Problem 002]: http://projecteuler.net/index.php?section=problems&id=2

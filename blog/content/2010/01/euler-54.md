@@ -6,7 +6,7 @@ date: 2010-01-01
 
 [Problem 054]\:
 
-{% highlight scala %}
+```scala
 object Euler54 extends EulerApp {
   class Card (s :String) {
     val suit :Char = s.charAt(1)
@@ -56,8 +56,11 @@ object Euler54 extends EulerApp {
 
   println(readlines("poker.txt").map(toHands).filter(p => p._1.rank > p._2.rank).length)
 }
-{% endhighlight %}
-This one is no pat one liner elegantly capturing some simple math. However, Scala sure does let us express the necessary fiddling to compare poker hands with a nice balance of readability and compactness.
+```
+
+This one is no pat one liner elegantly capturing some simple math. However, Scala sure does let us
+express the necessary fiddling to compare poker hands with a nice balance of readability and
+compactness.
 
 
 [Problem 054]: http://projecteuler.net/index.php?section=problems&id=54

@@ -6,7 +6,7 @@ date: 2008-02-03
 
 [Problem 025]\:
 
-{% highlight scala %}
+```scala
 object Euler25 extends Application {
   var prev2 :BigInt = 1;
   var prev1 :BigInt = 1;
@@ -20,7 +20,7 @@ object Euler25 extends Application {
   }
   println(term);
 }
-{% endhighlight %}
+```
 Another unglamorous solution wherein all the hard work is done by BigInt.
 
 

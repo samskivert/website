@@ -6,7 +6,7 @@ date: 2008-01-09
 
 [Problem 004]\:
 
-{% highlight scala %}
+```scala
 object Euler4 extends Application
 {
   def palindrome (value :String) :Boolean = {
@@ -22,6 +22,6 @@ object Euler4 extends Application
 
   println(palindromes.sort((a, b) => a<b ));
 }
-{% endhighlight %}
+```
 
 [Problem 004]: http://projecteuler.net/index.php?section=problems&id=4

@@ -6,7 +6,7 @@ date: 2008-01-12
 
 [Problem 010]\:
 
-{% highlight scala %}
+```scala
 object Euler10 extends Application {
   var numbers = List.range(2,1000000).toArray;
   def sumprimes (idx :Int, sum :Long) :Long = {
@@ -20,7 +20,7 @@ object Euler10 extends Application {
   }
   println(sumprimes(0, 0));
 }
-{% endhighlight %}
+```
 This one felt like it could have been solved more concisely given more thought. But who has time for more thought these days?
 
 

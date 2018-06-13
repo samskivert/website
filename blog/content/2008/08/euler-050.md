@@ -6,7 +6,7 @@ date: 2008-08-18
 
 [Problem 050]\:
 
-{% highlight scala %}
+```scala
 object Euler50 extends EulerApp {
   val pvec = genprimes(1000000)
   val primes = pvec.filter(0.!=)
@@ -20,7 +20,7 @@ object Euler50 extends EulerApp {
   def longer (one :PSum, two :PSum) = if (one.length > two.length) one else two
   println(0.until(primes.length).map(fsum(_, PSum(0, 0), PSum(0, 0))).reduceLeft(longer).sum)
 }
-{% endhighlight %}
+```
 I had a slightly shorter solution that did not make use of a helper class, but it's just so easy to encapsulate a bit of data and functionality into a handy little helper that I couldn't resist.
 
 

@@ -32,7 +32,7 @@ public class Test {
         };
     }
 </pre>
-<p>“<code>Exception in thread "main" java.lang.VerifyError: (class: Test, method: main signature: ([Ljava/lang/String;)V) Incompatible argument to function</code>" to be precise.</p>
+<p>“`Exception in thread "main" java.lang.VerifyError: (class: Test, method: main signature: ([Ljava/lang/String;)V) Incompatible argument to function`" to be precise.</p>
 <p>Having perused the internals of javac, I know that there is some <strike>hackery</strike> magic that takes place in relation to some of java.lang.Class's methods. So to be sure, I tried doing the casting myself:</p>
 <pre>
     public static void main (String[] args) {
@@ -76,4 +76,4 @@ public class Test {
    24:  invokespecial   #7; //Method Test$1."":(LTest;)V
    ...
 </pre>
-<p>We have a case of a mysteriously disappearing <code>checkcast</code>. If I wasn't so deathly tired of mucking around with the internals of javac, I might try to figure out what the problem was and submit a patch along with the bug report. As it is, I'm just hoping that the highlight of my future Sunday evenings will be more exciting than finding bugs in javac.</p>
+<p>We have a case of a mysteriously disappearing `checkcast`. If I wasn't so deathly tired of mucking around with the internals of javac, I might try to figure out what the problem was and submit a patch along with the bug report. As it is, I'm just hoping that the highlight of my future Sunday evenings will be more exciting than finding bugs in javac.</p>

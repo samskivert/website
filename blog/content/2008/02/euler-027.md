@@ -6,7 +6,7 @@ date: 2008-02-03
 
 [Problem 027]\:
 
-{% highlight scala %}
+```scala
 object Euler27 extends EulerApp {
   val MAX_N = 80;
   val primes = genprimes(MAX_N*MAX_N + MAX_N*1000 + 1000);
@@ -21,7 +21,7 @@ object Euler27 extends EulerApp {
   } yield Pair(a * b, p);
   println(polys.foldLeft(Pair(0, 0))((a, b) => if (a._2 > b._2) a else b)._1);
 }
-{% endhighlight %}
+```
 Pretty straightforward. Just try all combinations from -1000 to 1000 and see how many consecutive primes are generated and pick the one that generates the most. You may notice that I'm passing the list of primes into the polyprimes function because referencing it directly from its enclosing context annoyingly results in a 40 second runtime instead of 28 seconds.
 
 

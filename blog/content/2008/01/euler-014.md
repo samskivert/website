@@ -6,7 +6,7 @@ date: 2008-01-16
 
 [Problem 014]\:
 
-{% highlight scala %}
+```scala
 import scala.collection.mutable.Map;
 
 object Euler14 extends Application {
@@ -33,7 +33,7 @@ object Euler14 extends Application {
     (lpair, pair) => (if (lpair._2 > pair._2) lpair else pair));
   println(longest._1);
 }
-{% endhighlight %}
+```
 Because any given number will always converge to 1 in the same number of steps, once you reach a number for which you've already calculated the distance to 1 you can simply tack the previously calculated distance onto your current solution and Bob is your proverbial uncle.
 
 

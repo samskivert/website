@@ -147,7 +147,7 @@ To react to changes in state and to effect new changes to state, one defines beh
 expressions of dataflow programming. If you're familiar with FRP behaviors, these are basically the
 same thing. For example:
 
-{% highlight scala %}
+```scala
 def fib (n :Int) = n match {
   case 0 => 0
   case 1 => 1
@@ -159,7 +159,7 @@ state fibn :Int = 0
 
 // here comes the behavior!
 n >> fib >> fibn
-{% endhighlight %}
+```
 
 This program reacts to changes in `n` by computing the `nth` Fibonnaci number and storing it in
 `fibn`. Specifically: when `n` changes, its current (immutable) value is passed to the function
@@ -210,7 +210,7 @@ sources to create a dynamic computation that proceeds on its own as well as resp
 It is also possible to "partially apply" a behavior, by not routing a result back into reactive
 state. This is called a *view*. For example:
 
-{% highlight scala %}
+```scala
 struct Pos { x :Int, y :Int }
 state mousePos :Pos = ... // external source
 
@@ -219,7 +219,7 @@ val TILE_HEIGHT :Int = 64
 def posToTile (pos :Pos) :Pos = Pos(pos.x / TILE_WIDTH, pos.y / TILE_HEIGHT)
 
 view tilePos :Pos = mousePos >> posToTile
-{% endhighlight %}
+```
 
 A view can be understood as a piece of state which has been mapped by one or more functions. It is
 not itself state, in that one cannot route a value to it, but it can be the source of one or more
@@ -253,7 +253,7 @@ Here's an example of a system which has external state and value dependencies, i
 private state, and behaviors to connect it all together (TODO: find a simpler introductory
 example):
 
-{% highlight scala %}
+```scala
 system MouseClickDetector (
   view mousePos :Pos, view button1 :Boolean, val bounds :Rect
 ) {
@@ -287,7 +287,7 @@ private:
     >> (b1, armed, mpos) => if (!b1.previous && b1.current && armed) Some(mpos) else None
     >>? clicked // the >>? fitting routes Some(x) to its destination and ignores None
 }
-{% endhighlight %}
+```
 
 The `MouseClickDetector` system depends on two pieces of external state: `mousePos` and `button1`.
 It expresses that it need only react to that state by declaring them to be `view` rather than
@@ -326,7 +326,7 @@ DAG rather than a tree, the *ownership* of the state and systems is still tree-s
 It is possible for a containing system to access the public state of its child systems and it can
 pass its own state (or state on which it depends) to its child systems:
 
-{% highlight scala %}
+```scala
 system MouseClickDetector (
   view mousePos :Pos, view button1 :Boolean, view bounds :Rect
 ) { ... }
@@ -339,27 +339,27 @@ system Button (view mousePos :Pos, view button1 :Boolean) {
   clickDetect.armed >> renderButton >> image
   // ... there would be a lot more to a real button ...
 }
-{% endhighlight %}
+```
 
 However, a system cannot pass state from one child to another:
 
-{% highlight scala %}
+```scala
 system Foo {
   val bar = Bar()
   val baz = Baz(bar.enabled) // illegal!
 }
-{% endhighlight %}
+```
 
 If a system needs to pass data between subsystems, it must route it through state that it owns:
 
-{% highlight scala %}
+```scala
 system Foo {
   val bar = Bar()
   val baz = Baz(barEnabled)
   state barEnabled = false
   bar.enabled >> barEnabled
 }
-{% endhighlight %}
+```
 
 This ensures that computations take place in the proper execution context when concurrency is taken
 into account (see *Concurrency* below).
@@ -371,7 +371,7 @@ interactive programs.
 
 A single dynamic enclosed system:
 
-{% highlight scala %}
+```scala
 system AI (...) { ... }
 
 system Game (...) {
@@ -382,11 +382,11 @@ system Game (...) {
   // when it becomes zero, the AI system is destroyed
   turnHolder >> (thIdx) => { if (thIdx == 0) None else Some(AI(...)) } >> opp
 }
-{% endhighlight %}
+```
 
 A list of enclosed systems:
 
-{% highlight scala %}
+```scala
 interface Screen { ... }
 
 system App {
@@ -408,7 +408,7 @@ system PrefsScreen (state stack :Seq[Screen]) : Screen {
     >> () => self // self refers to the current system
     >>- stack     // >>- removes a value from a Seq
 }
-{% endhighlight %}
+```
 
 This latter example hints at some additional abstraction and code reuse mechanisms that will be
 possible with systems. *Abstraction* below provides more details.
@@ -465,7 +465,7 @@ going to inherit (pardon the pun) the capabilities of a class in that language. 
 designed specifically for RSP, I would lean toward a combination of interfaces and delegation. My
 thoughts here are very rough, but something along these lines are likely to be where I'll start:
 
-{% highlight scala %}
+```scala
 interface Screen {
   state added   :Boolean
   state showing :Boolean
@@ -498,7 +498,7 @@ system MainMenuScreen : Screen {
   val screen = ScreenImpl() provides Screen
   // can create behaviors that use added and removed
 }
-{% endhighlight %}
+```
 
 I'm already dissatisfied with this mechanism after writing this one simple example, so more thought
 is here needed.

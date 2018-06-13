@@ -6,7 +6,7 @@ date: 2008-01-18
 
 [Problem 022]\:
 
-{% highlight scala %}
+```scala
 import scala.io.Source;
 object Euler22 extends Application {
   def trim (name :String) = name.slice(1, name.length-1);
@@ -14,13 +14,13 @@ object Euler22 extends Application {
   def score (name :String) = name.foldLeft(0)((s, l) => (s + (l - 'A' + 1)))
   println(List.range(0, names.length).map(i => ((i+1) * score(names(i)))).foldLeft(0)(_+_));
 }
-{% endhighlight %}
+```
 Another reasonably legible solution. I resisted the urge to do it all in a single expression.
 
 I can see how language designers might succumb to the urge to expose a loop counter in their iteration functions because it would be nice to do:
 
-{% highlight scala %}
+```scala
   println(names.map(name => ((_INDEX_+1) * score(name))).foldLeft(0)(_+_));
-{% endhighlight %}
+```
 
 [Problem 022]: http://projecteuler.net/index.php?section=problems&id=22

@@ -6,7 +6,7 @@ date: 2010-08-25
 
 [Problem 064]\: (<a href="http://github.com/samskivert/euler-scala/raw/master/Euler064.scala">source</a>):
 
-{% highlight scala %}
+```scala
 object Euler064 extends EulerApp {
   case class Root (root :Int, add :Int, div :Int) {
     def expand = {
@@ -23,8 +23,12 @@ object Euler064 extends EulerApp {
   }
   def answer = 1 to 10000 map(n => expansion(Nil, Root(n, 0, 1)::Nil).length) count(_%2==0)
 }
-{% endhighlight %}
-Here we have a nice little case class to represent a single step in the infinite expansion. The process of generating the next expansion could be done purely with simple arithmetic, but I'm lazy, so I just use <code>math.sqrt</code> to obtain the non-fractional part. I don't actually need to keep track of the terms to obtain the solution, but it was handy to have when I was validating the solution, so I kept it around. Same goes for <code>toString</code>. I just love that little root sign!
+```
 
+Here we have a nice little case class to represent a single step in the infinite expansion. The
+process of generating the next expansion could be done purely with simple arithmetic, but I'm lazy,
+so I just use `math.sqrt` to obtain the non-fractional part. I don't actually need to keep track of
+the terms to obtain the solution, but it was handy to have when I was validating the solution, so I
+kept it around. Same goes for `toString`. I just love that little root sign!
 
 [Problem 064]: http://projecteuler.net/index.php?section=problems&id=64

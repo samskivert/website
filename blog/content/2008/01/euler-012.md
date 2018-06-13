@@ -6,7 +6,7 @@ date: 2008-01-12
 
 [Problem 012]\:
 
-{% highlight scala %}
+```scala
 object Euler12 extends Application {
   def findnum (i :Int, x :Int) :Int = {
     var divs = List.flatten(for {
@@ -18,7 +18,7 @@ object Euler12 extends Application {
   }
   println(findnum(1, 0));
 }
-{% endhighlight %}
+```
 Pretty straightforward, just compute the triangle numbers incrementally and stop when we find one with over 500 divisors.
 
 

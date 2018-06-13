@@ -9,14 +9,14 @@ process.)
 
 What do you think should happen if you do the following in Java?
 
-{% highlight java %}
+```java
 Map<String,String> map = new HashMap<String,String>();
 map.put("foo", "bar");
 Iterator<Map.Entry<String,String>> iter = map.entrySet().iterator();
 Map.Entry<String,String> entry = iter.next();
 iter.remove();
 entry.setValue("baz");
-{% endhighlight %}
+```
 
 Should the entry freak out because you tried to update the mapping after it has
 already been removed? Should it reintroduce a mapping from “foo” to “baz”?

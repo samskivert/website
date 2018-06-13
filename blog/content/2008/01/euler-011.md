@@ -6,7 +6,7 @@ date: 2008-01-12
 
 [Problem 011]\:
 
-{% highlight scala %}
+```scala
 object Euler11 extends Application {
   val data = Array(
      8,  2, 22, 97, 38, 15,  0, 40,  0, 75,  4,  5,  7, 78, 52, 12, 50, 77, 91,  8,
@@ -45,7 +45,7 @@ object Euler11 extends Application {
   } yield vector(x, y, delta(0), delta(1)).foldRight(1)(_*_);
   println(products.foldRight(0)(Math.max));
 }
-{% endhighlight %}
+```
 It's not the shortest solution in the world, but it makes up for it with generality.
 
 We simply iterate over all elements of the matrix and compute the four element product going right, down, down right and down left. Since it doesn't matter which way you compute the product we don't need to compute up, left, up left or up right.

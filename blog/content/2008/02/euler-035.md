@@ -6,7 +6,7 @@ date: 2008-02-25
 
 [Problem 035]\:
 
-{% highlight scala %}
+```scala
 object Euler35 extends EulerApp {
   val primes = genprimes(1000000);
   def digits (value :Int) :Int = if (value == 0) 0 else 1 + digits(value/10);
@@ -19,7 +19,7 @@ object Euler35 extends EulerApp {
   }
   println(primes.filter(0.!=).filter(circprime).length);
 }
-{% endhighlight %}
+```
 Coming up with rotate() was fun and the rest was pretty straightforward. I first wrote a recursive method that rotated the number one digit at a time, but then I realized I could do it in a single expression. If there existed a built in operator for raising an integer to an integer power, rotate would look much nicer.
 
 

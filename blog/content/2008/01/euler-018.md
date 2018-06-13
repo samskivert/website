@@ -6,7 +6,7 @@ date: 2008-01-18
 
 [Problem 018]\:
 
-{% highlight scala %}
+```scala
 object Euler18 extends Application {
   val triangle = List(
      4, 62, 98, 27, 23,  9, 70, 98, 73, 93, 38, 53, 60,  4, 23,
@@ -37,22 +37,22 @@ object Euler18 extends Application {
   var base = (Math.sqrt(1+8*triangle.length) - 1) / 2; // 15
   println(fold(triangle.drop(base), triangle.slice(0, base)));
 }
-{% endhighlight %}
+```
 The interesting thing about this one (other than my excellent triangle array formatting) is that we can simply fold the triangle up on itself computing the larger of each pair of elements in the bottom row and adding that larger value to the row above it.
 
 A reduction step takes something like this:
 
-{% highlight scala %}
+```scala
         91, 71, 52, 38, 17, 14, 91, 43, 58, 50, 27, 29, 48,
       63, 66,  4, 68, 89, 53, 67, 30, 73, 16, 69, 87, 40, 31,
      4, 62, 98, 27, 23,  9, 70, 98, 73, 93, 38, 53, 60,  4, 23,
-{% endhighlight %}
+```
 and turns it into:
 
-{% highlight scala %}
+```scala
    91,  71,  52,  38,  17,  14,  91,  43,  58,  50,  27,  29,  48,
 125, 164, 102,  95, 112, 123, 165, 128, 166, 109, 122, 145, 100, 54,
-{% endhighlight %}
+```
 Then we fold that up into the next line and so on until we've got our solution in the top row.
 
 

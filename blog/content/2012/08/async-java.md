@@ -8,7 +8,7 @@ I frequently suffer from Java's complete lack of assistance when it comes to
 asynchronous programming, but this little multi-phase maneuver really brings
 home the pain:
 
-{% highlight java %}
+```java
 protected void findFriends (final Socks.Network sock, Group contents) {
     contents.removeAll();
     final Label status = UI.wrapLabel(_msgs.findingFriends);
@@ -84,7 +84,7 @@ protected void findFriends (final Socks.Network sock, Group contents) {
     }
     new FriendFinder().start();
 }
-{% endhighlight %}
+```
 
 I've already taken great liberties with "Java style" to achieve a level of
 concision that allows at least some of the control flow to remain visible, but
@@ -95,7 +95,7 @@ something like C#'s `async` mechanism (wherein the resulting code is the same
 as the above, but the compiler takes care of the boilerplate behind the
 scenes):
 
-{% highlight java %}
+```java
 protected void findFriends (final Socks.Network sock, Group contents) {
     contents.removeAll();
     final Label status = UI.wrapLabel(_msgs.findingFriends);
@@ -141,12 +141,12 @@ protected void findFriends (final Socks.Network sock, Group contents) {
         status.text.update(errpre + ": " + e.getMessage());
     }
 }
-{% endhighlight %}
+```
 
 While we're dreaming, let's rewrite it all in Scala (assuming the use of the
 delimited continuations plugin to do the appropriate rewriting):
 
-{% highlight scala %}
+```scala
 def findFriends (sock :Socks.Network, contents :Group) {
   contents.removeAll()
   val status = UI.wrapLabel(_msgs.findingFriends)
@@ -186,7 +186,7 @@ def findFriends (sock :Socks.Network, contents :Group) {
     case e => status.text.update(errpre + ": " + e.getMessage)
   }
 }
-{% endhighlight %}
+```
 
 Alas, I can't use Scala on my current project. I'll shut up now and get back to
 the salt mines.

@@ -7,7 +7,7 @@ date: 2011-01-14
 [Problem 066](http://projecteuler.net/index.php?section=problems&id=66):
 (<a href="http://github.com/samskivert/euler-scala/raw/master/Euler066.scala">source</a>):
 
-{% highlight scala %}
+```scala
 import scala.collection.mutable.{Map => MMap}
 object Euler066 extends EulerApp {
   def leastx (d :Int) = {
@@ -55,7 +55,7 @@ object Euler066 extends EulerApp {
   def issquare (d :Int) = square(math.sqrt(d).toInt) == d
   def answer = (2 to 1000 filterNot(issquare) map(d => (d, leastx(d))) sortBy(_._2) last)._1
 }
-{% endhighlight %}
+```
 
 My efforts to post my Euler solutions with commentary remain woefully behind (I just finished
 problem 110), but when I took action to close this gap, I discovered that I had skipped over

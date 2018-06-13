@@ -6,13 +6,13 @@ date: 2008-06-01
 
 [Problem 042]\:
 
-{% highlight scala %}
+```scala
 object Euler42 extends EulerApp {
   def wvalue (word :Seq[Char]) = word.foldLeft(0)((s, l) => (s + (l - 'A' + 1)))
   def tri (n :Int) = (n*(n+1))/2
   println(readwords("words.txt").map(wvalue).filter(v => (v == tri(Math.sqrt(2*v)))).length);
 }
-{% endhighlight %}
+```
 
 This one is kind of cheating. I discovered (using the terminology `tri = (n *
 (n+1))/2)` that `floor(sqrt(2*tri)) == n` for at least the first 10,000 values

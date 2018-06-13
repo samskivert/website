@@ -6,7 +6,7 @@ date: 2008-07-20
 
 [Problem 045]\:
 
-{% highlight scala %}
+```scala
 object Euler45 extends Application {
   def findh (pent :Long, h :Long) :Long = {
     val hex = h*(2*h-1)
@@ -27,12 +27,12 @@ object Euler45 extends Application {
   }
   println(find(286))
 }
-{% endhighlight %}
+```
 We know that for a given t, any number p for which pent(p) = tri(t) will be less than t. The same holds for hex and pent. So we search down from our starting n for a matching pentagonal number and if we find it, we search further down for a matching hexagonal number. We also know that when we get to an n that generates a pent that is less than our tri we can stop because pent(n) will only keep getting smaller and thus never be equal to our tri.
 
 findp() and findh() are similar enough that they could be abstracted into something like:
 
-{% highlight scala %}
+```scala
   def findf (n :Long, x :Long, funcs :List[(Long => Long)]) :Long = {
     val fx = funcs.head(x)
     if (fx > n) findf(n, x-1, funcs)
@@ -40,7 +40,7 @@ findp() and findh() are similar enough that they could be abstracted into someth
     else if (funcs.size == 1) fx
     else findf(fx, x-1, funcs.tail)
   }
-{% endhighlight %}
+```
 but that's just crazy. (It also turns out to be quite a bit slower.)
 
 

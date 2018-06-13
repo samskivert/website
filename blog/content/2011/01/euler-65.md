@@ -7,7 +7,7 @@ date: 2011-01-13
 [Problem 065](http://projecteuler.net/index.php?section=problems&id=65):
 (<a href="http://github.com/samskivert/euler-scala/raw/master/Euler065.scala">source</a>):
 
-{% highlight scala %}
+```scala
 object Euler065 extends EulerApp {
   case class Frac (numer :BigInt, denom :BigInt) {
     def + (n :BigInt) = Frac(n * denom + numer, denom)
@@ -20,7 +20,7 @@ object Euler065 extends EulerApp {
   }
   def answer = compute(100, 1).numer.toString map(_-'0') sum
 }
-{% endhighlight %}
+```
 
 The only challenge here is algorithmizing the computation of the continued
 fraction, while preserving the numerator and denominator, so that we can

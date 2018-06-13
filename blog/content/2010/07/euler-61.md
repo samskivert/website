@@ -6,7 +6,7 @@ date: 2010-07-27
 
 [Problem 061]\:
 
-{% highlight scala %}
+```scala
 object Euler61 extends EulerApp {
   case class Pn (card :Int, value :Int) {
     def valid = (value < 10000) && (value > 999)
@@ -33,24 +33,42 @@ object Euler61 extends EulerApp {
   def sets = for (n <- gen(150)(tri); s <- search(nums, n::Nil)) yield s
   def answer = (sets head) map(_.value) sum
 }
-{% endhighlight %}
-I model a polygonal number with a case class to track it's value and cardinality. Since I care about four-digitality and two digit prefixes and suffixes, those fit nicely as methods on the class. The main search proceeds by starting with a given triangle number (since all sets must have one triangular element), and then looks for a number that matches the suffix of said number. If one is found, it is added to the ordered set, all other numbers with the same cardinality are dropped from the candidates list, and a new number is sought that matches the suffix of the value just added.
+```
 
-If we match a number for each cardinality, then we'll finally end up in the <code>search</code> procedure with an empty candidates list, in which case we check whether the last number in the ordered set matches the first.
+I model a polygonal number with a case class to track it's value and cardinality. Since I care
+about four-digitality and two digit prefixes and suffixes, those fit nicely as methods on the
+class. The main search proceeds by starting with a given triangle number (since all sets must have
+one triangular element), and then looks for a number that matches the suffix of said number. If one
+is found, it is added to the ordered set, all other numbers with the same cardinality are dropped
+from the candidates list, and a new number is sought that matches the suffix of the value just
+added.
 
-Functional programming comment: when I first wrote this, I was using <code>Nil</code> to indicate a non-match, and had a few <code>find(Nil.!=)</code> calls sprinkled around to find matching elements. That smelled suspiciously like using <code>null</code>, so I decided to be a good functional programmer and use <code>Option</code>. However, this left me in situations where I'd have a <code>List[Option[Pn]]</code> and I'd need the first non-<code>None</code> element. I know that I can take such a list and do <code>list flatMap(x => x) head</code> but that seems insufficiently scrutable to people not familiar with the idiom.
+If we match a number for each cardinality, then we'll finally end up in the `search` procedure with
+an empty candidates list, in which case we check whether the last number in the ordered set matches
+the first.
+
+Functional programming comment: when I first wrote this, I was using `Nil` to indicate a non-match,
+and had a few `find(Nil.!=)` calls sprinkled around to find matching elements. That smelled
+suspiciously like using `null`, so I decided to be a good functional programmer and use `Option`.
+However, this left me in situations where I'd have a `List[Option[Pn]]` and I'd need the first
+non-`None` element. I know that I can take such a list and do `list flatMap(x => x) head` but that
+seems insufficiently scrutable to people not familiar with the idiom.
 
 This motivated me to switch to for-comprehensions. Instead of writing:
 
-{% highlight scala %}
+```scala
 nums filter(_.ab == set.last.cd) map(n => search(...)) flatMap(s => s) headOption
-{% endhighlight %}
+```
+
 I use what you see above:
 
-{% highlight scala %}
+```scala
 (for (n <- nums; if (n.ab == set.last.cd); s <- search(...)) yield s) headOption
-{% endhighlight %}
-The for-comprehension turns out to be a little shorter, a lot easier to line-wrap (if needed), and I think probably slightly more comprehensible. You still have to deduce that <code>Option</code> behaves like a zero-or-one element list when used in a for-comprehension, but that seems more intuitive than figuring out that <code>List(Some(1), None, Some(2)) flatMap(x => x)</code> gives you <code>List(1, 2)</code>.
+```
 
+The for-comprehension turns out to be a little shorter, a lot easier to line-wrap (if needed), and
+I think probably slightly more comprehensible. You still have to deduce that `Option` behaves like a
+zero-or-one element list when used in a for-comprehension, but that seems more intuitive than
+figuring out that `List(Some(1), None, Some(2)) flatMap(x => x)` gives you `List(1, 2)`.
 
 [Problem 061]: http://projecteuler.net/index.php?section=problems&id=61

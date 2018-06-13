@@ -6,7 +6,7 @@ date: 2008-06-01
 
 [Problem 039]\:
 
-{% highlight scala %}
+```scala
 object Euler39 extends Application {
   def sols (perim :Int) = perim + 1000 * (for {
     a <- List.range(1, perim/2);
@@ -16,7 +16,7 @@ object Euler39 extends Application {
   } yield 1).length;
   println(List.range(3, 1000).map(sols).foldLeft(0)(Math.max) % 1000);
 }
-{% endhighlight %}
+```
 Nothing fancy here, just a moderately brute force search.
 
 

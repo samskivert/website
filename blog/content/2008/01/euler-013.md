@@ -6,7 +6,7 @@ date: 2008-01-16
 
 [Problem 013]\:
 
-{% highlight scala %}
+```scala
 object Euler13 extends Application {
   val data = List("37107287533902102798797998220837590246510135740250",
                   "46376937677490009712648124896970078050417018260538",
@@ -141,7 +141,7 @@ object Euler13 extends Application {
 
   println(sum(data.map((n) => toList(n))));
 }
-{% endhighlight %}
+```
 For this one, I simply summed the tens column of all the numbers and then tacked that sum onto the list of numbers and lopped off the tens column of all the numbers in the list. When I got down to 8 digit numbers, I simply summed them to get the final result.
 
 

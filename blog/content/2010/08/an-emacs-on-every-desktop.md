@@ -49,7 +49,7 @@ will remain safely ensconced in the terminal.
 If you too are an emacs user whose workflow resembles mine, feel free to reap
 the fruits of my labor. Add the following to your `.emacs` file:
 
-{% highlight scheme %}
+```scheme
 (defun cur-desk ()
   "Returns the numeric identifer of the current desktop."
   (replace-regexp-in-string "\\(^[[:space:]\n]*\\|[[:space:]\n]*$\\)" ""
@@ -58,11 +58,11 @@ the fruits of my labor. Add the following to your `.emacs` file:
 (if (string= "x" window-system)
     (progn (setq server-name (format "server%s" (cur-desk)))
            (server-start)))
-{% endhighlight %}
+```
 
 and create a shell script in your favorite location with the following contents:
 
-{% highlight sh %}
+```sh
 #!/bin/sh
 
 EMACS=/usr/bin/emacs
@@ -81,7 +81,7 @@ if [ $? != 0 ]; then
     # no instance running on this virtual desktop, so start one
     $EMACS $* &
 fi
-{% endhighlight %}
+```
 
 There are probably better ways to accomplish both of the above bits of code. My
 bash and elisp skills have both perpetually lingered in the “good enough to get

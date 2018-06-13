@@ -6,7 +6,7 @@ date: 2008-01-09
 
 [Problem 008]\:
 
-{% highlight scala %}
+```scala
 object Euler8 extends Application {
   val number = ("73167176531330624919225119674426574742355349194934" +
                 "96983520312774506326239578318016984801869478851843" +
@@ -34,7 +34,7 @@ object Euler8 extends Application {
   }
   println(List.range(0, number.length-WINDOW).foldRight(0)((o, g) => (Math.max(g, prod5(o)))))
 }
-{% endhighlight %}
+```
 I'll stop here for tonight. I already have solutions up to Problem 30, but I'll try to restrict myself to posting a few at a time so as not to try the patience of my already very kind and indulgent readers.
 
 
