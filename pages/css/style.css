@@ -90,9 +90,16 @@ h3 {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.elselink {
+  white-space: nowrap;
+  display: inline;
+  margin: 0px 10px;
+}
+
 #footer {
   border-top: 1px solid #CCCCCC;
   font-weight: normal;
+  font-family: sans-serif;
   margin: 5px 0px 0px;
   padding: 6px;
   font-size: medium;
