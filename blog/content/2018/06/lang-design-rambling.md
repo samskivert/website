@@ -174,16 +174,16 @@ syntax that can be "inverted". You just write `foo<A : B>(...)` which means `A` 
 
 ```kotlin
 interface Coll<out A> {
-  fun <B : A> contains (elem :B) :Boolean
+  fun <A : B> contains (elem :B) :Boolean
 }
 ```
 
-But kotlinc tells you to fuck right off (with a weird error message, but clearly we're breaking the
-rules here):
+But kotlinc tells you to fuck right off because the thing after the `:` is supposed to be a
+reference to a known type, not the place where you declare a new type:
 
 ```text
-Test.kt:2:12: error: type parameter A is declared as 'out' but occurs in 'in' position in type A
-  fun <B : A> contains (elem :B) :Boolean
+Test.kt:2:12: error: unresolved reference: B
+  fun <A : B> contains (elem :B) :Boolean
            ^
 ```
 
