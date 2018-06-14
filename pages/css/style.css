@@ -96,6 +96,14 @@ h3 {
   margin: 0px 10px;
 }
 
+.elselink img {
+  vertical-align: text-top;
+}
+
+.elselink svg {
+  vertical-align: text-top;
+}
+
 #footer {
   border-top: 1px solid #CCCCCC;
   font-weight: normal;
