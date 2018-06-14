@@ -467,7 +467,7 @@ subtyping, using ADTs and type classes.
 One more thing and then I'll shut up¹. This is a super good paper that brought a whole lot of
 haphazard ideas about OO that were rolling around in my head into clarity:
 
-http://www.cs.utexas.edu/~wcook/Drafts/2009/essay.pdf
+<a href="http://www.cs.utexas.edu/~wcook/Drafts/2009/essay.pdf">On Understanding Data Abstraction, Revisited</a>
 
 It also talks about how module systems play into all of this, which is also important for an
 industrial strength language.
