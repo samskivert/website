@@ -1,9 +1,0 @@
----
-layout: nil
----
-
-<ul class="posts">
-{% for post in site.posts limit:5 offset:0 %}
-  <li>{{ post.date | date: "%Y-%m-%d" }}: <a href="/blog{{ post.url }}">{{ post.title }}</a></li>
-{% endfor %}
-</ul>
