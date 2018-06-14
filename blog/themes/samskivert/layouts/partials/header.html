@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="/css/pygments.css" type="text/css"/>
     <link href="/images/favicon.png" rel="shortcut icon"/>
     <title>samskivert: {{ .Title }}</title>
+    {{- template "_internal/schema.html" . -}}
+    {{- template "_internal/google_news.html" . -}}
+    {{- template "_internal/twitter_cards.html" . -}}
+    {{- template "_internal/opengraph.html" . -}}
   </head>
 
   <body>
