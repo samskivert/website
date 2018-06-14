@@ -501,7 +501,7 @@ One thing that mildly irks me about ADTs is that they are "closed" (if I underst
 Now, in practice that's probably a good thing in many respects. In OO land you end up with
 something like this all the time
 
-https://github.com/badlogic/basis-template/blob/master/src/main/java/io/marioslab/basis/template/AstInterpreter.java#L762
+<a href="https://github.com/badlogic/basis-template/blob/master/src/main/java/io/marioslab/basis/template/AstInterpreter.java#L762">AstInterpreter.java#L762</a>
 
 (ignore that these should be instanceofs, I was JMHing a bit to hard...). There's no language
 construct that ensures I match all subtypes of Node, so you end up with a shitty ass big fat
