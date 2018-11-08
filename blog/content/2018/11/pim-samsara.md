@@ -251,8 +251,8 @@ get more attention.
 
 I also track which books I "abandon" and which games I "complete" (since abandoning books is the
 uncommon case, and &ndash; for me anyway &ndash; completing games is also the uncommon case). Moar
-data for the eventual meaningless statistics displays I will eventually add now that I have all
-this juicy metadata about my behavior.
+data for the meaningless statistics displays I will eventually add now that I have all this juicy
+metadata about my behavior.
 
 That's probably enough about I/O for now. If you like to obsess about your own input and output as
 much as I do, feel free to give it a try. I even registered a fancy `.app` domain:
