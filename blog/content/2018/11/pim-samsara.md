@@ -272,6 +272,12 @@ happen. Tragically, that particular platform feature has not yet come to webapps
 probably be thirteen years before some half-assed, buggily implemented, approximation of it grinds
 its way through the standards bodies and achieves unreliable browser support.
 
+More likely I will use this as an excuse to finally try out [Flutter], which has been on my list of
+things to play with since it was called Sky and required compiling half of [Fuschia] to even try
+out.
+
+Anyhow, onward into this [turn of the wheel]!
+
 [Puzzle Pirates]: https://www.puzzlepirates.com/
 [Jikan]: http://samskivert.com/code/jikan/
 [SWT]: https://www.eclipse.org/swt/
@@ -296,3 +302,6 @@ its way through the standards bodies and achieves unreliable browser support.
 [integrate some third-party service]: https://firebase.google.com/docs/firestore/solutions/search
 [rethink programming]: https://samskivert.github.io/compose/
 [source code]: https://github.com/samskivert/inout
+[Flutter]: https://flutter.io/
+[Fuschia]: https://fuchsia.googlesource.com/
+[turn of the wheel]: https://en.wikipedia.org/wiki/Sa%E1%B9%83s%C4%81ra_(Buddhism)
