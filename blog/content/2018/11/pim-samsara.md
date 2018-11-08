@@ -229,7 +229,7 @@ phone (in fact taken on the iOS Simulator because that was easier). But I still 
 information dashboard" open on my desktop computer as well. So I added a way to "pin" categories
 open when things are displayed on a larger screen:
 
-![I/O pinned screenshot](../io-pinned.jpg)
+<center><img src="../io-pinned.jpg" width="100%" /></center>
 
 It's not actually that cumbersome to flip to the appropriate tab as needed, but it felt silly to
 waste all that horizontal space on a desktop, and I just like seeing big, information dense
