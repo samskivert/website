@@ -84,7 +84,7 @@ but I also began keeping explicit track of movies/book/games that I wanted to se
 of just logging those things after the fact. I was particularly enamored of the ability to
 composite a "dashboard" page with all the myriad lists I was using to keep track of things:
 
-<center><img src="../sparecortex.jpg" width="600" /></center>
+<center><img src="../sparecortex.jpg" width="100%" /></center>
 
 I also had "To See", "To Listen", and "To Eat" down below the fold. Such lists, so organize.
 
@@ -122,15 +122,11 @@ track things like the author of a book or director of a film and who recommended
 tags to track whether it was a film or video, or book or academic paper, etc. With I/O all of this
 metadata is made explicit.
 
-<center><table>
-<tr><td>
-<img style="margin-left: 20px" align="right" width="200" src="../io-journal.jpg" />
-</td><td>
-<img style="margin-left: 20px" align="right" width="200" src="../io-watch.jpg" />
-</td><td>
-<img style="margin-left: 20px" align="right" width="200" src="../io-watch-edit.jpg" />
-</td></tr>
-</table></center>
+<div style="display: inline-flex; flex-wrap: wrap">
+<div style="margin: 0px 20px; width: 200px"><img width="100%" src="../io-journal.jpg" /></div>
+<div style="margin: 0px 20px; width: 200px"><img width="100%" src="../io-watch.jpg" /></div>
+<div style="margin: 0px 20px; width: 200px"><img width="100%" src="../io-watch-edit.jpg" /></div>
+</div>
 
 I/O is written in [TypeScript] using [React], [material-ui] and [MobX]. It is completely
 serverless, relying entirely on the (very nice) [Cloud Firestore] for data storage, [Firebase auth]
@@ -173,15 +169,11 @@ annual history views for the journal (because they get kinda lengthy and I didn'
 sacrificing any more blood and sweat to the UI gods to get infinite scrolling working) and full
 history views for media. Including searching/filtering:
 
-<center><table>
-<tr><td>
-<img style="margin-left: 20px" align="right" width="200" src="../io-journal-epoch.jpg" />
-</td><td>
-<img style="margin-left: 20px" align="right" width="200" src="../io-journal-history.jpg" />
-</td><td>
-<img style="margin-left: 20px" align="right" width="200" src="../io-play-history.jpg" />
-</td></tr>
-</table></center>
+<div style="display: inline-flex; flex-wrap: wrap">
+<div style="margin: 0px 20px; width: 200px"><img width="100%" src="../io-journal-epoch.jpg" /></div>
+<div style="margin: 0px 20px; width: 200px"><img width="100%" src="../io-journal-history.jpg" /></div>
+<div style="margin: 0px 20px; width: 200px"><img width="100%" src="../io-play-history.jpg" /></div>
+</div>
 
 This is pretty awesome when you're a crazy person like me and migrate sixteen years of journal data
 and twenty years of media logging/reviews into your powerful new PIM app and then spend nostalgic
