@@ -22,7 +22,7 @@ feasted on this fine fare in the gaps between Games issues. When I completed the
 February of 2019, I sent a photo to Paul (and later Trip) as a requiem for all the puzzling joy he
 had wrought:
 
-<a href="../payne.jpg"><img src="../payne.jpg" width=750 /></a>
+<a href="../payne.jpg"><img src="../payne.jpg" width=750 style="max-width: 100%" /></a>
 
 Those were printed two sided, so I could only show half of my work, and I was apparently too lazy
 to flip all the pages over and take another photo.
@@ -37,7 +37,7 @@ April 2006. Being not particularly creative in these matters, I decided to do th
 order, and save forthcoming subscription issues as a buffer against future lean times. Thus here at
 the end of 2019, I have a better idea of my "natural" rate of puzzle throughput:
 
-<a href="../games-done.jpg"><img src="../games-done.jpg" width=750 /></a>
+<a href="../games-done.jpg"><img src="../games-done.jpg" width=750 style="max-width: 100%" /></a>
 
 I completed 17 back issues and the January, February and April 2019 issues. The Feb and April
 issues are not pictured because I apparently didn't hang onto them after completion, alas. Also,
@@ -49,7 +49,7 @@ chronological approach enabled a strange recapitulation of the 1990s and early a
 lens of pop culture references in crossword puzzles. The April 1993 issue contained this puzzle
 about TV show logos:
 
-<a href="../logos.jpg"><img src="../logos.jpg" width=750 /></a>
+<a href="../logos.jpg"><img src="../logos.jpg" width=750 style="max-width: 100%" /></a>
 
 I have helpfully redacted my written answers so that you too can enjoy this test of how much time
 you wasted in the 80s and 90s watching bad television.
@@ -59,7 +59,7 @@ crosswords, logic puzzles and the like. I habitually skipped a few styles that d
 cipher decoding puzzles, Picross-style puzzles, word searches. Here's a sampling of the sorts of
 delightful puzzling fun lurking in each issue of Games:
 
-<a href="../puzzles.jpg"><img src="../puzzles.jpg" width=750 /></a>
+<a href="../puzzles.jpg"><img src="../puzzles.jpg" width=750 style="max-width: 100%" /></a>
 
 I particularly like the few Crossnumber puzzles that turned up here and there. Being a puzzle
 enthusiast for as long as I've been, I've come to know the names of a few constructors (as they
@@ -75,7 +75,7 @@ least a few nights a week, I do those to quiet my brain before falling asleep. B
 aughties I had to download them from the NYT website and print them out, but these days, naturally,
 there's an app for that. One that tracks puzzle solving statistics to boot!
 
-<a href="../stats.png"><img src="../stats.png" width=750 /></a>
+<a href="../stats.png"><img src="../stats.png" width=750 style="max-width: 100%" /></a>
 
 I tend to run a bit behind the latest puzzle, so I'm only on the November 2019 puzzles now, though I
 probably started the year with a similar deficit, so I'm guessing I average about a puzzle a day. I
@@ -93,7 +93,7 @@ spread across two nights of solving and probably include a few minutes of accide
 Looking forward to 2020, I still have a modest collection of Games back issues to get through, and
 my accumulated buffer of 2019 issues:
 
-<a href="../games-undone.jpg"><img src="../games-undone.jpg" width=750 /></a>
+<a href="../games-undone.jpg"><img src="../games-undone.jpg" width=750 style="max-width: 100%" /></a>
 
 With a mere 7 back issues (plus half of August 2003 which I'm in the middle of) and 7 new issues,
 I'm still well short of my 2019 rate of 19 issues a year (and also lacking the Trip Payne bonanza
@@ -104,7 +104,7 @@ probably get by just fine with my current stash.
 If push comes to shove, I can just finally get around to reading Mike Selinker's Puzzlecraft book
 and switch from solving puzzles to making them:
 
-<a href="../puzzlecraft.jpg"><img src="../puzzlecraft.jpg" width=750 /></a>
+<a href="../puzzlecraft.jpg"><img src="../puzzlecraft.jpg" width=750 style="max-width: 100%" /></a>
 
 Here's to another fine year of puzzling in 2020!
 
