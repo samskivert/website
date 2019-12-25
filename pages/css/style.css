@@ -73,6 +73,10 @@ h3 {
   margin-top: 0;
 }
 
+hr {
+  border-top: none;
+  border-bottom: 1px dotted #aaa;
+}
 .meta {
   font-size: .75em;
   color: #808080;
