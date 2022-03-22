@@ -38,8 +38,8 @@ product.
 
 This tale of woe has been ongoing for over two years now, so I have suppressed most of the horrific
 memories in order to continue functioning as a human being, but I will dredge up and describe a few
-things to pave the road toward the latest affronts to basic decency. I can only hope that writing
-about them will ease the pain.
+things to pave the road toward the latest crimes against basic decency. I can only hope that
+writing about them will ease the pain.
 
 ## We have eyes on the package
 
