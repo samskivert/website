@@ -165,8 +165,9 @@ of its own. Hey, two wrongs actually made a right this time! Sorta.
 Life on the fringe continues to be full of surprises. Most recently, Apple _finally_ stopped
 shipping Python 2 with macOS (Python's migration from 2 to 3 being yet another clown car shit show
 that we software developers can be proud of). I had already worked around half a dozen problems
-with the Firebase build because it assumed `python` meant Python 3, but that was Apple's sin, not
-Google's. Google's sin was much worse.
+with the Firebase SDK build because it assumed whaver `python` executable was on your path was
+Python 3. On macOS, `python` is Python 2. But that is Apple's sin, not Google's. Google's sin is
+much worse.
 
 At some point in the orgy of duct taping that took place during the initial creation of the
 Firebase Unity SDK, someone needed to generate an XML file. "Firebase Team JavaScript" likes their
@@ -243,3 +244,22 @@ version of the Firebase Unity SDK, only to find that they fucked up and failed t
 And the problem itself was so egregious, that in order to maintain my sanity, I had to write this
 blog post. And now I must gird my loins and go debug, and then fix, their fucking fix so that
 maybe, if the fates are kind to me, I can get back to making a video game today.
+
+## The morning after
+
+Brief addenda here, just to report that failure of the upstream fix to fix things was actually my
+error. The process of creating a patched version of the Firebase Unity SDK that works on ASi Macs
+is complex, time consuming, and easily messed up. And I messed it up. Now, in order to do it
+properly, I have grapple with new "completely unrelated to my actual goals" problems.
+
+I have learned that there are two formats for the debugging files that accompany C# DLLs: `mdb`
+files (no relation) and `pdb` files. Unity uses `mdb` files and those are only generated when
+building libraries on Windows. When building libraries on the Mac, `pdb` files are generated. So I
+have to set up a Windows development machine with the necessary compilers and SDKs to compile the
+C# parts of the Firebase Unity SDK, and then hand merge those into my patched SDK. Even if I were
+crazy enough to want to set up a C++ compiler toolchain on Windows, I would not be able to build
+the entire patched SDK on Windows, because I still need to build native libraries for ASi Macs,
+which can only be done on a Mac.
+
+I can only hope that this second day of my unwanted odyssey will see it full resolved. The Fates
+may yet require more sacrifice.
