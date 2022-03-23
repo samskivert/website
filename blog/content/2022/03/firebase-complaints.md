@@ -214,7 +214,8 @@ most likely did. I'm sure they had their reasons. It's tragedy all the way down 
 Development Land. But when they did, the quality product of our (possibly canine) protagonist up
 above came to a screeching halt. Now as soon as you so much as change a line of code, Unity
 attempts to recompile it and rebuild the universe, the Firebase Unity SDK attempts to bring Python
-to that party, and the whole house of cards comes tumbling down.
+to that party, and the whole house of cards
+[comes tumbling down](https://github.com/firebase/quickstart-unity/issues/1232).
 
 On the plus side, Google has actually taken action to fix this problem, unlike the "your entire SDK
 does not work on Apple Silicon Macs" problem, which is still TBD five months later. Four days ago,
