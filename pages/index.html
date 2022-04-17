@@ -5,10 +5,10 @@
   <title>samskivert</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width"/>
-  <link href="/images/favicon.png" rel="shortcut icon"/>
-  <link rel="alternate" href="/blog/index.xml" title="blog" type="application/atom+xml"/>
+  <link href="images/favicon.png" rel="shortcut icon"/>
+  <link rel="alternate" href="blog/index.xml" title="blog" type="application/atom+xml"/>
   <style type="text/css" media="screen">
-    @import url( /css/style.css );
+    @import url( css/style.css );
     ul li a, .project {
       font-family: sans-serif;
       letter-spacing: .07em;
@@ -22,12 +22,70 @@
 </head>
 
 <body>
-<div id="page">
-<img width="72" height="71" src="/images/headshot.jpg" alt="Me" align="right" style="margin-left: 5px"/>
-
+<div id="header">
+<a href="who.html"><img height="84" src="images/headshot.jpg" alt="Me" align="right" style="margin-left: 10px"/></a>
 <h1 id="banner" class="big"><a href="https://samskivert.com">samskivert</a></h1>
-<p>Here lies the homepage of one Michael Bayne. The twisty maze of passages lead as follows:</p>
+<p>Michael Bayne's internet parking spot.<br/>Choose your own adventure:</p>
+</div>
 
+<div id="page">
+<div class="columns">
+
+<div class="column">
+<h2>Writing</h2>
+<p>I have a blog about <a href="blog">the blah blah blah</a>. Here are
+some recent posts (where recent is used in the geologic sense):</p>
+
+<!--#include file="blog/recent/index.html" -->
+
+<p>I briefly wrote another blog about <a href="bikeshed">a
+hypothetical programming language</a>.
+
+<p>I also used to write reviews of <a href="reviews/books">books</a>,
+  <a href="reviews/films">films</a>, <a href="reviews/games">games</a>
+  and <a href="reviews/papers">Computer Science papers</a>.
+
+<p>Back in the Internet stone age (i.e. Web 1.0), I and a few other intrepid
+   programmers wrote a weekly column about nerdy things called
+   <a href="/internet/deep/">Deep Magic</a>.
+</div>
+
+<div class="column">
+<h2>Adventures</h2>
+<p>Before I had children, I wandered the world in search of enlightenment.
+                  Sometimes I would take pictures and write about it:
+
+<ul>
+  <li><a href="play/2009/01/brazarg/">2009 - Brazil, Argentina</a></li>
+  <li><a href="play/2005/11/hawaii/">2005 - Hawaii</a></li>
+  <li><a href="play/2004/04/nepal/">2004 - Nepal</a></li>
+  <li><a href="play/2002/07/nippon/">2002 - Japan</a></li>
+  <li><a href="play/2001/12/jamonduras/">2001 - Jamaica, Honduras</a></li>
+  <li><a href="play/2001/04/italy/">2001 - Italy</a></li>
+  <li><a href="play/2000/12/morocco/">2000 - Morocco</a></li>
+  <li><a href="play/2000/09/newzealand/">2000 - New Zealand</a></li>
+  <li><a href="play/2000/02/tahoe/">2000 - Tahoe</a></li>
+  <li><a href="play/1999/12/fiji/">1999 - Fiji</a></li>
+
+</ul>
+
+<p>I partook of the playa every year from 1999 to 2009 and managed to
+   document some of those adventures as well:
+
+<a href="play/2000/08/burn/">2000</a>,
+<a href="play/2001/08/burn/">2001</a>,
+<a href="play/2002/08/burn/">2002</a>,
+<a href="play/2003/08/burn/greenroommap.jpg">2003</a>,
+<a href="play/2004/08/burn/">2004</a>,
+<a href="play/2007/08/burn/">2007</a>.
+</p>
+
+These days I keep myself out of trouble by playing taiko with
+<a href="https://seattlekokontaiko.org/">Seattle Kokon Taiko</a>.
+Here's an <a href="images/2019/cherry-blossom.jpg">action photo</a> for you.
+</div>
+
+<div class="column">
 <h2>Playing</h2>
 <p>At the turn of the century, I co-founded
 a <a href="https://en.wikipedia.org/wiki/Three_Rings_Design">video game company</a> at which I made
@@ -66,6 +124,14 @@ games. Some of them are even still alive and kicking:</p>
   </li>
 </ul>
 
+<p>
+  In 2019 I made the questionable life choice of co-founding another video game company.
+  We're working on a game but aren't ready to announce it yet.
+</p>
+
+</div>
+
+<div class="column">
 <h2>Coding</h2>
 <p>I also write a lot of the computer software. Here are some of my more
 ambitious/interesting/popular non-game projects:</p>
@@ -78,181 +144,9 @@ ambitious/interesting/popular non-game projects:</p>
 <li><a href="https://github.com/threerings/getdown">Getdown</a> - an installer/updater for Java applications (2004)
 </ul>
 
-<p>Here's a big list of most everything, organized by inaugural year:</p>
-<ul>
-  <li>2018:
-    <a href="https://github.com/samskivert/inout">Input/Output</a> •
-    <a href="https://github.com/samskivert/bidir-scala">Bidir Checker</a> •
-    <a href="https://github.com/samskivert/adventofcode/tree/master/2018">adventofcode</a> •
-    <span class="project">Scaled modes:</span>
-    <a href="https://github.com/scaled/haskell-mode">haskell</a> •
-    <a href="https://github.com/scaled/purescript-mode">purescript</a>
-  <li>2017:
-    <a href="https://github.com/samskivert/compose">Compose</a> •
-    <a href="https://github.com/samskivert/adventofcode/tree/master/2017">adventofcode</a> •
-    <span class="project">Scaled modes:</span>
-    <a href="https://github.com/scaled/idris-mode">idris</a> •
-    <a href="https://github.com/scaled/ocaml-mode">ocaml</a> •
-    <a href="https://github.com/scaled/ocaml-mode">reason</a>
-  <li>2016:
-    <a href="https://github.com/samskivert/ReactSharp">ReactSharp</a> •
-    <span class="project">Scaled modes:</span>
-    <a href="https://github.com/scaled/cplusplus-mode">cplusplus</a> •
-    <a href="https://github.com/scaled/csharp-mode">csharp</a> •
-    <a href="https://github.com/scaled/javascript-mode">javascript</a> •
-    <a href="https://github.com/scaled/lisp-mode">lisp</a> •
-    <a href="https://github.com/scaled/thrift-mode">thrift</a> •
-    <a href="https://github.com/scaled/typescript-mode">typescript</a> •
-    <span class="project">extensions:</span>
-    <a href="https://github.com/scaled/javascript-project">javascript-project</a> •
-    <a href="https://github.com/scaled/gradle-project">gradle-project</a> •
-    <a href="https://github.com/scaled/vcs-project">vcs-project</a>
-  <li>2015:
-    <a href="https://github.com/samskivert/ddb">ddb</a> •
-    <span class="project">Scaled modes:</span>
-    <a href="https://github.com/scaled/groovy-mode">groovy</a> •
-    <a href="https://github.com/scaled/kotlin-mode">kotlin</a> •
-    <a href="https://github.com/scaled/sh-mode">sh</a> •
-    <span class="project">extensions:</span>
-    <a href="https://github.com/scaled/kotlin-project">kotlin-project</a>
-  <li>2014:
-    <a href="https://github.com/scaled/scaled">Scaled</a> •
-    <a href="https://github.com/scaled/codex">Codex'</a> •
-    <a href="https://github.com/samskivert/reactual">Reactual</a> •
-    <a href="https://github.com/samskivert/mfetcher">mfetcher</a>
-  <li>2013:
-    <a href="https://github.com/samskivert/codex">Codex</a> •
-    <a href="https://github.com/samskivert/mashups/tree/master/pokeros">Pokeros</a> •
-    <a href="https://github.com/samskivert/mashups/tree/master/samsara">Samsara</a> •
-    <a href="https://github.com/greyhavens/everything-mobile">Everything Mobile</a> •
-    <a href="https://github.com/samskivert/ios-scala-demo">iOS + Scala Demo</a> •
-    <a href="https://github.com/samskivert/monotouch-maven-plugin">Maven Plugin for MonoTouch</a> •
-    <a href="https://github.com/samskivert/samscala">samscala</a> •
-    <a href="https://github.com/samskivert/fundus">Fundus</a> •
-    <a href="https://github.com/threerings/nexus-demos">Nexus Demos</a> •
-    <a href="https://github.com/samskivert/depot-maven-plugin">Depot Maven Plugin</a> •
-    <a href="https://github.com/threerings/playn-cookbook">PlayN Cookbook</a> •
-    <a href="https://github.com/threerings/playn-perf">PlayN Perf Test Suite</a>
-  </li>
-  <li>2012:
-    <a href="https://github.com/samskivert/ikvm-monotouch">IVKM for MonoTouch</a> •
-    <a href="https://github.com/samskivert/ikvm-maven-plugin">IKVM MonoTouch Maven Plugin</a> •
-    <a href="https://github.com/threerings/ooo-app">ooo-app</a>
-  </li>
-  <li>2011:
-    <a href="https://github.com/threerings/atlantis">Atlantis</a> •
-    <a href="https://github.com/samskivert/curspace">curspace</a> •
-    <a href="https://github.com/samskivert/docserver">docserver</a> •
-    <a href="https://github.com/samskivert/findclass">findclass</a> •
-    <a href="https://github.com/threerings/nexus">Nexus</a> •
-    <a href="https://github.com/playn/playn">PlayN</a> •
-    <a href="https://github.com/samskivert/pom-util">pom-util</a> •
-    <a href="https://github.com/samskivert/pythagoras">pythagoras</a> •
-    <a href="https://github.com/threerings/react">React</a> •
-    <a href="https://github.com/samskivert/reversi">Reversi</a> •
-    <a href="https://github.com/samskivert/sbt-condep-plugin">sbt-condep-plugin</a> •
-    <a href="https://github.com/samskivert/sbt-pom-util">sbt-pom-util</a> •
-    <a href="https://github.com/threerings/tripleplay">Triple Play</a>
-  </li>
-  <li>2010:
-    <a href="https://github.com/samskivert/coreen">Coreen</a> •
-    <a href="https://github.com/samskivert/jmustache">JMustache</a> •
-    <a href="https://github.com/samskivert/memory">Memory</a> (<a href="https://www.sparecortex.com">Spare Cortex</a>) •
-    <a href="https://github.com/samskivert/pom2classpath">pom2classpath</a> •
-    <a href="https://github.com/samskivert/chromewheel">Chromewheel</a>
-  </li>
-  <li>2009: <a href="https://github.com/greyhavens/everything">Everything Game</a> •
-    <a href="https://github.com/mernst/ductilej">DuctileJ</a> •
-    <a href="https://github.com/samskivert/gwt-asyncgen">GWT AsyncGen</a> •
-    <a href="https://github.com/samskivert/immutablej">ImmutableJ</a> •
-    <a href="https://github.com/samskivert/jogviz/">Jogviz</a>
-  </li>
-  <li>2008: <a href="https://github.com/threerings/gwt-utils">GWT Utils</a> •
-    <a href="https://github.com/samskivert/twingle/">Twingle</a> •
-    <a href="https://github.com/samskivert/wiggle">Wiggle</a> •
-    <a href="https://github.com/samskivert/moveimap">moveimap</a>
-  </li>
-  <li>2007: <a href="https://github.com/samskivert/euler-scala/">euler-scala</a> •
-    <a href="https://github.com/greyhavens/whirled-projects/tree/master/games/dictattack">Dictionary Attack</a>
-  </li>
-  <li>2006: <a href="https://github.com/threerings/depot">Depot</a> •
-    <a href="https://github.com/greyhavens/msoy">Whirled</a>
-  </li>
-  <li>2005: <a href="https://github.com/samskivert/jme-bui">JME BUI</a> •
-    <a href="https://github.com/greyhavens/bang-game">Bang! Howdy</a> •
-    <a href="/code/jikan/">Jikan</a> •
-    <a href="https://github.com/samskivert/enormous">That's Enormous</a> •
-    <a href="https://github.com/samskivert/spacecrack">Space Crack</a>
-  </li>
-  <li>2004: <a href="https://github.com/threerings/getdown">Getdown</a> •
-    <a href="https://github.com/threerings/game-gardens">Game Gardens</a> •
-    <a href="https://github.com/samskivert/bugs">bugs</a>
-  </li>
-  <li>2002: <a href="https://github.com/samskivert/depends">Depends</a>
-  </li>
-  <li>2001: <a href="https://github.com/threerings/narya/">Narya</a> •
-    <a href="https://github.com/threerings/nenya/">Nenya</a> •
-    <a href="https://github.com/threerings/vilya/">Vilya</a> •
-    <a href="https://github.com/samskivert/viztool">Viztool</a> •
-    <a href="https://github.com/samskivert/chuchusolver">Chu Chu Solver</a> •
-    <a href="/code/whowhere/">Who Where When</a>
-  </li>
-  <li>2000:
-    <a href="https://github.com/samskivert/samskivert/">samskivert</a> •
-    <a href="/code/robodj/">RoboDJ</a> •
-    <a href="/code/lookuplet">Lookuplet</a>
-  </li>
-  <li>1999:
-    <a href="https://github.com/samskivert/kartrando">Kart Rando</a>
-  </li>
-  <li>1995:
-    <a href="https://github.com/samskivert/beschei-en">Bescheißen</a>
-  </li>
-  <li>1992:
-    <a href="https://github.com/samskivert/garshneblanker">Garshneblanker</a>
-  </li>
-</ul>
-
-<p> Prior to 2000 things are spotty because I'm not very good at keeping track
-of things and public source repositories weren't around before thenabouts. Much
-commercial software also happened along the way, some of it probably even
-useful, but most inaccessible via hyperlink. </p>
-
-<h2>Writing</h2>
-<p>I have a blog about <a href="blog">general blah blah</a>. Here are
-some recent posts, where recent is used in the geological sense:</p>
-
-<!--#include file="blog/recent/index.html" -->
-
-<p>I briefly wrote another blog about <a href="bikeshed">a
-hypothetical programming language</a>:</p>
-
-<!--#include file="bikeshed/recent.html" -->
-
-<p>I also used to write reviews of <a href="reviews/books">books</a>,
-  <a href="reviews/films">films</a>, <a href="reviews/games">games</a>
-  and <a href="reviews/papers">Computer Science papers</a>. These are
-  the last few posts from that era:</p>
-
-<!--#include file="reviews/recent.html" -->
-
-<p>Back in the Internet stone age (i.e. Web 1.0), I and a few other intrepid
-   programmers wrote a weekly column about nerdy things called
-   <a href="/internet/deep/">Deep Magic</a>.
-
-<h2>Party Like It's 1994</h2>
-
-<p>In order to relive the glory days of the early Internet, I am part of a grumpy video game /
-programming language developer <a href="https://en.wikipedia.org/wiki/Webring">web ring</a>.
-If your appetite for good natured pessimism about software development has not been satisfied
-by my writings, these fine individuals are glad to provide more:
-
-<center>
-  <a href="https://marioslab.io/">Mario's Lab</a> •
-  <a href="https://code-disaster.com/">/code/disaster</a> •
-  <a href="https://gpfault.net/">gpfault</a>
-</center>
-
+<p>If you're into this sort of thing, I have a <a href="code.html">larger list</a> of my larger projects.
 </p>
+</div>
+</div>
 
 <!--#include file="footer.html"-->

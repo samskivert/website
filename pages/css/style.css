@@ -24,6 +24,15 @@ body p, body li {
   line-height: 125%;
 }
 
+.columns {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  column-gap: 2rem;
+}
+
+.column {
+}
+
 .big {
   font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-size: x-large;
@@ -117,6 +126,11 @@ hr {
   font-size: medium;
   text-align: center;
   clear: both;
+}
+
+#header {
+  max-width: 400px;
+  margin: 0px auto;
 }
 
 #page {
