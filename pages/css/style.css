@@ -18,6 +18,7 @@ body {
   background: #fff;
   color: #000;
   font-family: "Palatino", "Times New Roman", Times, serif;
+  margin: 1em 1em;
 }
 
 body p, body li {
@@ -26,8 +27,8 @@ body p, body li {
 
 .columns {
   display: grid;
-  grid-template-columns: 50% 50%;
   column-gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
 }
 
 .column {
