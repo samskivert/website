@@ -65,6 +65,7 @@ body p, body li {
 
 .post pre {
   overflow-x: auto;
+  padding: 8px 12px 8px 12px;
 }
 
 h2 {
