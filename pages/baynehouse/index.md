@@ -69,8 +69,8 @@ students, and advanced undergraduate students with relevant teaching or tutoring
 ### How to Apply
 
 Please send a brief introduction describing your educational background, relevant teaching or
-tutoring experience, and why this position interests you: to Remy's father,
-<a href="mailto:mdb@samskivert.com">Michael</a>.
+tutoring experience, and why this position interests you: to Remy's father Michael, at
+<a href="mailto:mdb@samskivert.com">mdb@samskivert.com</a>.
 
 We look forward to finding someone who will enjoy helping our son learn, grow, and work toward his
 educational goals.
