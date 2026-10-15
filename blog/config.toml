@@ -13,3 +13,27 @@ pygmentsUseClasses = true
 
 [markup.goldmark.renderer]
   unsafe= true
+
+[security]
+  allowContent = ['.*']
+
+# Declaring any mount replaces Hugo's defaults, so the standard ones are listed too.
+[[module.mounts]]
+  source = "content"
+  target = "content"
+[[module.mounts]]
+  source = "static"
+  target = "static"
+[[module.mounts]]
+  source = "layouts"
+  target = "layouts"
+[[module.mounts]]
+  source = "data"
+  target = "data"
+[[module.mounts]]
+  source = "archetypes"
+  target = "archetypes"
+# Share the main site's footer (Hugo doesn't follow symlinked layout files).
+[[module.mounts]]
+  source = "../pages/footer.html"
+  target = "layouts/partials/footer.html"
