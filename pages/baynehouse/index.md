@@ -1,3 +1,4 @@
+# Seeking Private Academic Tutor / Educator
 **Bothell, WA | In Person | $50–$75/hour | 6–8 hours/week**
 
 We are a family in Bothell, Washington, seeking an enthusiastic, capable, and patient educator to
